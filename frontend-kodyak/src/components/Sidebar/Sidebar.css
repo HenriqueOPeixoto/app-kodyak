@@ -1,0 +1,18 @@
+.Sidebar {
+    display: flex;
+    height: 100%;
+    width: 300px;
+    background-color: #153448;
+}
+
+.SidebarData li {
+    /* Style each list item */
+    display: flex; /* Use flexbox for easier alignment */
+    align-items: center; /* Center items vertically */
+    padding: 10px; /* Add padding for spacing */
+  }
+  
+  .SidebarData li div {
+    /* Style each div inside a list item */
+    margin-right: 10px; /* Add margin between icon and title */
+  }
