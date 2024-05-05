@@ -10,6 +10,7 @@
     display: flex; /* Use flexbox for easier alignment */
     align-items: center; /* Center items vertically */
     padding: 10px; /* Add padding for spacing */
+    color: rgb(228, 219, 219);
   }
   
   .SidebarData li div {
