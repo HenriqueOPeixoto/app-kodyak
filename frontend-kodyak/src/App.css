@@ -5,10 +5,16 @@
 .App {
     height: 100vh;
     width: 100vw;
+    display: flex;
 }
 
 
 body {
     margin: 0px;
     padding: 0px;
+}
+
+.Main {
+    padding: 20px;
+    flex-grow: 1;
 }

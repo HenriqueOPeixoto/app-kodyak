@@ -4,7 +4,7 @@ import SidebarData from './SidebarData'
 
 function Sidebar() {
   return (
-    <div className='Sidebar'>
+    <div>
         <ul className='SidebarData'>
             {SidebarData().map(item => {
               return (
