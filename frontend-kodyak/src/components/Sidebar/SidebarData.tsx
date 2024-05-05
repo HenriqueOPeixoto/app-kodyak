@@ -8,12 +8,12 @@ function SidebarData() {
         {
             title: "Dashboard",
             icon: <DashboardIcon />,
-            link: ""
+            link: "/dashboard"
         },
         {
             title: "Cadastros",
             icon: <AddBoxIcon />,
-            link: ""
+            link: "/cadastros"
         }
     ]
   )

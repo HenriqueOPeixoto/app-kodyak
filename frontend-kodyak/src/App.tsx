@@ -1,11 +1,11 @@
 import './App.css'
 import './components/Sidebar/Sidebar.css'
 import Sidebar from './components/Sidebar/Sidebar'
-import Cadastro from './components/Content/Cadastro';
+import Cadastro from './components/Content/Cadastros';
 import Dashboard from './components/Content/Dashboard';
 
 import '@fontsource/roboto/400.css';
-
+import { Route, Routes } from 'react-router-dom'
 
 
 function App() {
@@ -16,7 +16,10 @@ function App() {
         <div className='Sidebar'><Sidebar /></div>
         <div className='Main'>
           {/* O conteúdo da página atual será carregado aqui */}
-          <Dashboard />
+          <Routes>
+            <Route path='/cadastros' Component={Cadastro}></Route>
+            <Route path='/dashboard' Component={Dashboard}></Route>
+          </Routes>
         </div>
       </div>
     </>

@@ -2,16 +2,20 @@ import React from 'react'
 import './Sidebar.css'
 import SidebarData from './SidebarData'
 
+import { Link } from 'react-router-dom'
+
 function Sidebar() {
   return (
     <div>
         <ul className='SidebarData'>
             {SidebarData().map(item => {
               return (
-                <li>
-                  <div>{item.icon}</div>
-                  <div>{item.title}</div>
-                </li>
+                <Link to={item.link}>
+                  <li>
+                    <div>{item.icon}</div>
+                    <div>{item.title}</div>
+                  </li>
+                </Link>
               )
             })}
         </ul>
