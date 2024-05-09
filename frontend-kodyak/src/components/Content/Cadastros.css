@@ -8,3 +8,12 @@
     justify-content: flex-start;
     max-width: 35%;    
 }
+
+.Cadastros {
+    display: flex;
+    flex-direction: row;
+}
+
+.ListaCadastros {
+    margin-left: 1%;
+}
