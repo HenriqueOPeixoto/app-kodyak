@@ -17,3 +17,8 @@
 .ListaCadastros {
     margin-left: 1%;
 }
+
+.TabelaClientes {
+    height: 100%;
+    width: 100%;
+}

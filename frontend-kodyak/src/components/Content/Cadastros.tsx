@@ -26,7 +26,7 @@ function Cadastros() {
       </div>
       <div className='Cadastros'>
         <div className='BotoesCadastro'>
-
+          {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
           <Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
           <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
           <Button startIcon={<ShoppingBagIcon />}>Família de Produtos</Button>
