@@ -1,12 +1,15 @@
 import { Button, Paper, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 
 import '../Cadastros.css'
+import { Link } from "react-router-dom"
 
 function TabelaClientes() {
   return (
     <div className="TabelaClientes">
       <div className="ContainerBtnIncluir">
-        <Button className="BtnIncluirCliente" variant="contained" color="success">Incluir</Button>
+        <Link to='/cadastros/novo_cliente'>
+          <Button className="BtnIncluirCliente" variant="contained" color="success">Incluir</Button>
+        </Link>
       </div>
       <TableContainer component={Paper}>
         <TableHead>
