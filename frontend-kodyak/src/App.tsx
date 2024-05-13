@@ -6,6 +6,7 @@ import '@fontsource/roboto/400.css';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import Motoristas from './components/Cadastros/Motoristas';
 
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
@@ -22,7 +23,8 @@ function App() {
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
-            {/* Add more routes here */}
+            <Route path='/cadastros/novo_motorista' element={<Motoristas />} />
+            {/* Novas rotas aqui */}
           </Routes>
         </Suspense>
       </div>
