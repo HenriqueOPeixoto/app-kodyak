@@ -1,0 +1,12 @@
+{
+  "name": "backend-kodyak",
+  "version": "1.0.0",
+  "description": "APIs para o aplicativo de acompanhamento de pedidos",
+  "main": "index.js",
+  "author": "Henrique Peixoto",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
