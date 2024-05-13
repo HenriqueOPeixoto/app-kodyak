@@ -1,32 +1,33 @@
 import './App.css'
 import './components/Sidebar/Sidebar.css'
-import Sidebar from './components/Sidebar/Sidebar'
-import Cadastro from './components/Content/Cadastros';
-import Dashboard from './components/Content/Dashboard';
-import Clientes from './components/Content/Cadastros/Clientes';
-
-
+import Sidebar from './components/Sidebar/Sidebar';
 import '@fontsource/roboto/400.css';
-import { Route, Routes } from 'react-router-dom'
 
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+
+const Cadastro = lazy(() => import('./components/Content/Cadastros'));
+const Dashboard = lazy(() => import('./components/Content/Dashboard'));
+const Clientes = lazy(() => import('./components/Content/Cadastros/Clientes'));
 
 function App() {
-
   return (
-    <>
-      <div className='App'>
-        <div className='Sidebar'><Sidebar /></div>
-        <div className='Main'>
-          {/* O conteúdo da página atual será carregado aqui */}
+    <div className='App'>
+      <div className='Sidebar'><Sidebar /></div>
+      <div className='Main'>
+        {/* O conteúdo da página atual será carregado aqui */}
+        <Suspense fallback={<div><CircularProgress /></div>}>
           <Routes>
-            <Route path='/cadastros' Component={Cadastro}></Route>
-            <Route path='/dashboard' Component={Dashboard}></Route>
-            <Route path='/cadastros/novo_cliente' Component={Clientes}></Route>
+            <Route path='/cadastros' element={<Cadastro />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/cadastros/novo_cliente' element={<Clientes />} />
+            {/* Add more routes here */}
           </Routes>
-        </div>
+        </Suspense>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
