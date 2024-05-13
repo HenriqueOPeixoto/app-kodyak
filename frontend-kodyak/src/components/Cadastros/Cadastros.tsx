@@ -3,9 +3,9 @@ import PeopleIcon from '@mui/icons-material/People';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
-import './Cadastros.css'
-import TabelaClientes from './Cadastros/TabelaClientes';
-import TabelaBancos from './Cadastros/TabelaBancos';
+import './styles/Cadastros.css'
+import TabelaClientes from './TabelaClientes';
+import TabelaBancos from './TabelaBancos';
 import { useState } from 'react';
 
 function Cadastros() {

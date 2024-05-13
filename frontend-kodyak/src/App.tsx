@@ -7,9 +7,9 @@ import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
-const Cadastro = lazy(() => import('./components/Content/Cadastros'));
-const Dashboard = lazy(() => import('./components/Content/Dashboard'));
-const Clientes = lazy(() => import('./components/Content/Cadastros/Clientes'));
+const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
+const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
+const Clientes = lazy(() => import('./components/Cadastros/Clientes'));
 
 function App() {
   return (
