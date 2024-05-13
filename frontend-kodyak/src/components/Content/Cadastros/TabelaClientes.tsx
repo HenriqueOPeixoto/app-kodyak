@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Button, Paper, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 
 import '../Cadastros.css'
 

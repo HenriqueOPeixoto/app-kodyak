@@ -1,9 +1,7 @@
-import { Button, Table } from '@mui/material'
+import { Button } from '@mui/material'
 import PeopleIcon from '@mui/icons-material/People';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
-import { Link, Route, Routes } from 'react-router-dom';
 
 import './Cadastros.css'
 import TabelaClientes from './Cadastros/TabelaClientes';
