@@ -53,30 +53,44 @@ export default function Motoristas() {
           required
           id="outlined-required"
           label="Nome Completo"
+          value={nome}
           defaultValue=""
+          onChange={event => setNome(event.target.value)}
         />
         <TextField
           required
           id="filled-required"
           label="Placa"
+          value={placa}
           defaultValue=""
+          onChange={event => setPlaca(event.target.value)}
         />
         <TextField
           required
           id="standard-required"
           label="Telefone"
+          value={telefone}
           defaultValue=""
+          onChange={event => setTelefone(event.target.value)}
         />
         <TextField 
             required
             id='vinculo'
+            value={vinculo}
             label='Vínculo com o tipo de caminhão'
+            onChange={event => setVinculo(event.target.value)}
         />
         </div>
         <div className='ContainerTipoCaminhao'>
           <FormControl fullWidth>
               <InputLabel id="lblTipoCaminhao">Selecione o tipo de caminhão</InputLabel>
-              <Select labelId='lblTipoCaminhao' id='tipoCaminhao' autoWidth label="Selecione o tipo de caminhão">
+              <Select
+                labelId='lblTipoCaminhao'
+                id='tipoCaminhao' 
+                value={tipoCaminhao}
+                autoWidth 
+                label="Selecione o tipo de caminhão"
+                onChange={handleChangeTipo}>
                   <MenuItem value={1}>Truck - 14500</MenuItem>
                   <MenuItem value={2}>Bi-Truck - 18500</MenuItem>
                   <MenuItem value={3}>Carreta Is - 32000</MenuItem>
