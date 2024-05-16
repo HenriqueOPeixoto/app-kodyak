@@ -28,7 +28,7 @@ export default function Motoristas() {
       tipoCaminhao
     }
    
-    axios.post('backend', formData)
+    axios.post('http://localhost:5174/api/cadastro/motorista', formData)
     .then(response => {
       console.log('Motorista cadastrado com sucesso.')
 
