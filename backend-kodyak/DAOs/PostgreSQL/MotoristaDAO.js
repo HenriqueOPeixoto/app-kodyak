@@ -1,0 +1,21 @@
+const pool = require('../../postgres').pool
+
+const createMotorista = (request, response) => {
+    const { nome, placa, telefone, vinculo, tp_caminhao } = request.body
+
+    console.log(request.body)
+
+    pool.query(
+        'INSERT INTO MOTORISTAS (NOME, PLACA, TELEFONE, VINCULO, TP_CAMINHAO) VALUES ($1, $2 ,$3, $4, $5)',
+        [nome, placa, telefone, vinculo, tp_caminhao],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+
+            response.status(201).send(`Motorista adicionado com ID ${results.insertId}`)
+            
+        })
+}
+
+module.exports = { createMotorista }
