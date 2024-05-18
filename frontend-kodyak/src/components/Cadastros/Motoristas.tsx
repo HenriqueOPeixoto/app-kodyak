@@ -13,10 +13,10 @@ export default function Motoristas() {
   const [placa, setPlaca] = useState('')
   const [telefone, setTelefone] = useState('')
   const [vinculo, setVinculo] = useState('')
-  const [tipoCaminhao, setTipoCaminhao] = useState('')
+  const [tp_caminhao, setTpCaminhao] = useState('')
 
   const handleChangeTipo = (event: SelectChangeEvent) => {
-    setTipoCaminhao(event.target.value as string)
+    setTpCaminhao(event.target.value as string)
   }
 
   const handleSubmit = () => {
@@ -25,7 +25,7 @@ export default function Motoristas() {
       placa,
       telefone,
       vinculo,
-      tipoCaminhao
+      tp_caminhao: tp_caminhao
     }
    
     axios.post('http://localhost:5174/api/cadastro/motorista', formData)
@@ -87,7 +87,7 @@ export default function Motoristas() {
               <Select
                 labelId='lblTipoCaminhao'
                 id='tipoCaminhao' 
-                value={tipoCaminhao}
+                value={tp_caminhao}
                 autoWidth 
                 label="Selecione o tipo de caminhão"
                 onChange={handleChangeTipo}>
