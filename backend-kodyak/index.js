@@ -21,6 +21,7 @@ app.post('/api/cadastro/motorista', async (req, res) => {
   })
 
 app.get('/api/motoristas', async (req, res) => {
+  motoristaDAO.getMotoristas(req, res)
 })
 
 app.listen(port, () => {

@@ -18,4 +18,17 @@ const createMotorista = (request, response) => {
         })
 }
 
-module.exports = { createMotorista }
+const getMotoristas = (request, response) => {
+    pool.query(
+        'SELECT * FROM MOTORISTAS', (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).json(results.rows)
+        })
+}
+
+module.exports = {
+    createMotorista,
+    getMotoristas
+}
