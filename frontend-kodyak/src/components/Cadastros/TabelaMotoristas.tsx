@@ -16,15 +16,15 @@ interface Motorista {
 
 const CardMotorista: React.FC<{ motorista:Motorista }> = ({ motorista }) => {
   return (
-    <Card>
+    <Card variant="outlined">
       <CardActionArea>
         <CardContent>
-          <Typography>#{motorista.id}</Typography>
-          <Typography variant="h5">{motorista.nome}</Typography>
-          <Typography>{motorista.placa}</Typography>
-          <Typography>{motorista.telefone}</Typography>
-          <Typography>{motorista.vinculo}</Typography>
-          <Typography>{motorista.tp_caminhao}</Typography>
+          <Typography variant="subtitle2">#{motorista.id}</Typography>
+          <Typography variant="h6">{motorista.nome}</Typography>
+          <Typography>Placa: {motorista.placa}</Typography>
+          <Typography>Telefone: {motorista.telefone}</Typography>
+          <Typography>Vinculo: {motorista.vinculo}</Typography>
+          <Typography>Caminhão: {motorista.tp_caminhao}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>
@@ -54,7 +54,7 @@ const TabelaMotoristas: React.FC = () => {
       </div>
       <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
         {motorista.map((motorista) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={motorista.id}>
+          <Grid item xs={12} key={motorista.id}>
             <CardMotorista motorista={motorista} />
           </Grid>
         ))}
