@@ -28,7 +28,22 @@ const getMotoristas = (request, response) => {
         })
 }
 
+const getMotoristaById = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query(
+        'SELECT * FROM MOTORISTAS WHERE ID = $1',
+        [id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).json(results.rows)
+        }
+    )
+}
+
 module.exports = {
     createMotorista,
-    getMotoristas
+    getMotoristas,
+    getMotoristaById
 }
