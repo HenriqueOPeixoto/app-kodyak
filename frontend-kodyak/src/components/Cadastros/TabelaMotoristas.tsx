@@ -17,6 +17,7 @@ interface Motorista {
 const CardMotorista: React.FC<{ motorista:Motorista }> = ({ motorista }) => {
   return (
     <Card variant="outlined">
+      <Link to={`/cadastros/editar_motorista/${motorista.id}`} style={{ textDecoration: 'none', color: 'inherit'}}>
       <CardActionArea>
         <CardContent>
           <Typography variant="subtitle2">#{motorista.id}</Typography>
@@ -27,6 +28,7 @@ const CardMotorista: React.FC<{ motorista:Motorista }> = ({ motorista }) => {
           <Typography>Caminhão: {motorista.tp_caminhao}</Typography>
         </CardContent>
       </CardActionArea>
+      </Link>
     </Card>
   )
 }

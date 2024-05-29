@@ -24,6 +24,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/novo_motorista' element={<Motoristas />} />
+            <Route path='/cadastros/editar_motorista/:id' element={<Motoristas />} />
             {/* Novas rotas aqui */}
           </Routes>
         </Suspense>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
@@ -7,13 +7,38 @@ import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './styles/Motoristas.css'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 export default function Motoristas() {
+  const { id } = useParams() // Trazer id do motorista para atualizar, se houver
   const [nome, setNome] = useState('')
   const [placa, setPlaca] = useState('')
   const [telefone, setTelefone] = useState('')
   const [vinculo, setVinculo] = useState('')
-  const [tp_caminhao, setTpCaminhao] = useState('')
+  const [tp_caminhao, setTpCaminhao] = useState(id ? '' : '1')
+
+  useEffect(() => {
+    if (id) {
+      // Buscar os dados do motorista para atualizar
+      axios.get(`http://localhost:5174/api/motoristas/${id}`)
+      .then(response => {
+        console.log(response.data)
+        if (response.data.length > 0) { // Checar se response não é vazio
+            // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
+            // retorna um registro.
+            const { nome, placa, telefone, vinculo, tp_caminhao } = response.data[0]
+            setNome(nome)
+            setPlaca(placa)
+            setTelefone(telefone)
+            setVinculo(vinculo)
+            setTpCaminhao(tp_caminhao)
+        }
+      })
+      .catch(error => {
+        console.log('Não foi possível carregar dados do motorista: ', error)
+      })
+    }
+  }, [id])
 
   const handleChangeTipo = (event: SelectChangeEvent) => {
     setTpCaminhao(event.target.value as string)
