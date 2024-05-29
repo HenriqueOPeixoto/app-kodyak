@@ -7,7 +7,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './styles/Motoristas.css'
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 export default function Motoristas() {
   const { id } = useParams() // Trazer id do motorista para atualizar, se houver
@@ -72,7 +72,9 @@ export default function Motoristas() {
       noValidate
       autoComplete="off"
     >
-      <Button startIcon={<ArrowBackIcon />}  color='error'>Voltar</Button>
+      <Link to='/cadastros'>
+        <Button startIcon={<ArrowBackIcon />}  color='error'>Voltar</Button>
+      </Link>
       <div>
         <TextField
           required
