@@ -57,14 +57,24 @@ export default function Motoristas() {
       tp_caminhao: tp_caminhao
     }
    
-    axios.post('http://localhost:5174/api/cadastro/motorista', formData)
-    .then(response => {
-      console.log('Motorista cadastrado com sucesso.')
-
-    })
-    .catch(error => {
-      console.error('Não foi possível cadastrar o motorista: ', error)
-    })
+    if (id) {
+      axios.put(`http://localhost:5174/api/motoristas/${id}`, formData)
+      .then(response => {
+        console.log('Motorista atualizado com sucesso')
+      })
+      .catch(error => {
+        console.log('Ocorreu um erro ao atualizar o motorista: ', error)
+      })
+    } else {
+      axios.post('http://localhost:5174/api/cadastro/motorista', formData)
+      .then(response => {
+        console.log('Motorista cadastrado com sucesso.')
+  
+      })
+      .catch(error => {
+        console.error('Não foi possível cadastrar o motorista: ', error)
+      })
+    }
   }
 
   return (
