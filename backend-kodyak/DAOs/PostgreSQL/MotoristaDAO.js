@@ -42,8 +42,24 @@ const getMotoristaById = (request, response) => {
     )
 }
 
+const updateMotorista = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { nome, placa, telefone, vinculo, tp_caminhao } = request.body
+    pool.query(
+        'UPDATE MOTORISTAS SET NOME = $1, PLACA = $2, TELEFONE = $3, VINCULO = $4, TP_CAMINHAO = $5 WHERE id = $6',
+        [nome, placa, telefone, vinculo, tp_caminhao],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`Motorista com ID ${id} foi alterado`)
+        }
+    )
+}
+
 module.exports = {
     createMotorista,
     getMotoristas,
-    getMotoristaById
+    getMotoristaById,
+    updateMotorista
 }

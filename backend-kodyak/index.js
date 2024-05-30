@@ -26,6 +26,8 @@ app.get('/api/motoristas', async (req, res) => {
 
 app.get('/api/motoristas/:id', motoristaDAO.getMotoristaById)
 
+app.put('/api/motoristas/:id', motoristaDAO.updateMotorista)
+
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)
 })
