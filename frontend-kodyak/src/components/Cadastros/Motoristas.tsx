@@ -1,3 +1,7 @@
+//TODO: Mudar botão Salvar para Alterar, quando ID for fornecido.
+//TODO: Usar uma rota alternativa para atualização do motorista.
+//TODO: Adicionar um aviso para mostrar ao usuário que a operação foi bem sucedida
+
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -131,7 +135,7 @@ export default function Motoristas() {
             variant='contained'
             color='success'
             onClick={() => {handleSubmit()}}
-          >Gravar</Button>
+          >{id ? 'Atualizar' : 'Gravar'}</Button>
         </div>
     </Box>
   );
