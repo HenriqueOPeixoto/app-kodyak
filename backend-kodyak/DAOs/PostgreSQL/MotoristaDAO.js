@@ -47,7 +47,7 @@ const updateMotorista = (request, response) => {
     const { nome, placa, telefone, vinculo, tp_caminhao } = request.body
     pool.query(
         'UPDATE MOTORISTAS SET NOME = $1, PLACA = $2, TELEFONE = $3, VINCULO = $4, TP_CAMINHAO = $5 WHERE id = $6',
-        [nome, placa, telefone, vinculo, tp_caminhao],
+        [nome, placa, telefone, vinculo, tp_caminhao, id],
         (error, results) => {
             if (error) {
                 throw error
