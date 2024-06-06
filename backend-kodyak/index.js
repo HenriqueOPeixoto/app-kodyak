@@ -28,6 +28,8 @@ app.get('/api/motoristas/:id', motoristaDAO.getMotoristaById)
 
 app.put('/api/motoristas/:id', motoristaDAO.updateMotorista)
 
+app.put('/api/motoristas/:id/inativar', motoristaDAO.inativarMotorista)
+
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)
 })

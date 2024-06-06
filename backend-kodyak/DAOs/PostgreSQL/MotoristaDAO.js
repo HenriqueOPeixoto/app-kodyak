@@ -57,9 +57,24 @@ const updateMotorista = (request, response) => {
     )
 }
 
+const inativarMotorista = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query(
+        'UPDATE MOTORISTAS SET INATIVO = TRUE WHERE ID = $1',
+        [id],
+        (error, results) => {
+            if (error) {
+                throw error
+            }
+            response.status(200).send(`Motorista com ID ${id} inativado.`)
+        }
+    )
+}
+
 module.exports = {
     createMotorista,
     getMotoristas,
     getMotoristaById,
-    updateMotorista
+    updateMotorista,
+    inativarMotorista
 }
