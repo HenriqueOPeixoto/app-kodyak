@@ -10,8 +10,10 @@ import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } 
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './styles/Motoristas.css'
+import './styles/Cadastros.css'
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import { DoNotDisturb } from '@mui/icons-material';
 
 export default function Motoristas() {
   const { id } = useParams() // Trazer id do motorista para atualizar, se houver
@@ -86,6 +88,10 @@ export default function Motoristas() {
       noValidate
       autoComplete="off"
     >
+      <div className="Title">
+        Motoristas
+        <hr />
+      </div>
       <Link to='/cadastros'>
         <Button startIcon={<ArrowBackIcon />}  color='error'>Voltar</Button>
       </Link>
@@ -140,12 +146,15 @@ export default function Motoristas() {
               </Select>
           </FormControl>
         </div>
-        <div className='BtnGravar'>
+        <div className='FormButtons'>
           <Button startIcon={<SaveIcon />}
             variant='contained'
             color='success'
             onClick={() => {handleSubmit()}}
           >{id ? 'Atualizar' : 'Gravar'}</Button>
+          <Button startIcon={<DoNotDisturb/>}
+            variant='contained'
+            color='error'>Inativar</Button>
         </div>
     </Box>
   );

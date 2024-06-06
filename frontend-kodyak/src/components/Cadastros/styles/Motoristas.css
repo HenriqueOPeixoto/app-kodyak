@@ -2,6 +2,8 @@
     width: 50%;
 }
 
-.BtnGravar {
+.FormButtons {
     margin-top: 10px;
+    display: flex;
+    column-gap: 5px;
 }
