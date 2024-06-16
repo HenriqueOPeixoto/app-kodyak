@@ -15,6 +15,8 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { DoNotDisturb } from '@mui/icons-material';
 
+import DialogInativar from './Dialogs/DialogInativar';
+
 export default function Motoristas() {
   const { id } = useParams() // Trazer id do motorista para atualizar, se houver
   const [nome, setNome] = useState('')
@@ -22,6 +24,8 @@ export default function Motoristas() {
   const [telefone, setTelefone] = useState('')
   const [vinculo, setVinculo] = useState('')
   const [tp_caminhao, setTpCaminhao] = useState(id ? '' : '1')
+  
+  const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
     if (id) {
@@ -77,6 +81,18 @@ export default function Motoristas() {
         console.error('Não foi possível cadastrar o motorista: ', error)
       })
     }
+  }
+
+  const handleAbrirDialogInativar = () => {
+    setDialogOpen(true)
+  }
+
+  const handleFecharDialogInativar = () => {
+    setDialogOpen(false)
+  }
+
+  const handleConfirmarDialogInativar = () => {
+    console.log('Teste')
   }
 
   return (
@@ -154,8 +170,13 @@ export default function Motoristas() {
           >{id ? 'Atualizar' : 'Gravar'}</Button>
           <Button startIcon={<DoNotDisturb/>}
             variant='contained'
-            color='error'>Inativar</Button>
+            color='error'
+            onClick={handleAbrirDialogInativar}>Inativar</Button>
         </div>
+        <DialogInativar
+          open={dialogOpen}
+          handleClose={handleFecharDialogInativar}
+          handleConfirm={handleConfirmarDialogInativar}/>
     </Box>
   );
 }
