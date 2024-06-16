@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material';
 
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -26,6 +26,9 @@ export default function Motoristas() {
   const [tp_caminhao, setTpCaminhao] = useState(id ? '' : '1')
   
   const [dialogOpen, setDialogOpen] = useState(false)
+  const [snackOpen, setSnackOpen] = useState(false)
+  
+  const [snackMessage, setSnackMessage] = useState('')
 
   useEffect(() => {
     if (id) {
@@ -66,19 +69,21 @@ export default function Motoristas() {
     if (id) {
       axios.put(`http://localhost:5174/api/motoristas/${id}`, formData)
       .then(response => {
-        console.log('Motorista atualizado com sucesso')
+        handleAbrirSnack('Motorista atualizado com sucesso!')
       })
       .catch(error => {
         console.log('Ocorreu um erro ao atualizar o motorista: ', error)
+        handleAbrirSnack('Ocorreu um erro ao atualizar o motorista.')
       })
     } else {
       axios.post('http://localhost:5174/api/cadastro/motorista', formData)
       .then(response => {
-        console.log('Motorista cadastrado com sucesso.')
-  
+        handleAbrirSnack('Motorista cadastrado com sucesso.')
+        
       })
       .catch(error => {
         console.error('Não foi possível cadastrar o motorista: ', error)
+        handleAbrirSnack('Não foi possível cadastrar o motorista.')
       })
     }
   }
@@ -91,10 +96,23 @@ export default function Motoristas() {
     setDialogOpen(false)
   }
 
+  const handleAbrirSnack = (message: string) => {
+    setSnackMessage(message)
+    setSnackOpen(true)
+  }
+
+  const handleFecharSnack = () => {
+    setSnackOpen(false)
+  }
+
   const handleConfirmarDialogInativar = () => {
     axios.put(`http://localhost:5174/api/motoristas/${id}/inativar`, id)
     .then(response =>  {
-      console.log('Motorista inativado')
+      handleAbrirSnack('Motorista inativado!')
+    })
+    .catch(error => {
+      console.log('Ocorreu um erro ao inativar o motorista: ', error)
+      handleAbrirSnack('Ocorreu um erro ao inativar o motorista.')
     })
     setDialogOpen(false)
   }
@@ -181,6 +199,12 @@ export default function Motoristas() {
           open={dialogOpen}
           handleClose={handleFecharDialogInativar}
           handleConfirm={handleConfirmarDialogInativar}/>
+        <Snackbar
+          open={snackOpen}
+          autoHideDuration={6000}
+          onClose={handleFecharSnack}
+          message={snackMessage}
+        />
     </Box>
   );
 }
