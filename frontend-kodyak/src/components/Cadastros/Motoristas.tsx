@@ -92,7 +92,11 @@ export default function Motoristas() {
   }
 
   const handleConfirmarDialogInativar = () => {
-    console.log('Teste')
+    axios.put(`http://localhost:5174/api/motoristas/${id}/inativar`, id)
+    .then(response =>  {
+      console.log('Motorista inativado')
+    })
+    setDialogOpen(false)
   }
 
   return (
