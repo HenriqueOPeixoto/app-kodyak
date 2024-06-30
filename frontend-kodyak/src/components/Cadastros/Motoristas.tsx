@@ -115,7 +115,7 @@ export default function Motoristas() {
       .then(response => {
         handleAbrirSnack(response.data); 
         setInativo(newInativo);
-        //setBtnInativarText(newInativo ? 'Ativar' : 'Inativar');
+        //setBtnInativarText(newInativo ? 'Ativar' : 'Inativar'); Não é necessário, o useEffect atualiza automático
         setDialogOpen(false);
       })
       .catch(error => {
