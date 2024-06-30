@@ -24,11 +24,14 @@ export default function Motoristas() {
   const [telefone, setTelefone] = useState('')
   const [vinculo, setVinculo] = useState('')
   const [tp_caminhao, setTpCaminhao] = useState(id ? '' : '1')
+  const [inativo, setInativo] = useState(false)
   
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
   
   const [snackMessage, setSnackMessage] = useState('')
+
+  const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
   useEffect(() => {
     if (id) {
@@ -39,12 +42,13 @@ export default function Motoristas() {
         if (response.data.length > 0) { // Checar se response não é vazio
             // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
             // retorna um registro.
-            const { nome, placa, telefone, vinculo, tp_caminhao } = response.data[0]
+            const { nome, placa, telefone, vinculo, tp_caminhao, inativo } = response.data[0]
             setNome(nome)
             setPlaca(placa)
             setTelefone(telefone)
             setVinculo(vinculo)
             setTpCaminhao(tp_caminhao)
+            setInativo(inativo)
         }
       })
       .catch(error => {
@@ -115,7 +119,20 @@ export default function Motoristas() {
       handleAbrirSnack('Ocorreu um erro ao inativar o motorista.')
     })
     setDialogOpen(false)
+    axios.get(`http://localhost:5174/api/motoristas/${id}`)
+    .then(response => {
+      const { inativo } = response.data[0].inativo
+      setInativo(inativo)
+    })
   }
+
+  useEffect(() => {
+    if (inativo) {
+      setBtnInativarText('Ativar')
+    } else {
+      setBtnInativarText('Inativar')
+    }
+  }, [inativo])
 
   return (
     <Box
@@ -193,7 +210,7 @@ export default function Motoristas() {
           <Button startIcon={<DoNotDisturb/>}
             variant='contained'
             color='error'
-            onClick={handleAbrirDialogInativar}>Inativar</Button>
+            onClick={handleAbrirDialogInativar}>{btnInativarText}</Button>
         </div>
         <DialogInativar
           open={dialogOpen}
