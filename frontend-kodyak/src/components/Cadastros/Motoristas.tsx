@@ -110,21 +110,19 @@ export default function Motoristas() {
   }
 
   const handleConfirmarDialogInativar = () => {
-    axios.put(`http://localhost:5174/api/motoristas/${id}/alterarStatus`, id)
-    .then(response =>  {
-      handleAbrirSnack('Motorista inativado!')
-    })
-    .catch(error => {
-      console.log('Ocorreu um erro ao inativar o motorista: ', error)
-      handleAbrirSnack('Ocorreu um erro ao inativar o motorista.')
-    })
-    setDialogOpen(false)
-    axios.get(`http://localhost:5174/api/motoristas/${id}`)
-    .then(response => {
-      const { inativo } = response.data[0].inativo
-      setInativo(inativo)
-    })
-  }
+    const newInativo = !inativo; // Toggle inativo status
+    axios.put(`http://localhost:5174/api/motoristas/${id}/alterarStatus`, { inativo: newInativo })
+      .then(response => {
+        handleAbrirSnack(response.data); 
+        setInativo(newInativo);
+        //setBtnInativarText(newInativo ? 'Ativar' : 'Inativar');
+        setDialogOpen(false);
+      })
+      .catch(error => {
+        console.log('Ocorreu um erro ao inativar o motorista: ', error);
+        handleAbrirSnack('Ocorreu um erro ao inativar o motorista.');
+      });
+  };
 
   useEffect(() => {
     if (inativo) {
