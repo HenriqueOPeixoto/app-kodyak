@@ -60,20 +60,20 @@ const updateMotorista = (request, response) => {
 const alterarStatusMotorista = (request, response) => {
     const id = parseInt(request.params.id)
 
-    const status = request.body.inativo // true ou false
+    const inativo = request.body.inativo // true ou false
 
-    if (typeof status !== 'boolean') {
+    if (typeof inativo !== 'boolean') {
         return response.status(400).send('Valor inválido para status. Esperava um boolean.')
     }
 
     pool.query(
         'UPDATE MOTORISTAS SET INATIVO = $1 WHERE ID = $2',
-        [status, id],
+        [inativo, id],
         (error, results) => {
             if (error) {
                 throw error
             }
-            const acaoRealizada = status ? 'inativado' : 'ativado'
+            const acaoRealizada = inativo ? 'inativado' : 'ativado'
             response.status(200).send(`Motorista com ID ${id} ${acaoRealizada}`)
         }
     )
