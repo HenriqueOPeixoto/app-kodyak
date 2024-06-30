@@ -57,16 +57,24 @@ const updateMotorista = (request, response) => {
     )
 }
 
-const inativarMotorista = (request, response) => {
+const alterarStatusMotorista = (request, response) => {
     const id = parseInt(request.params.id)
+
+    const status = request.body.inativo // true ou false
+
+    if (typeof status !== 'boolean') {
+        return response.status(400).send('Valor inválido para status. Esperava um boolean.')
+    }
+
     pool.query(
-        'UPDATE MOTORISTAS SET INATIVO = TRUE WHERE ID = $1',
-        [id],
+        'UPDATE MOTORISTAS SET INATIVO = $1 WHERE ID = $2',
+        [status, id],
         (error, results) => {
             if (error) {
                 throw error
             }
-            response.status(200).send(`Motorista com ID ${id} inativado.`)
+            const acaoRealizada = status ? 'inativado' : 'ativado'
+            response.status(200).send(`Motorista com ID ${id} ${acaoRealizada}`)
         }
     )
 }
@@ -76,5 +84,5 @@ module.exports = {
     getMotoristas,
     getMotoristaById,
     updateMotorista,
-    inativarMotorista
+    alterarStatusMotorista
 }
