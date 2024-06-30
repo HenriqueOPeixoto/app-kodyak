@@ -1,7 +1,3 @@
-//TODO: Mudar botão Salvar para Alterar, quando ID for fornecido.
-//TODO: Usar uma rota alternativa para atualização do motorista.
-//TODO: Adicionar um aviso para mostrar ao usuário que a operação foi bem sucedida
-
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -72,7 +68,7 @@ export default function Motoristas() {
    
     if (id) {
       axios.put(`http://localhost:5174/api/motoristas/${id}`, formData)
-      .then(response => {
+      .then(() => {
         handleAbrirSnack('Motorista atualizado com sucesso!')
       })
       .catch(error => {
@@ -81,7 +77,7 @@ export default function Motoristas() {
       })
     } else {
       axios.post('http://localhost:5174/api/cadastro/motorista', formData)
-      .then(response => {
+      .then(() => {
         handleAbrirSnack('Motorista cadastrado com sucesso.')
         
       })
