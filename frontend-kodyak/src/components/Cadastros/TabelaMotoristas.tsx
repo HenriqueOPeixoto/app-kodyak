@@ -1,4 +1,4 @@
-import { Button, Card, CardActionArea, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import './styles/Cadastros.css'
 import { Link } from "react-router-dom"
