@@ -19,8 +19,28 @@ const createMotorista = (request, response) => {
 }
 
 const getMotoristas = (request, response) => {
+    const { nome, inativo } = request.query;
+
+    // 1=1 é uma condição neutra, é só para não ter que lidar com o where nos filtros adicionais
+    let query = 'SELECT * FROM MOTORISTAS WHERE 1=1 '
+    const params = []
+
+    if (nome) {
+        // Foi criado um índice para o nome em uppercase no banco de dados.
+        // idx_motoristas_nome_upper
+        // Devido a isso, sempre que fazer uma query por nome,
+        // usar o nome em uppercase.
+        params.push('%' + nome + '%')
+        query += 'AND UPPER(NOME) LIKE UPPER($' + (params.length) + ')'
+    }
+
+    if (inativo) {
+        query += 'AND INATIVO = $' + (params.length + 1)
+        params.push(inativo)
+    }
+
     pool.query(
-        'SELECT * FROM MOTORISTAS', (error, results) => {
+        query, params, (error, results) => {
             if (error) {
                 throw error
             }
