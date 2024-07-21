@@ -52,7 +52,7 @@ const TabelaMotoristas: React.FC = () => {
   return (
     <div className="TabelaMotoristas">
       <div className="ContainerFiltros">
-        <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Pesquisar" variant="standard" />
+        <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Nome" variant="standard" />
         <FormControl>
           <FormLabel id="ativo-radio-button">Filtros</FormLabel>
           <FormGroup row>
