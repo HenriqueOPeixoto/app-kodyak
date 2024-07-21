@@ -16,8 +16,8 @@
 }
 
 .ListaCadastros {
-    margin-left: 1%;
-}
+    flex: 1;
+  }
 
 .TabelaClientes {
     height: 100%;
