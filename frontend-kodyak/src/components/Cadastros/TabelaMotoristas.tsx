@@ -51,7 +51,7 @@ const TabelaMotoristas: React.FC = () => {
 
   return (
     <div className="TabelaMotoristas">
-      <div className="ContainerBtnIncluir">
+      <div className="ContainerFiltros">
         <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Pesquisar" variant="standard" />
         <FormControl>
           <FormLabel id="ativo-radio-button">Filtros</FormLabel>
@@ -60,10 +60,12 @@ const TabelaMotoristas: React.FC = () => {
             <FormControlLabel value="inativo" control={<Checkbox />} label="Inativo" />
           </FormGroup>
         </FormControl>
-        <Button className="BtnPesquisar" variant="contained">Pesquisar</Button>
+        <div className="Botoes">
+          <Button className="BtnPesquisar" variant="contained">Pesquisar</Button>
         <Link to='/cadastros/novo_motorista'>
           <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
         </Link>
+        </div>
       </div>
       <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
         {motorista.map((motorista) => (

@@ -24,7 +24,7 @@
     width: 100%;
 }
 
-.ContainerBtnIncluir {
+.ContainerFiltros {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -33,4 +33,10 @@
 
 .TxtPesquisarMotorista {
     flex-grow: 1;
+}
+
+.Botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
