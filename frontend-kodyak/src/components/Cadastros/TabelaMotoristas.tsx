@@ -40,42 +40,56 @@ const TabelaMotoristas: React.FC = () => {
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Motorista[]>('http://localhost:5174/api/motoristas')
+    axios.get<Motorista[]>('http://localhost:5174/api/motoristas', {
+        params: {
+          "nome": nome,
+          "inativo": inativo
+        }
+      }
+    )
       .then(response => {
         setMotoristas(response.data);
       })
       .catch(error => {
         console.error("Erro ao listar os motoristas: ", error);
       });
-  }, []);
+  }, [nome, inativo]);
 
-  return (
-    <div className="TabelaMotoristas">
-      <div className="ContainerFiltros">
-        <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Nome" variant="standard" />
-        <FormControl>
-          <FormLabel id="ativo-radio-button">Filtros</FormLabel>
-          <FormGroup row>
-            <FormControlLabel value="ativo" control={<Checkbox defaultChecked/>} label="Ativo"/>
-            <FormControlLabel value="inativo" control={<Checkbox />} label="Inativo" />
-          </FormGroup>
-        </FormControl>
-        <div className="Botoes">
-          <Button className="BtnPesquisar" variant="contained">Pesquisar</Button>
-        <Link to='/cadastros/novo_motorista'>
-          <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
-        </Link>
+  const handleTxtPesquisarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNome(event.target.value)
+  }
+
+  const handleInativoRadioButtonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInativo(event.target.value === 'true')
+  }
+
+    return (
+      <div className="TabelaMotoristas">
+        <div className="ContainerFiltros">
+          <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
+          <FormControl>
+            <FormLabel id="ativo-radio-button">Filtros</FormLabel>
+            <RadioGroup defaultValue="ativo" row onChange={handleInativoRadioButtonChange}>
+              <FormControlLabel value="false" control={<Radio />} label="Ativo"/>
+              <FormControlLabel value="true" control={<Radio />} label="Inativo" />
+            </RadioGroup>
+          </FormControl>
+          <div className="Botoes">
+            {/* <Button className="BtnPesquisar" variant="contained">Pesquisar</Button> */}
+          <Link to='/cadastros/novo_motorista'>
+            <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
+          </Link>
+          </div>
         </div>
+        <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
+          {motorista.map((motorista) => (
+            <Grid item xs={12} key={motorista.id}>
+              <CardMotorista motorista={motorista} />
+            </Grid>
+          ))}
+        </Grid>
       </div>
-      <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
-        {motorista.map((motorista) => (
-          <Grid item xs={12} key={motorista.id}>
-            <CardMotorista motorista={motorista} />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
-  )
-}
+    )
+  }
 
 export default TabelaMotoristas
