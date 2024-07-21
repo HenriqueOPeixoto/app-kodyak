@@ -1,4 +1,4 @@
-import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import { Button, Card, CardActionArea, CardContent, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import './styles/Cadastros.css'
 import { Link } from "react-router-dom"
@@ -36,6 +36,8 @@ const CardMotorista: React.FC<{ motorista: Motorista }> = ({ motorista }) => {
 const TabelaMotoristas: React.FC = () => {
 
   const [motorista, setMotoristas] = useState<Motorista[]>([])
+  const [nome, setNome] = useState<string>('')
+  const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
     axios.get<Motorista[]>('http://localhost:5174/api/motoristas')
@@ -53,16 +55,12 @@ const TabelaMotoristas: React.FC = () => {
         <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Pesquisar" variant="standard" />
         <FormControl>
           <FormLabel id="ativo-radio-button">Filtros</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="ativo-radio-buttons-group-label"
-            defaultValue="ativo"
-            name="radio-buttons-group"
-          >
-            <FormControlLabel value="ativo" control={<Radio />} label="Ativo" />
-            <FormControlLabel value="inativo" control={<Radio />} label="Inativo" />
-          </RadioGroup>
+          <FormGroup row>
+            <FormControlLabel value="ativo" control={<Checkbox defaultChecked/>} label="Ativo"/>
+            <FormControlLabel value="inativo" control={<Checkbox />} label="Inativo" />
+          </FormGroup>
         </FormControl>
+        <Button className="BtnPesquisar" variant="contained">Pesquisar</Button>
         <Link to='/cadastros/novo_motorista'>
           <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
         </Link>
