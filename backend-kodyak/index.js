@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv')
 
 const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
 
 const app = express();
+
+dotenv.config({ path: './.env'})
 
 app.use(cors());
 
