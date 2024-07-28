@@ -15,20 +15,18 @@ const CodigoStatus = {
 const createUsuario = (request, response) => {
     const { nome, email, senha, confirmacao_senha, representante, nivel_acesso } = request.body
 
-    console.log(request.body)
-
     //Validar credenciais antes de registrar.
     validaCadastro(request)
         .then(() => {
             pool.query(
-                'INSERT INTO USUARIOS (NOME, EMAIL, SENHA, REPRESENTANTE, NIVEL_ACESSO) VALUES ($1, $2 ,$3, $4, $5)',
+                'INSERT INTO USUARIOS (NOME, EMAIL, SENHA, REPRESENTANTE, NIVEL_ACESSO) VALUES ($1, $2 ,$3, $4, $5) RETURNING id',
                 [nome, email, senha, representante, nivel_acesso],
                 (error, results) => {
                     if (error) {
                         throw error
                     }
 
-                    response.status(201).send(`USUARIO adicionado com sucesso! ${results.insertId}`)
+                    response.status(201).send(`USUARIO adicionado com sucesso! ${results.rows[0].id}`)
 
                 })
 
