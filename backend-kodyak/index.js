@@ -19,7 +19,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/auth/register', (req, res) => {
-  const { nome, email, senha, confirmacao_senha, representante, nivel_acesso } = req.body
 
   //usuarioDAO.validaCadastro(req, res)
   usuarioDAO.createUsuario(req, res)
