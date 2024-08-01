@@ -25,6 +25,10 @@ app.post('/auth/register', (req, res) => {
   usuarioDAO.createUsuario(req, res)
 })
 
+app.post('/auth/update', async (req, res) => {
+  usuarioDAO.updateUsuario(req, res)
+})
+
 app.get('/api/usuarios', usuarioDAO.getUsuarios)
 
 app.get('/api/usuarios/:id', usuarioDAO.getUsuarioById)

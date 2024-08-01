@@ -39,6 +39,63 @@ const createUsuario = (request, response) => {
 
 }
 
+const updateUsuario = async (request, response) => {
+    const { id, nome, email, senha, representante, nivel_acesso } = request.body
+
+    let query = 'UPDATE USUARIOS SET'
+    let updates = []
+    const params = []
+
+    if (nome) {
+        params.push(nome)
+        updates.push(' NOME = $' + (params.length))
+    }
+    
+    if (email) {
+        try {
+            const emailExiste = await validaEmail(email)
+            if (emailExiste) {
+                return response.status(400).send('O e-mail informado já está em uso.')
+            }
+            params.push(email)
+            updates.push(' EMAIL = $' + (params.length))
+            
+        } catch {
+            console.log(error)
+            return response.status(500).send('Erro ao validar o e-mail.');
+        }
+    }
+
+    if (senha) {
+        params.push(senha)
+        updates.push(' SENHA = $' + (params.length))
+    }
+    
+    if (representante) {
+        params.push(representante)
+        updates.push(' REPRESENTANTE = $' + (params.length))
+    }
+    
+    if (nivel_acesso) {
+        params.push(nivel_acesso)
+        updates.push(' NIVEL_ACESSO = $' + (params.length))
+    }
+
+    query += updates.join(', ')
+
+    query += ' WHERE ID = ' + (id)
+
+    pool.query(query, params,
+        (error, results) => {
+            if (error) {
+                return response.status(400).send('Ocorreu um erro ao atualizar o usuário')
+            }
+            return response.status(200).send(`Usuário ${id} atualizado com sucesso!`)
+        }
+    )
+
+}
+
 // Verifica se e-mail informado no request já está cadastrado no BD
 const validaEmail = (email) => {
     return new Promise((resolve, reject) => {
@@ -144,6 +201,7 @@ const inativarUsuario = (request, response) => {
 
 module.exports = {
     createUsuario,
+    updateUsuario,
     validaCadastro,
     getUsuarios,
     getUsuarioById,
