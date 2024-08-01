@@ -25,6 +25,10 @@ app.post('/auth/register', (req, res) => {
   usuarioDAO.createUsuario(req, res)
 })
 
+app.get('/api/usuarios', async (req, res) => {
+  usuarioDAO.getUsuarios(req, res)
+})
+
 app.post('/api/cadastro/motorista', async (req, res) => {
     console.log('Recebido: ' + JSON.stringify(req.body, null, 2));
 
