@@ -2,7 +2,6 @@ const Pool = require('pg').Pool
 const dotenv_config = require('dotenv/config')
 
 const { request, response } = require('express')
-const credentials = require('./credentials.json') // Arquivo com a senha do banco
 
 const pool = new Pool({
     user: process.env.DATABASE_USER,
