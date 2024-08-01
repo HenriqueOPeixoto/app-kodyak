@@ -124,6 +124,20 @@ const getUsuarios = (request, response) => {
         })
 }
 
+const getUsuarioById = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query(
+        'SELECT * FROM USUARIOS WHERE ID = $1',
+        [id]
+    ).then((results) => {
+        response.status(200).json(results.rows)
+    })
+    .catch((error) => {
+        console.log(error)
+        response.status(500).send(error)
+    })
+}
+
 const inativarUsuario = (request, response) => {
     
 }
@@ -132,5 +146,6 @@ module.exports = {
     createUsuario,
     validaCadastro,
     getUsuarios,
+    getUsuarioById,
     inativarUsuario
 }
