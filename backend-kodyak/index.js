@@ -33,6 +33,8 @@ app.get('/api/usuarios', usuarioDAO.getUsuarios)
 
 app.get('/api/usuarios/:id', usuarioDAO.getUsuarioById)
 
+app.put('/api/usuarios/:id/alterarStatus', usuarioDAO.alterarStatusUsuario)
+
 app.post('/api/cadastro/motorista', async (req, res) => {
   motoristaDAO.createMotorista(req, res)
 })

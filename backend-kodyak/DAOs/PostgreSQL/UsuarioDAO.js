@@ -195,8 +195,23 @@ const getUsuarioById = (request, response) => {
     })
 }
 
-const inativarUsuario = (request, response) => {
-    
+const alterarStatusUsuario = (request, response) => {
+    const id = request.params.id
+    const { inativo } = request.body
+
+    if (typeof inativo !== 'boolean') {
+        return response.status(400).send('Valor inválido para status. Esperava um boolean.')
+    }
+
+    pool.query(
+        'UPDATE USUARIOS SET INATIVO = $1 WHERE ID = $2',
+        [inativo, id]
+    ).then((results) => {
+        const acaoRealizada = inativo ? 'inativado' : 'ativado'
+        response.status(200).send(`Usuário com ID ${id} ${acaoRealizada}.`)
+    }).catch((error) => {
+        response.status(500).send('Ocorreu um erro ao inativar o usuário: ' + error.message)
+    })
 }
 
 module.exports = {
@@ -205,5 +220,5 @@ module.exports = {
     validaCadastro,
     getUsuarios,
     getUsuarioById,
-    inativarUsuario
+    alterarStatusUsuario
 }
