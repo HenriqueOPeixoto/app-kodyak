@@ -9,6 +9,7 @@ import TabelaClientes from './TabelaClientes';
 import TabelaBancos from './TabelaBancos';
 import { useState } from 'react';
 import TabelaMotoristas from './TabelaMotoristas';
+import { Person } from '@mui/icons-material';
 
 function Cadastros() {
 
@@ -31,6 +32,7 @@ function Cadastros() {
           <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
           <Button startIcon={<ShoppingBagIcon />}>Família de Produtos</Button>
           <Button startIcon={<LocalShippingIcon />} onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
+          <Button startIcon={<Person />} onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
         </div>
         <div className='ListaCadastros'>
           {/* As linhas abaixo controlam qual tabela de cadastro deve ser exibida 
@@ -38,6 +40,7 @@ function Cadastros() {
           {activeButton === 'bancos' && <TabelaBancos />}
           {activeButton === 'clientes' && <TabelaClientes />}
           {activeButton === 'motoristas' && <TabelaMotoristas />}
+          {activeButton === 'usuarios' && <p>Em desenvolvimento</p>}
         </div>
       </div>
     </>
