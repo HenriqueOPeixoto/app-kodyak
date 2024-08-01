@@ -25,20 +25,13 @@ app.post('/auth/register', (req, res) => {
   usuarioDAO.createUsuario(req, res)
 })
 
-app.get('/api/usuarios', async (req, res) => {
-  usuarioDAO.getUsuarios(req, res)
-})
+app.get('/api/usuarios', usuarioDAO.getUsuarios)
 
-app.get('/api/usuarios/:id', async (req, res) => {
-  usuarioDAO.getUsuarioById(req, res)
-})
+app.get('/api/usuarios/:id', usuarioDAO.getUsuarioById)
 
 app.post('/api/cadastro/motorista', async (req, res) => {
-    console.log('Recebido: ' + JSON.stringify(req.body, null, 2));
-
-    motoristaDAO.createMotorista(req, res)
-    
-  })
+  motoristaDAO.createMotorista(req, res)
+})
 
 app.get('/api/motoristas', async (req, res) => {
   motoristaDAO.getMotoristas(req, res)
