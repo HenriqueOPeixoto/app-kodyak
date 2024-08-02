@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
-const bcrypt = require('bcryptjs')
 
 const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
 const usuarioDAO = require('./DAOs/PostgreSQL/UsuarioDAO')

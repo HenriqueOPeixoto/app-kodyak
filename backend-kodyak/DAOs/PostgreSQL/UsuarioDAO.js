@@ -1,4 +1,5 @@
 const pool = require('../../postgres').pool
+const bcrypt = require('bcryptjs')
 
 const MensagensErro = {
     EMAIL_EM_USO: 'E-mail já está em uso',
@@ -12,15 +13,16 @@ const CodigoStatus = {
     [MensagensErro.ERRO_SERVIDOR]: 500
 }
 
-const createUsuario = (request, response) => {
+const createUsuario = async (request, response) => {
     const { nome, email, senha, confirmacao_senha, representante, nivel_acesso } = request.body
+    let pw_hash = await bcrypt.hash(senha, 8)
 
     //Validar credenciais antes de registrar.
     validaCadastro(request)
         .then(() => {
             pool.query(
                 'INSERT INTO USUARIOS (NOME, EMAIL, SENHA, REPRESENTANTE, NIVEL_ACESSO) VALUES ($1, $2 ,$3, $4, $5) RETURNING id',
-                [nome, email, senha, representante, nivel_acesso],
+                [nome, email, pw_hash, representante, nivel_acesso],
                 (error, results) => {
                     if (error) {
                         throw error
