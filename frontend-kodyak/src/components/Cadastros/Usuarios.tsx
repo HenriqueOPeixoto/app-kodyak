@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material';
 
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -62,9 +62,9 @@ export default function Usuarios() {
     }
   }, [id])
 
-  //const handleChangeTipo = (event: SelectChangeEvent) => {
-  //  setTpCaminhao(event.target.value as string)
-  //}
+  const handleChangeNivel = (event: SelectChangeEvent) => {
+    setNivelAcesso(event.target.value as string)
+  }
 
   const handleSubmit = () => {
     const formData = {
@@ -184,6 +184,7 @@ export default function Usuarios() {
               id='seleciona-nivel-acesso'
               value={nivel_acesso}
               label="nivelAcesso"
+              onChange={handleChangeNivel}
               >
                 {niveis_acesso.map((nivel: NivelAcesso) => (
                   <MenuItem key={nivel.id} value={nivel.id}>{nivel.descricao}</MenuItem>
