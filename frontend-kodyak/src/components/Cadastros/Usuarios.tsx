@@ -13,6 +13,11 @@ import { DoNotDisturb } from '@mui/icons-material';
 
 import DialogInativar from './Dialogs/DialogInativar';
 
+type NivelAcesso = {
+  id: number,
+  descricao: string
+}
+
 export default function Usuarios() {
   const { id } = useParams() // Trazer id do usuário para atualizar, se houver
   const [nome, setNome] = useState('')
@@ -20,6 +25,8 @@ export default function Usuarios() {
   const [representante, setRepresentante] = useState('')
   const [nivel_acesso, setNivelAcesso] = useState('')
   const [inativo, setInativo] = useState(false)
+
+  const [niveis_acesso, setNiveisAcesso] = useState([])
   
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
@@ -29,11 +36,15 @@ export default function Usuarios() {
   const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
   useEffect(() => {
+    axios.get('http://localhost:5174/api/nivel_acesso')
+    .then((response) => {
+      setNiveisAcesso(response.data)
+    })
+
     if (id) {
       // Buscar os dados do usuário para atualizar
       axios.get(`http://localhost:5174/api/usuarios/${id}`)
       .then(response => {
-        console.log(response.data)
         if (response.data.length > 0) { // Checar se response não é vazio
             // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
             // retorna um registro.
@@ -174,7 +185,9 @@ export default function Usuarios() {
               value={nivel_acesso}
               label="nivelAcesso"
               >
-                <MenuItem value={1}>Teste</MenuItem>
+                {niveis_acesso.map((nivel: NivelAcesso) => (
+                  <MenuItem key={nivel.id} value={nivel.id}>{nivel.descricao}</MenuItem>
+                ))}
             </Select>
           </FormControl>
         </div>
