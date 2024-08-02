@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, Snackbar } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, Snackbar } from '@mui/material';
 
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './styles/Cadastros.css'
+import './styles/Usuarios.css'
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { DoNotDisturb } from '@mui/icons-material';
@@ -164,14 +165,20 @@ export default function Usuarios() {
           defaultValue=""
           onChange={event => setRepresentante(event.target.value)}
         />
-        <TextField 
-            required
-            id='nivel_acesso'
-            value={nivel_acesso}
-            label='Nivel Acesso'
-            onChange={event => setNivelAcesso(event.target.value)}
-        />
+        <div className='ContainerNivelAcesso'>
+          <FormControl fullWidth>
+            <InputLabel id='seleciona-nivel-acesso-lbl'>Nível de Acesso</InputLabel>
+            <Select
+              labelId='seleciona-nivel-acesso-lbl'
+              id='seleciona-nivel-acesso'
+              value={nivel_acesso}
+              label="nivelAcesso"
+              >
+                <MenuItem value={1}>Teste</MenuItem>
+            </Select>
+          </FormControl>
         </div>
+        </div>  
         <div className='FormButtons'>
           <Button startIcon={<SaveIcon />}
             variant='contained'
