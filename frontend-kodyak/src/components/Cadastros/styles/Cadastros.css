@@ -24,6 +24,11 @@
     width: 100%;
 }
 
+.TabelaUsuarios {
+    height: 100%;
+    width: 100%;
+}
+
 .ContainerFiltros {
     display: flex;
     justify-content: flex-end;
@@ -32,6 +37,10 @@
 }
 
 .TxtPesquisarMotorista {
+    flex-grow: 1;
+}
+
+.TxtPesquisarUsuario {
     flex-grow: 1;
 }
 
