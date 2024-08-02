@@ -63,7 +63,7 @@ export default function Usuarios() {
     }
    
     if (id) {
-      axios.put(`http://localhost:5174/api/usuarios/${id}`, formData)
+      axios.put(`http://localhost:5174/auth/update/${id}`, formData)
       .then(() => {
         handleAbrirSnack('Usuário atualizado com sucesso!')
       })

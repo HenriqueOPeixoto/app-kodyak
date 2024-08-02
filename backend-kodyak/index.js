@@ -23,7 +23,7 @@ app.post('/auth/register', (req, res) => {
   usuarioDAO.createUsuario(req, res)
 })
 
-app.post('/auth/update', async (req, res) => {
+app.post('/auth/update/:id', async (req, res) => {
   usuarioDAO.updateUsuario(req, res)
 })
 
