@@ -5,6 +5,7 @@ const dotenv = require('dotenv')
 
 const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
 const usuarioDAO = require('./DAOs/PostgreSQL/UsuarioDAO')
+const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO')
 
 const app = express();
 
@@ -32,6 +33,10 @@ app.get('/api/usuarios', usuarioDAO.getUsuarios)
 app.get('/api/usuarios/:id', usuarioDAO.getUsuarioById)
 
 app.put('/api/usuarios/:id/alterarStatus', usuarioDAO.alterarStatusUsuario)
+
+app.get('/api/nivel_acesso', nivelAcessoDAO.getNivelAcesso)
+
+app.get('/api/nivel_acesso/:id', nivelAcessoDAO.getNivelAcessoById)
 
 app.post('/api/cadastro/motorista', async (req, res) => {
   motoristaDAO.createMotorista(req, res)
