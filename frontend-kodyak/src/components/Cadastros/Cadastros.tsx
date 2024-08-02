@@ -10,6 +10,7 @@ import TabelaBancos from './TabelaBancos';
 import { useState } from 'react';
 import TabelaMotoristas from './TabelaMotoristas';
 import { Person } from '@mui/icons-material';
+import TabelaUsuarios from './TabelaUsuarios';
 
 function Cadastros() {
 
@@ -40,7 +41,7 @@ function Cadastros() {
           {activeButton === 'bancos' && <TabelaBancos />}
           {activeButton === 'clientes' && <TabelaClientes />}
           {activeButton === 'motoristas' && <TabelaMotoristas />}
-          {activeButton === 'usuarios' && <p>Em desenvolvimento</p>}
+          {activeButton === 'usuarios' && <TabelaUsuarios/>}
         </div>
       </div>
     </>
