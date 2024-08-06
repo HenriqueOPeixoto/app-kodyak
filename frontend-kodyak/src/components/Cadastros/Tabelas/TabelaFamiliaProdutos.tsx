@@ -69,7 +69,7 @@ const TabelaFamiliaProdutos: React.FC = () => {
           </FormControl>
           <div className="Botoes">
             {/* <Button className="BtnPesquisar" variant="contained">Pesquisar</Button> */}
-          <Link to='/cadastros/novo_familia_produto'>
+          <Link to='/cadastros/novo_familia_produtos'>
             <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
           </Link>
           </div>
