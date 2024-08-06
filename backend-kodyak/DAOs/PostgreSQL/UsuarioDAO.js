@@ -42,7 +42,8 @@ const createUsuario = async (request, response) => {
 }
 
 const updateUsuario = async (request, response) => {
-    const { id, nome, email, senha, representante, nivel_acesso } = request.body
+    const id = parseInt(request.params.id)
+    const { nome, email, senha, representante, nivel_acesso } = request.body
 
     let query = 'UPDATE USUARIOS SET'
     let updates = []
@@ -87,10 +88,12 @@ const updateUsuario = async (request, response) => {
 
     query += ' WHERE ID = ' + (id)
 
+    console.log(query)
+
     pool.query(query, params,
         (error, results) => {
             if (error) {
-                return response.status(400).send('Ocorreu um erro ao atualizar o usuário')
+                return response.status(400).send('Ocorreu um erro ao atualizar o usuário: ' + error)
             }
             return response.status(200).send(`Usuário ${id} atualizado com sucesso!`)
         }

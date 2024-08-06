@@ -3,9 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 
-//const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
 const motoristaRoutes = require('./routes/MotoristaRoutes');
-const usuarioDAO = require('./DAOs/PostgreSQL/UsuarioDAO')
+const usuarioRoutes = require('./routes/UsuarioRoutes');
 const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO');
 const FamiliaProdutosDAO = require('./DAOs/PostgreSQL/FamiliaProdutosDAO');
 
@@ -30,27 +29,12 @@ app.put('/api/familia/:id/alterarStatus', FamiliaProdutosDAO.alterarStatusFamili
 app.put('/api/familia/:id', FamiliaProdutosDAO.updateFamiliaProdutos)
 
 
-app.post('/auth/register', (req, res) => {
-
-  //usuarioDAO.validaCadastro(req, res)
-  usuarioDAO.createUsuario(req, res)
-})
-
-app.post('/auth/update/:id', async (req, res) => {
-  usuarioDAO.updateUsuario(req, res)
-})
-
-app.get('/api/usuarios', usuarioDAO.getUsuarios)
-
-app.get('/api/usuarios/:id', usuarioDAO.getUsuarioById)
-
-app.put('/api/usuarios/:id/alterarStatus', usuarioDAO.alterarStatusUsuario)
-
 app.get('/api/nivel_acesso', nivelAcessoDAO.getNivelAcesso)
 
 app.get('/api/nivel_acesso/:id', nivelAcessoDAO.getNivelAcessoById)
 
 app.use('/api/motoristas', motoristaRoutes);
+app.use('/api/usuarios', usuarioRoutes);
 
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)

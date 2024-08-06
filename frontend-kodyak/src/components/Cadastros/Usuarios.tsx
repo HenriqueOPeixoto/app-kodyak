@@ -73,9 +73,11 @@ export default function Usuarios() {
       representante,
       nivel_acesso
     }
+
+    console.log(id)
    
     if (id) {
-      axios.put(`http://localhost:5174/auth/update/${id}`, formData)
+      axios.put(`http://localhost:5174/api/usuarios/${id}`, formData)
       .then(() => {
         handleAbrirSnack('Usuário atualizado com sucesso!')
       })
@@ -84,7 +86,7 @@ export default function Usuarios() {
         handleAbrirSnack('Ocorreu um erro ao atualizar o usuário: ' + error.response.data)
       })
     } else {
-      axios.post('http://localhost:5174/auth/register/', formData)
+      axios.post('http://localhost:5174/api/usuarios/', formData)
       .then(() => {
         handleAbrirSnack('Usuário cadastrado com sucesso.')
         
@@ -115,7 +117,7 @@ export default function Usuarios() {
 
   const handleConfirmarDialogInativar = () => {
     const newInativo = !inativo; // Toggle inativo status
-    axios.put(`http://localhost:5174/api/usuarios/${id}/alterarStatus`, { inativo: newInativo })
+    axios.patch(`http://localhost:5174/api/usuarios/${id}/alterarStatus`, { inativo: newInativo })
       .then(response => {
         handleAbrirSnack(response.data); 
         setInativo(newInativo);
