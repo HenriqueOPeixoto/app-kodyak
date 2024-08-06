@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 
 const motoristaRoutes = require('./routes/MotoristaRoutes');
 const usuarioRoutes = require('./routes/UsuarioRoutes');
-const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO');
+const nivelAcessoRoutes = require('./routes/NivelAcessoRoutes')
 const FamiliaProdutosDAO = require('./DAOs/PostgreSQL/FamiliaProdutosDAO');
 
 const app = express();
@@ -28,11 +28,7 @@ app.put('/api/familia/:id/alterarStatus', FamiliaProdutosDAO.alterarStatusFamili
 
 app.put('/api/familia/:id', FamiliaProdutosDAO.updateFamiliaProdutos)
 
-
-app.get('/api/nivel_acesso', nivelAcessoDAO.getNivelAcesso)
-
-app.get('/api/nivel_acesso/:id', nivelAcessoDAO.getNivelAcessoById)
-
+app.use('/api/nivel_acesso', nivelAcessoRoutes)
 app.use('/api/motoristas', motoristaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 
