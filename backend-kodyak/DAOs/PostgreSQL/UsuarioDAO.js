@@ -88,8 +88,6 @@ const updateUsuario = async (request, response) => {
 
     query += ' WHERE ID = ' + (id)
 
-    console.log(query)
-
     pool.query(query, params,
         (error, results) => {
             if (error) {
