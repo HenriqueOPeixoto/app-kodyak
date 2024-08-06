@@ -6,12 +6,12 @@ import '@fontsource/roboto/400.css';
 import { lazy, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
-import Motoristas from './components/Cadastros/Motoristas';
-import Usuarios from './components/Cadastros/Usuarios';
 
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const Clientes = lazy(() => import('./components/Cadastros/Clientes'));
+const Motoristas = lazy(() => import('./components/Cadastros/Motoristas'));
+const Usuarios = lazy(() => import('./components/Cadastros/Usuarios'));
 
 function App() {
   return (
