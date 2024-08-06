@@ -11,6 +11,7 @@ import { useState } from 'react';
 import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
+import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
 
 function Cadastros() {
 
@@ -31,7 +32,7 @@ function Cadastros() {
           {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
           <Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
           <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
-          <Button startIcon={<ShoppingBagIcon />}>Família de Produtos</Button>
+          <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
           <Button startIcon={<LocalShippingIcon />} onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
           <Button startIcon={<Person />} onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
         </div>
@@ -42,6 +43,7 @@ function Cadastros() {
           {activeButton === 'clientes' && <TabelaClientes />}
           {activeButton === 'motoristas' && <TabelaMotoristas />}
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
+          {activeButton === 'familia_produtos' && <TabelaFamiliaProdutos/>}
         </div>
       </div>
     </>
