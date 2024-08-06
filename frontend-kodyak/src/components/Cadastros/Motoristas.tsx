@@ -76,7 +76,7 @@ export default function Motoristas() {
         handleAbrirSnack('Ocorreu um erro ao atualizar o motorista.')
       })
     } else {
-      axios.post('http://localhost:5174/api/cadastro/motorista', formData)
+      axios.post('http://localhost:5174/api/motorista/cadastro', formData)
       .then(() => {
         handleAbrirSnack('Motorista cadastrado com sucesso.')
         

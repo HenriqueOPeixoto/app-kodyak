@@ -3,7 +3,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 
-const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
+//const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
+const motoristaRoutes = require('./routes/MotoristaRoutes');
 const usuarioDAO = require('./DAOs/PostgreSQL/UsuarioDAO')
 const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO');
 const FamiliaProdutosDAO = require('./DAOs/PostgreSQL/FamiliaProdutosDAO');
@@ -49,19 +50,7 @@ app.get('/api/nivel_acesso', nivelAcessoDAO.getNivelAcesso)
 
 app.get('/api/nivel_acesso/:id', nivelAcessoDAO.getNivelAcessoById)
 
-app.post('/api/cadastro/motorista', async (req, res) => {
-  motoristaDAO.createMotorista(req, res)
-})
-
-app.get('/api/motoristas', async (req, res) => {
-  motoristaDAO.getMotoristas(req, res)
-})
-
-app.get('/api/motoristas/:id', motoristaDAO.getMotoristaById)
-
-app.put('/api/motoristas/:id', motoristaDAO.updateMotorista)
-
-app.put('/api/motoristas/:id/alterarStatus', motoristaDAO.alterarStatusMotorista)
+app.use('/api/motoristas', motoristaRoutes);
 
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)
