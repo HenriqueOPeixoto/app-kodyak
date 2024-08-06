@@ -5,12 +5,12 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 import './styles/Cadastros.css'
-import TabelaClientes from './TabelaClientes';
-import TabelaBancos from './TabelaBancos';
+import TabelaClientes from './Tabelas/TabelaClientes';
+import TabelaBancos from './Tabelas/TabelaBancos';
 import { useState } from 'react';
-import TabelaMotoristas from './TabelaMotoristas';
+import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
-import TabelaUsuarios from './TabelaUsuarios';
+import TabelaUsuarios from './Tabelas/TabelaUsuarios';
 
 function Cadastros() {
 

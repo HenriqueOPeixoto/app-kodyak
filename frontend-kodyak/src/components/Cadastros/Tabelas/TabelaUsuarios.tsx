@@ -1,31 +1,29 @@
 import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
-import './styles/Cadastros.css'
+import '../styles/Cadastros.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 
-interface Motorista {
+interface Usuario {
   id: number
   nome: string
-  telefone: string
-  placa: string
-  vinculo: string
-  tp_caminhao: number
+  email: string
+  representante: number
+  nivel_acesso: number
 }
 
-const CardMotorista: React.FC<{ motorista: Motorista }> = ({ motorista }) => {
+const CardUsuario: React.FC<{ usuario: Usuario }> = ({ usuario }) => {
   return (
     <Card variant="outlined">
-      <Link to={`/cadastros/editar_motorista/${motorista.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to={`/cadastros/editar_usuario/${usuario.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <CardActionArea>
           <CardContent>
-            <Typography variant="subtitle2">#{motorista.id}</Typography>
-            <Typography variant="h6">{motorista.nome}</Typography>
-            <Typography>Placa: {motorista.placa}</Typography>
-            <Typography>Telefone: {motorista.telefone}</Typography>
-            <Typography>Vinculo: {motorista.vinculo}</Typography>
-            <Typography>Caminhão: {motorista.tp_caminhao}</Typography>
+            <Typography variant="subtitle2">#{usuario.id}</Typography>
+            <Typography variant="h6">{usuario.nome}</Typography>
+            <Typography>E-mail: {usuario.email}</Typography>
+            <Typography>Representante: {usuario.representante}</Typography>
+            <Typography>Nível Acesso: {usuario.nivel_acesso}</Typography>
           </CardContent>
         </CardActionArea>
       </Link>
@@ -33,14 +31,14 @@ const CardMotorista: React.FC<{ motorista: Motorista }> = ({ motorista }) => {
   )
 }
 
-const TabelaMotoristas: React.FC = () => {
+const TabelaUsuarios: React.FC = () => {
 
-  const [motorista, setMotoristas] = useState<Motorista[]>([])
+  const [usuario, setUsuarios] = useState<Usuario[]>([])
   const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Motorista[]>('http://localhost:5174/api/motoristas', {
+    axios.get<Usuario[]>('http://localhost:5174/api/usuarios', {
         params: {
           "nome": nome,
           "inativo": inativo
@@ -48,10 +46,10 @@ const TabelaMotoristas: React.FC = () => {
       }
     )
       .then(response => {
-        setMotoristas(response.data);
+        setUsuarios(response.data);
       })
       .catch(error => {
-        console.error("Erro ao listar os motoristas: ", error);
+        console.error("Erro ao listar os usuários: ", error);
       });
   }, [nome, inativo]);
 
@@ -64,9 +62,9 @@ const TabelaMotoristas: React.FC = () => {
   }
 
     return (
-      <div className="TabelaMotoristas">
+      <div className="TabelaUsuarios">
         <div className="ContainerFiltros">
-          <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
+          <TextField className="TxtPesquisarUsuario" id="pesquisar-usuario" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
           <FormControl>
             <FormLabel id="ativo-radio-button">Filtros</FormLabel>
             <RadioGroup defaultValue="ativo" row onChange={handleInativoRadioButtonChange}>
@@ -76,15 +74,15 @@ const TabelaMotoristas: React.FC = () => {
           </FormControl>
           <div className="Botoes">
             {/* <Button className="BtnPesquisar" variant="contained">Pesquisar</Button> */}
-          <Link to='/cadastros/novo_motorista'>
+          <Link to='/cadastros/novo_usuario'>
             <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
           </Link>
           </div>
         </div>
         <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
-          {motorista.map((motorista) => (
-            <Grid item xs={12} key={motorista.id}>
-              <CardMotorista motorista={motorista} />
+          {usuario.map((usuario) => (
+            <Grid item xs={12} key={usuario.id}>
+              <CardUsuario usuario={usuario} />
             </Grid>
           ))}
         </Grid>
@@ -92,4 +90,4 @@ const TabelaMotoristas: React.FC = () => {
     )
   }
 
-export default TabelaMotoristas
+export default TabelaUsuarios

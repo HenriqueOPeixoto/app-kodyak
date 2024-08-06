@@ -1,6 +1,6 @@
 import { Button, Paper, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 
-import './styles/Cadastros.css'
+import '../styles/Cadastros.css'
 import { Link } from "react-router-dom"
 
 function TabelaClientes() {
