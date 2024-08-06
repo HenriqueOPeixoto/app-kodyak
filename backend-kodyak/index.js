@@ -5,7 +5,8 @@ const dotenv = require('dotenv')
 
 const motoristaDAO = require('./DAOs/PostgreSQL/MotoristaDAO')
 const usuarioDAO = require('./DAOs/PostgreSQL/UsuarioDAO')
-const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO')
+const nivelAcessoDAO = require('./DAOs/PostgreSQL/NivelAcessoDAO');
+const FamiliaProdutosDAO = require('./DAOs/PostgreSQL/FamiliaProdutosDAO');
 
 const app = express();
 
@@ -17,6 +18,16 @@ const port = process.env.PORT || 5174;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.post('/api/cadastro/familia', FamiliaProdutosDAO.createFamiliaProdutos)
+
+app.get('/api/familia/:id', FamiliaProdutosDAO.getFamiliaProdutosById)
+app.get('/api/familia/', FamiliaProdutosDAO.getFamiliaProdutos)
+
+app.put('/api/familia/:id/alterarStatus', FamiliaProdutosDAO.alterarStatusFamiliaProdutos)
+
+app.put('/api/familia/:id', FamiliaProdutosDAO.updateFamiliaProdutos)
+
 
 app.post('/auth/register', (req, res) => {
 
