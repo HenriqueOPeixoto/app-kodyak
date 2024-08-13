@@ -9,6 +9,8 @@ import axios from "axios";
 
 import DialogInativar from "./Dialogs/DialogInativar";
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 export default function FamiliaProdutos() {
     const { id } = useParams()
     const [nome, setNome] = useState('')
@@ -24,7 +26,7 @@ export default function FamiliaProdutos() {
     useEffect(() => {
         if (id) {
             // Buscar dados da família de produtos
-            axios.get(`http://localhost:5174/api/familia_produtos/${id}`)
+            axios.get(`${backendBaseURL}/api/familia_produtos/${id}`)
                 .then(response => {
                     console.log(response.data)
                     if (response.data.length > 0) { // Checar se response não é vazio
@@ -47,7 +49,7 @@ export default function FamiliaProdutos() {
         }
 
         if (id) {
-            axios.put(`http://localhost:5174/api/familia_produtos/${id}`, formData)
+            axios.put(`${backendBaseURL}/api/familia_produtos/${id}`, formData)
                 .then(() => {
                     handleAbrirSnack('Família de produtos atualizada com sucesso!')
                 })
@@ -55,7 +57,7 @@ export default function FamiliaProdutos() {
                     handleAbrirSnack('Ocorreu um erro ao atualizar a família de produtos.')
                 })
         } else {
-            axios.post('http://localhost:5174/api/familia_produtos/', formData)
+            axios.post(`${backendBaseURL}/api/familia_produtos/`, formData)
                 .then(() => {
                     handleAbrirSnack('Família de produtos cadastrada com sucesso.')
 
@@ -89,7 +91,7 @@ export default function FamiliaProdutos() {
 
     const handleConfirmarDialogInativar = () => {
         const newInativo = !inativo; // Toggle inativo status
-        axios.patch(`http://localhost:5174/api/familia_produtos/${id}/alterarStatus`, { inativo: newInativo })
+        axios.patch(`${backendBaseURL}/api/familia_produtos/${id}/alterarStatus`, { inativo: newInativo })
             .then(response => {
                 handleAbrirSnack(response.data);
                 setInativo(newInativo);

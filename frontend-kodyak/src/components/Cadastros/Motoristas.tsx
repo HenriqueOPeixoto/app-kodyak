@@ -13,6 +13,8 @@ import { DoNotDisturb } from '@mui/icons-material';
 
 import DialogInativar from './Dialogs/DialogInativar';
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 export default function Motoristas() {
   const { id } = useParams() // Trazer id do motorista para atualizar, se houver
   const [nome, setNome] = useState('')
@@ -32,7 +34,7 @@ export default function Motoristas() {
   useEffect(() => {
     if (id) {
       // Buscar os dados do motorista para atualizar
-      axios.get(`http://localhost:5174/api/motoristas/${id}`)
+      axios.get(`${backendBaseURL}/api/motoristas/${id}`)
       .then(response => {
         console.log(response.data)
         if (response.data.length > 0) { // Checar se response não é vazio
@@ -67,7 +69,7 @@ export default function Motoristas() {
     }
    
     if (id) {
-      axios.put(`http://localhost:5174/api/motoristas/${id}`, formData)
+      axios.put(`${backendBaseURL}/api/motoristas/${id}`, formData)
       .then(() => {
         handleAbrirSnack('Motorista atualizado com sucesso!')
       })
@@ -76,7 +78,7 @@ export default function Motoristas() {
         handleAbrirSnack('Ocorreu um erro ao atualizar o motorista.')
       })
     } else {
-      axios.post('http://localhost:5174/api/motorista/cadastro', formData)
+      axios.post(`${backendBaseURL}/api/motorista/cadastro`, formData)
       .then(() => {
         handleAbrirSnack('Motorista cadastrado com sucesso.')
         
@@ -107,7 +109,7 @@ export default function Motoristas() {
 
   const handleConfirmarDialogInativar = () => {
     const newInativo = !inativo; // Toggle inativo status
-    axios.put(`http://localhost:5174/api/motoristas/${id}/alterarStatus`, { inativo: newInativo })
+    axios.put(`${backendBaseURL}/api/motoristas/${id}/alterarStatus`, { inativo: newInativo })
       .then(response => {
         handleAbrirSnack(response.data); 
         setInativo(newInativo);

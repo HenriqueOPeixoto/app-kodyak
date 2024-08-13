@@ -33,6 +33,8 @@ const CardMotorista: React.FC<{ motorista: Motorista }> = ({ motorista }) => {
   )
 }
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 const TabelaMotoristas: React.FC = () => {
 
   const [motorista, setMotoristas] = useState<Motorista[]>([])
@@ -40,7 +42,7 @@ const TabelaMotoristas: React.FC = () => {
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Motorista[]>('http://localhost:5174/api/motoristas', {
+    axios.get<Motorista[]>(`${backendBaseURL}/api/motoristas`, {
         params: {
           "nome": nome,
           "inativo": inativo

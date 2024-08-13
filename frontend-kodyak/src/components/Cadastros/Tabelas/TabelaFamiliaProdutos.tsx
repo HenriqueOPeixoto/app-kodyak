@@ -26,6 +26,8 @@ const CardFamiliaProdutos: React.FC<{ familiaProdutos: FamiliaProdutos }> = ({ f
   )
 }
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 const TabelaFamiliaProdutos: React.FC = () => {
 
   const [familiaProdutos, setFamiliaProdutos] = useState<FamiliaProdutos[]>([])
@@ -33,7 +35,7 @@ const TabelaFamiliaProdutos: React.FC = () => {
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<FamiliaProdutos[]>('http://localhost:5174/api/familia_produtos', {
+    axios.get<FamiliaProdutos[]>(`${backendBaseURL}/api/familia_produtos`, {
         params: {
           "nome": nome,
           "inativo": inativo

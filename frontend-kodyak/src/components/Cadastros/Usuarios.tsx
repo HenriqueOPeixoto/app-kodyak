@@ -18,6 +18,8 @@ type NivelAcesso = {
   descricao: string
 }
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 export default function Usuarios() {
   const { id } = useParams() // Trazer id do usuário para atualizar, se houver
   const [nome, setNome] = useState('')
@@ -36,14 +38,14 @@ export default function Usuarios() {
   const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
   useEffect(() => {
-    axios.get('http://localhost:5174/api/nivel_acesso')
+    axios.get(`${backendBaseURL}/api/nivel_acesso`)
     .then((response) => {
       setNiveisAcesso(response.data)
     })
 
     if (id) {
       // Buscar os dados do usuário para atualizar
-      axios.get(`http://localhost:5174/api/usuarios/${id}`)
+      axios.get(`${backendBaseURL}/api/usuarios/${id}`)
       .then(response => {
         if (response.data.length > 0) { // Checar se response não é vazio
             // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
@@ -77,7 +79,7 @@ export default function Usuarios() {
     console.log(id)
    
     if (id) {
-      axios.put(`http://localhost:5174/api/usuarios/${id}`, formData)
+      axios.put(`${backendBaseURL}/api/usuarios/${id}`, formData)
       .then(() => {
         handleAbrirSnack('Usuário atualizado com sucesso!')
       })
@@ -86,7 +88,7 @@ export default function Usuarios() {
         handleAbrirSnack('Ocorreu um erro ao atualizar o usuário: ' + error.response.data)
       })
     } else {
-      axios.post('http://localhost:5174/api/usuarios/', formData)
+      axios.post(`${backendBaseURL}/api/usuarios/`, formData)
       .then(() => {
         handleAbrirSnack('Usuário cadastrado com sucesso.')
         
@@ -117,7 +119,7 @@ export default function Usuarios() {
 
   const handleConfirmarDialogInativar = () => {
     const newInativo = !inativo; // Toggle inativo status
-    axios.patch(`http://localhost:5174/api/usuarios/${id}/alterarStatus`, { inativo: newInativo })
+    axios.patch(`${backendBaseURL}/api/usuarios/${id}/alterarStatus`, { inativo: newInativo })
       .then(response => {
         handleAbrirSnack(response.data); 
         setInativo(newInativo);

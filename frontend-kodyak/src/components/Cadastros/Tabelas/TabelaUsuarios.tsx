@@ -31,6 +31,8 @@ const CardUsuario: React.FC<{ usuario: Usuario }> = ({ usuario }) => {
   )
 }
 
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
 const TabelaUsuarios: React.FC = () => {
 
   const [usuario, setUsuarios] = useState<Usuario[]>([])
@@ -38,7 +40,7 @@ const TabelaUsuarios: React.FC = () => {
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Usuario[]>('http://localhost:5174/api/usuarios', {
+    axios.get<Usuario[]>(`${backendBaseURL}/api/usuarios`, {
         params: {
           "nome": nome,
           "inativo": inativo
