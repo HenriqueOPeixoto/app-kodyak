@@ -64,8 +64,71 @@ const getProdutoById = (request, response) => {
     })
 }
 
+const updateProduto = (request, response) => {
+    const id = request.params.id
+    const { nome, valor, indicacoes, modo_uso, restricoes, peso, consumo_diario, familia_produtos } = request.body
+
+    let query = 'UPDATE PRODUTOS SET '
+    const updates = []
+    const params = []
+
+    if (nome) {
+        params.push(nome)
+        updates.push(' nome = $' + params.length)
+    }
+
+    if (valor) {
+        params.push(valor)
+        updates.push(' valor = $' + params.length)
+    }
+
+    if (indicacoes) {
+        params.push(indicacoes)
+        updates.push(' indicacoes = $' + params.length)
+    }
+
+    if (modo_uso) {
+        params.push(modo_uso)
+        updates.push(' modo_uso = $' + params.length)
+    }
+
+    if (restricoes) {
+        params.push(restricoes)
+        updates.push(' restricoes = $' + params.length)
+    }
+
+    if (peso) {
+        params.push(peso)
+        updates.push(' peso = $' + params.length)
+    }
+
+    if (consumo_diario) {
+        params.push(consumo_diario)
+        updates.push(' consumo_diario = $' + params.length)
+    }
+
+    if (familia_produtos) {
+        params.push(familia_produtos)
+        updates.push(' familia_produtos = $' + params.length)
+    }
+
+    if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.') }
+
+    query += updates.join(', ')
+    query += ' WHERE ID = ' + id
+    
+    pool.query(query, params)
+    .then(() => {
+        response.status(200).send('Produto atualizado.')
+    })
+    .catch((error) => {
+        response.status(500).send('Não foi possível atualizar o produto. ' + error)
+    })
+}
+
 module.exports = {
     createProduto,
     getProdutos,
-    getProdutoById
+    getProdutoById,
+    updateProduto
 }
