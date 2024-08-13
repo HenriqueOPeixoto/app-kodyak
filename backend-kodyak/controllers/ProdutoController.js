@@ -15,3 +15,7 @@ exports.getProdutoById = (req, res) => {
 exports.updateProduto = (req, res) => {
     ProdutoDAO.updateProduto(req, res)
 }
+
+exports.alterarStatusProduto = (req, res) => {
+    ProdutoDAO.alterarStatusProduto(req, res)
+}

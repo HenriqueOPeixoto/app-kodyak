@@ -116,7 +116,7 @@ const updateProduto = (request, response) => {
 
     query += updates.join(', ')
     query += ' WHERE ID = ' + id
-    
+
     pool.query(query, params)
     .then(() => {
         response.status(200).send('Produto atualizado.')
@@ -126,9 +126,33 @@ const updateProduto = (request, response) => {
     })
 }
 
+const alterarStatusProduto = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { inativo } = request.body
+
+    if (typeof inativo !== 'boolean') {
+        return response.status(400).send('Valor inválido para status. Esperava um boolean.')
+    }
+
+    pool.query(
+        'UPDATE PRODUTOS SET INATIVO = $1 WHERE ID = $2',
+        [inativo, id]
+    )
+    .then(() => {
+        const acaoRealizada = inativo ? 'inativado' : 'ativado'
+        response.status(200).send(`Produto com ID ${id} ${acaoRealizada} com sucesso.`)
+    })
+    .catch((error) => {
+        response.status(500).send('Ocorreu um erro ao inativar o cadastro: ' + error)
+    })
+
+
+}
+
 module.exports = {
     createProduto,
     getProdutos,
     getProdutoById,
-    updateProduto
+    updateProduto,
+    alterarStatusProduto
 }
