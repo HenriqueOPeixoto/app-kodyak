@@ -12,6 +12,7 @@ import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
 import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
+import TabelaProdutos from './Tabelas/TabelaProdutos';
 
 function Cadastros() {
 
@@ -33,6 +34,7 @@ function Cadastros() {
           <Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
           <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
           <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
+          <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
           <Button startIcon={<LocalShippingIcon />} onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
           <Button startIcon={<Person />} onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
         </div>
@@ -44,6 +46,7 @@ function Cadastros() {
           {activeButton === 'motoristas' && <TabelaMotoristas />}
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
           {activeButton === 'familia_produtos' && <TabelaFamiliaProdutos/>}
+          {activeButton === 'produtos' && <TabelaProdutos/>}
         </div>
       </div>
     </>
