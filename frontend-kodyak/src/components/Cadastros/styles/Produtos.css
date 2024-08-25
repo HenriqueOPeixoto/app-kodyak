@@ -1,0 +1,7 @@
+.ContainerNumeros {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    justify-content: space-between;
+    padding: 5px;
+}
