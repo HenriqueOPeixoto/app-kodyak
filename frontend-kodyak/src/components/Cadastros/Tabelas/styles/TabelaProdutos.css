@@ -1,0 +1,15 @@
+.ContainerFiltros {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.TabelaProdutos {
+    height: 100%;
+    width: 100%;
+}
+
+.TxtPesquisarProduto {
+    flex-grow: 1;
+}

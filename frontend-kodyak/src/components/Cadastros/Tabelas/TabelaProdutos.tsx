@@ -1,6 +1,7 @@
 import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import '../styles/Cadastros.css'
+import './styles/TabelaProdutos.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import axios from "axios"
