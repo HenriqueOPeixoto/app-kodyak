@@ -28,7 +28,7 @@ const createProduto = (request, response) => {
 }
 
 const getProdutos = (request, response) => {
-    const { nome, inativo } = request.body
+    const { nome, inativo } = request.query
 
     let query = 'SELECT * FROM PRODUTOS WHERE 1 = 1'
     const params = []
