@@ -5,3 +5,11 @@
     justify-content: space-between;
     padding: 5px;
 }
+
+.SeletorFamilia {
+    width: 50%;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 5px;
+}

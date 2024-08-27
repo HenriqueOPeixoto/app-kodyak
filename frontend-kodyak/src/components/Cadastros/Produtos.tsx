@@ -235,7 +235,7 @@ export default function Produtos() {
                         />
                 </div>
                 <div>
-                    <FormControl fullWidth>
+                    <FormControl className="SeletorFamilia" fullWidth>
                         <InputLabel id="lblFamiliaProdutos">Família de Produtos</InputLabel>
                         <Select
                             labelId="lblFamiliaProdutos"
