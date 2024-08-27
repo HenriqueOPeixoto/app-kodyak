@@ -19,4 +19,8 @@ body {
 .Main {
     padding: 20px;
     flex-grow: 1;
+    /*
+     * A margem esquerda precisa ter o mesmo tamanho que o width do sidebar, para não sobrepor
+    */
+    margin-left: 200px;
 }

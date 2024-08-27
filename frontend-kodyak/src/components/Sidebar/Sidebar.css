@@ -1,9 +1,15 @@
 .Sidebar {
-    display: flex;
-    height: 100%;
-    width: 50%;
-    max-width: 200px;
-    background-color: #074173;
+  position: fixed;
+  display: flex;
+  height: 100%;
+  /* 
+   * Tamanho do sidebar. Devido ao position:fixed, o .Main (App.css) precisa ter a margem esquerda
+   * igual ao width do sidebar. Senão os elementos se sobrepõem.
+   */
+  width: 200px; 
+  max-width: 200px;
+  background-color: #074173;
+  transition: width 2;
 }
 
 .SidebarData {
