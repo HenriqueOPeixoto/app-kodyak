@@ -4,6 +4,7 @@
 import { Box, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format"
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
@@ -180,39 +181,32 @@ export default function Produtos() {
                     onChange={event => setNome(event.target.value)}
                     />
                 <div className="ContainerNumeros">
-                    <TextField
-                        required
+                    <NumericFormat 
                         label="Valor"
+                        customInput={TextField}
+                        thousandSeparator="."
+                        decimalSeparator=","
                         value={valor}
-                        id="txtValor"
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-                        }}
-                        onChange={event => setValor(parseFloat(event.target.value))}
-                        />
-                    <TextField
-                        required
+                        prefix="R$ "
+                        onValueChange={(values) => setValor(values.floatValue as number)}
+                    />
+                    <NumericFormat 
                         label="Peso"
+                        customInput={TextField}
+                        thousandSeparator=""
+                        decimalSeparator=","
                         value={peso}
-                        id="txtPeso"
-                        InputProps={{
-                            endAdornment: <InputAdornment position="end">kg</InputAdornment>,
-                        }}
-                        onChange={event => setPeso(parseFloat(event.target.value))}
-                        />
-                    <TextField
-                        required
+                        suffix=" kg"
+                        onValueChange={(values) => setPeso(values.floatValue as number)}
+                    />
+                    <NumericFormat 
                         label="Consumo Diário"
-                        id="txtConsumoDiario"
+                        customInput={TextField}
+                        thousandSeparator=""
+                        decimalSeparator=","
                         value={consumoDiario}
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start"></InputAdornment>,
-                        }}
-                        onChange={event => {
-                            if (event.target.value === '') setConsumoDiario(0)
-                                else setConsumoDiario(parseFloat(event.target.value))}
-                        }
-                        />
+                        onValueChange={(values) => setConsumoDiario(values.floatValue as number)}
+                    />
                 </div>
                 <div className="ContainerTextos">
                     <TextField
