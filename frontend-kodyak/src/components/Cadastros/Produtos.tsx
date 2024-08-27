@@ -1,6 +1,3 @@
-// TODO: Corrigir família de produtos ao carregar a página
-// TODO: Corrigir Sidebar
-
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
