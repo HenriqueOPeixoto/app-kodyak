@@ -181,10 +181,27 @@ const getClienteById = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível buscar o cliente. ' + error) })
 }
 
+const alterarStatusCliente = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { inativo } = request.body
+
+    if (typeof inativo !== 'boolean') {
+        return response.status(400).send('Valor inválido para status. Esperava um boolean.')
+    }
+
+    pool.query('UPDATE CLIENTES SET INATIVO = $1 WHERE ID = $2', [inativo, id])
+    .then(() => {
+        const acaoRealizada = (inativo ? 'inativado' : 'ativado')
+        response.status(200).send(`Usuário com ID ${id} ${acaoRealizada} com sucesso.`)}
+    )
+    .catch((error) => { response.status(200).send('Ocorreu um erro ao alterar status do cliente ' + error) })
+}
+
 
 module.exports = {
     createCliente,
     getClientes,
     updateCliente,
-    getClienteById
+    getClienteById,
+    alterarStatusCliente
 }

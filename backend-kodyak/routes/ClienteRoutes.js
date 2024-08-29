@@ -6,5 +6,6 @@ router.put('/', ClienteController.createCliente)
 router.get('/', ClienteController.getClientes)
 router.put('/:id', ClienteController.updateCliente)
 router.get('/:id', ClienteController.getClienteById)
+router.patch('/:id/alterarStatus', ClienteController.alterarStatusCliente)
 
 module.exports = router;
