@@ -81,8 +81,103 @@ const getClientes = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível listar os clientes. Erro: ' + error)})
 }
 
+const updateCliente = (request, response) => {
+    const id = parseInt(request.params.id)
+
+    const {
+        razao_social,
+        nome,
+        cnpj,
+        cpf,
+        inscricao_estadual,
+        telefone_fixo,
+        telefone_celular,
+        email,
+        cep,
+        logradouro,
+        numero,
+        bairro,
+        cidade,
+        estado
+    } = request.body
+
+    let query = 'UPDATE CLIENTES SET '
+    const updates = []
+    const params = []
+
+    if (razao_social) {
+        params.push(razao_social)
+        updates.push(' razao_social = $' + params.length)
+    }
+    if (nome) {
+        params.push(nome)
+        updates.push(' nome = $' + params.length)
+    }
+    if (cnpj) {
+        params.push(cnpj)
+        updates.push(' cnpj = $' + params.length)
+    }
+    if (cpf) {
+        params.push(cpf)
+        updates.push(' cpf = $' + params.length)
+    }
+    if (inscricao_estadual) {
+        params.push(inscricao_estadual)
+        updates.push(' inscricao_estadual = $' + params.length)
+    }
+    if (telefone_fixo) {
+        params.push(telefone_fixo)
+        updates.push(' telefone_fixo = $' + params.length)
+    }
+    if (telefone_celular) {
+        params.push(telefone_celular)
+        updates.push(' telefone_celular = $' + params.length)
+    }
+    if (email) {
+        params.push(email)
+        updates.push(' email = $' + params.length)
+    }
+    if (cep) {
+        params.push(cep)
+        updates.push(' cep = $' + params.length)
+    }
+    if (logradouro) {
+        params.push(logradouro)
+        updates.push(' logradouro = $' + params.length)
+    }
+    if (numero) {
+        params.push(numero)
+        updates.push(' numero = $' + params.length)
+    }
+    if (bairro) {
+        params.push(bairro)
+        updates.push(' bairro = $' + params.length)
+    }
+    if (estado) {
+        params.push(estado)
+        updates.push(' estado = $' + params.length)
+    }
+    if (cidade) {
+        params.push(cidade)
+        updates.push(' cidade = $' + params.length)
+    }
+
+    if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}
+
+    query += updates.join(', ')
+    query += ' WHERE ID = ' + id
+
+    console.log(query)
+
+    pool.query(query, params)
+    .then(() => { response.status(200).send('Cliente atualizado.') })
+    .catch((error) => { response.status(500).send('Não foi possível atualizar o cliente. Erro:' + error) })
+
+}
+
 
 module.exports = {
     createCliente,
-    getClientes
+    getClientes,
+    updateCliente
 }
