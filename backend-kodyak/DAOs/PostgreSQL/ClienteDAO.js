@@ -49,6 +49,40 @@ const createCliente = (request, response) => {
 
 }
 
+const getClientes = (request, response) => {
+    const { nome, cnpj, cpf, inativo } = request.query
+
+    let query = 'SELECT * FROM CLIENTES WHERE 1=1'
+    const params = []
+
+    if (nome) {
+        params.push('%' + nome + '%')
+        query += ' AND UPPER(NOME) LIKE UPPER($' + params.length + ')'
+
+    }
+
+    if (cpf) {
+        params.push('%' + cpf + '%')
+        query += ' AND CPF LIKE $' + params.length
+    }
+
+    if (cnpj) {
+        params.push('%' + cnpj + '%')
+        query += ' AND CNPJ LIKE $' + params.length
+    }
+
+    if (inativo) {
+        params.push(inativo)
+        query += ' AND INATIVO = $' + params.length
+    }
+
+    pool.query(query, params)
+    .then((results) => { response.status(200).send(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível listar os clientes. Erro: ' + error)})
+}
+
+
 module.exports = {
-    createCliente
+    createCliente,
+    getClientes
 }
