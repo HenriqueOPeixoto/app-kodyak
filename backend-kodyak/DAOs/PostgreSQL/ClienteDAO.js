@@ -167,8 +167,6 @@ const updateCliente = (request, response) => {
     query += updates.join(', ')
     query += ' WHERE ID = ' + id
 
-    console.log(query)
-
     pool.query(query, params)
     .then(() => { response.status(200).send('Cliente atualizado.') })
     .catch((error) => { response.status(500).send('Não foi possível atualizar o cliente. Erro:' + error) })
