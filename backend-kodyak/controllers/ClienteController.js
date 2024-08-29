@@ -11,3 +11,7 @@ exports.getClientes = (req, res) => {
 exports.updateCliente= (req, res) => {
     ClienteDAO.updateCliente(req, res)
 };
+
+exports.getClienteById = (req, res) => {
+    ClienteDAO.getClienteById(req, res)
+}
