@@ -1,34 +1,107 @@
-import { Button, Paper, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import '../styles/Cadastros.css'
+import './styles/TabelaClientes.css'
 import { Link } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import axios from "axios"
 
-function TabelaClientes() {
+interface Cliente {
+  id: number
+  nome: string
+  inscricao_estadual: string
+  cnpj: string
+  cpf: string
+  telefone_celular: string
+  logradouro: string
+  numero: number
+  bairro: number
+  cidade: number
+  estado: number
+  inativo: boolean
+}
+
+const CardCliente: React.FC<{ cliente: Cliente }> = ({ cliente }) => {
   return (
-    <div className="TabelaClientes">
-      <div className="ContainerBtnIncluir">
-        <Link to='/cadastros/novo_cliente'>
-          <Button className="BtnIncluirCliente" variant="contained" color="success">Incluir</Button>
-        </Link>
-      </div>
-      <TableContainer component={Paper}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell>CPF</TableCell>
-            <TableCell>Endereço</TableCell>
-          </TableRow>
-          <TableRow>
-
-            {/* TODO: Fazer scrollbar horizontal parar de aparecer. O conteúdo deve caber na página */}
-            <TableCell>Teste da Silva</TableCell>
-            <TableCell>123.456.789-00</TableCell>
-            <TableCell>Rua dos Testes, 123W</TableCell>
-          </TableRow>
-        </TableHead>
-      </TableContainer>
-    </div>
+    <Card variant="outlined">
+      <Link to={`/cadastros/editar_cliente/${cliente.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <CardActionArea style={{height: '100%'}}>
+          <CardContent>
+            <Typography variant="subtitle2">#{cliente.id}</Typography>
+            <Typography variant="h6">{cliente.nome}</Typography>
+            <Typography><hr/></Typography>
+            <Typography>I.E.: {cliente.inscricao_estadual}</Typography>
+            <Typography>CNPJ: {cliente.cnpj}</Typography>
+            <Typography>CPF: {cliente.cpf}</Typography>
+            <Typography>Celular: {cliente.telefone_celular}</Typography>
+            <Typography>Endereço: {cliente.logradouro}, {cliente.numero} - {cliente.bairro}</Typography>
+            <Typography>{cliente.cidade} - {cliente.estado}</Typography>
+          </CardContent>
+        </CardActionArea>
+      </Link>
+    </Card>
   )
 }
+
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
+const TabelaClientes: React.FC = () => {
+
+  const [cliente, setCliente] = useState<Cliente[]>([])
+  const [nome, setNome] = useState<string>('')
+  const [inativo, setInativo] = useState<boolean>(false)
+
+  useEffect(() => {
+    axios.get<Cliente[]>(`${backendBaseURL}/api/clientes`, {
+        params: {
+          "nome": nome,
+          "inativo": inativo
+        }
+      }
+    )
+      .then(response => {
+        setCliente(response.data);
+      })
+      .catch(error => {
+        console.error("Erro ao listar os clientes: ", error);
+      });
+  }, [nome, inativo]);
+
+  const handleTxtPesquisarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNome(event.target.value)
+  }
+
+  const handleInativoRadioButtonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInativo(event.target.value === 'true')
+  }
+
+    return (
+      <div className="TabelaClientes">
+        <div className="ContainerFiltros">
+          <TextField className="TxtPesquisarCliente" id="pesquisar-cliente" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
+          <FormControl>
+            <FormLabel id="ativo-radio-button">Filtros</FormLabel>
+            <RadioGroup defaultValue="ativo" row onChange={handleInativoRadioButtonChange}>
+              <FormControlLabel value="false" control={<Radio />} label="Ativo"/>
+              <FormControlLabel value="true" control={<Radio />} label="Inativo" />
+            </RadioGroup>
+          </FormControl>
+          <div className="Botoes">
+            {/* <Button className="BtnPesquisar" variant="contained">Pesquisar</Button> */}
+          <Link to='/cadastros/novo_cliente'>
+            <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
+          </Link>
+          </div>
+        </div>
+        <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
+          {cliente.map((cliente) => (
+            <Grid item xs={12} key={cliente.id}>
+              <CardCliente cliente={cliente} />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    )
+  }
 
 export default TabelaClientes
