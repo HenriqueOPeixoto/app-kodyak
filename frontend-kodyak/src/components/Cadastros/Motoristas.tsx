@@ -36,7 +36,6 @@ export default function Motoristas() {
       // Buscar os dados do motorista para atualizar
       axios.get(`${backendBaseURL}/api/motoristas/${id}`)
       .then(response => {
-        console.log(response.data)
         if (response.data.length > 0) { // Checar se response não é vazio
             // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
             // retorna um registro.
