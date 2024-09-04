@@ -90,7 +90,6 @@ export default function Clientes() {
       nome,
       cpf,
       cnpj,
-      cpf,
       inscricao_estadual: inscricaoEstadual,
       telefone_fixo: telefoneFixo,
       telefone_celular: telefoneCelular,
