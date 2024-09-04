@@ -112,30 +112,31 @@ export default function Clientes() {
           handleAbrirSnack('Ocorreu um erro ao atualizar o cliente.')
         })
     } else {
-      axios.post(`${backendBaseURL}/api/clientes/`, formData)
+      axios.put(`${backendBaseURL}/api/clientes/`, formData)
         .then(() => {
           handleAbrirSnack('Cliente cadastrado com sucesso.')
-
+        
+          setRazaoSocial('')
+          setNome('')
+          setCnpj('')
+          setCpf('')
+          setInscricaoEstadual('')
+          setTelefoneFixo('')
+          setTelefoneCelular('')
+          setEmail('')
+          setCep('')
+          setLogradouro('')
+          setNumero('')
+          setBairro('')
+          setCidade('')
+          setEstado('')
+          setInativo(false)
         })
-        .catch(() => {
+        .catch((error) => {
           handleAbrirSnack('Não foi possível cadastrar o cliente.')
         })
 
-        setRazaoSocial('')
-        setNome('')
-        setCnpj('')
-        setCpf('')
-        setInscricaoEstadual('')
-        setTelefoneFixo('')
-        setTelefoneCelular('')
-        setEmail('')
-        setCep('')
-        setLogradouro('')
-        setNumero('')
-        setBairro('')
-        setCidade('')
-        setEstado('')
-        setInativo(false)
+        
     }
 
   }
