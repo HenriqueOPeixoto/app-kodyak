@@ -26,6 +26,7 @@ function App() {
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
+            <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
             <Route path='/cadastros/novo_motorista' element={<Motoristas />} />
             <Route path='/cadastros/editar_motorista/:id' element={<Motoristas />} />
             <Route path='/cadastros/novo_usuario' element={<Usuarios />} />
