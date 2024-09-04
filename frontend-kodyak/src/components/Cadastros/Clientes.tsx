@@ -63,6 +63,7 @@ export default function Clientes() {
 
             setRazaoSocial(razao_social)
             setNome(nome)
+            setCpf(cpf)
             setCnpj(cnpj)
             setInscricaoEstadual(inscricao_estadual)
             setTelefoneFixo(telefone_fixo)
@@ -87,6 +88,7 @@ export default function Clientes() {
     const formData = {
       razao_social: razaoSocial,
       nome,
+      cpf,
       cnpj,
       cpf,
       inscricao_estadual: inscricaoEstadual,
@@ -123,6 +125,7 @@ export default function Clientes() {
         setRazaoSocial('')
         setNome('')
         setCnpj('')
+        setCpf('')
         setInscricaoEstadual('')
         setTelefoneFixo('')
         setTelefoneCelular('')
