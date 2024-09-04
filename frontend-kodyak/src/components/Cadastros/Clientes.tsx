@@ -204,6 +204,13 @@ export default function Clientes() {
           value={nome}
           onChange={event => setNome(event.target.value)}
         />
+        <TextField
+          id="txtRazaoSocial"
+          label="Razão Social"
+          defaultValue=""
+          value={razaoSocial}
+          onChange={event => setRazaoSocial(event.target.value)}
+        />
         <PatternFormat
           id="txtCpf"
           label="CPF"
