@@ -177,7 +177,7 @@ const getClienteById = (request, response) => {
     const id = parseInt(request.params.id)
 
     pool.query('SELECT * FROM CLIENTES WHERE ID = $1', [id])
-    .then((results) => { response.status(200).send(results.rows[0])})
+    .then((results) => { response.status(200).send(results.rows)})
     .catch((error) => { response.status(500).send('Não foi possível buscar o cliente. ' + error) })
 }
 
