@@ -1,7 +1,7 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format"
+import { NumericFormat, PatternFormat } from "react-number-format"
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
@@ -196,9 +196,127 @@ export default function Clientes() {
       </Link>
       <div>
         <TextField
+          id="txtNome"
           label="Nome"
+          defaultValue=""
           value={nome}
+          onChange={event => setNome(event.target.value)}
         />
+        <PatternFormat
+          id="txtCpf"
+          label="CPF"
+          value={cpf}
+          customInput={TextField}
+          format="###.###.###-##"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setCpf(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        <PatternFormat
+          id="txtCnpj"
+          label="CNPJ"
+          value={cnpj}
+          customInput={TextField}
+          format="##.###.###/####-##"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setCnpj(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        <TextField 
+          id="txtIE"
+          label="Inscrição Estadual"
+          value={inscricaoEstadual}
+          defaultValue=""
+          onChange={event => setInscricaoEstadual(event.target.value)}
+        />
+        <PatternFormat
+          id="txtTelefoneFixo"
+          label="Telefone Fixo"
+          value={telefoneFixo}
+          customInput={TextField}
+          format="(##) ####-####"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setTelefoneFixo(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        <PatternFormat
+          id="txtTelefoneCelular"
+          label="Telefone Celular"
+          value={telefoneCelular}
+          customInput={TextField}
+          format="(##) # ####-####"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setTelefoneCelular(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        <TextField 
+          id="txtEmail"
+          label="E-mail"
+          value={email}
+          defaultValue=""
+          onChange={event => setEmail(event.target.value)}
+        />
+        <PatternFormat
+          id="txtCep"
+          label="CEP"
+          value={cep}
+          customInput={TextField}
+          format="#####-###"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setCep(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        <TextField 
+          id="txtLogradouro"
+          label="Logradouro"
+          value={logradouro}
+          defaultValue=""
+          onChange={event => setLogradouro(event.target.value)}
+        />
+        <TextField 
+          id="txtNumero"
+          label="Número"
+          value={numero}
+          defaultValue=""
+          onChange={event => setNumero(event.target.value)}
+        />
+        <TextField 
+          id="txtBairro"
+          label="Bairro"
+          value={bairro}
+          defaultValue=""
+          onChange={event => setBairro(event.target.value)}
+        />
+        <TextField 
+          id="txtCidade"
+          label="Cidade"
+          value={cidade}
+          defaultValue=""
+          onChange={event => setCidade(event.target.value)}
+        />
+        <TextField 
+          id="txtEstado"
+          label="Estado"
+          value={estado}
+          defaultValue=""
+          onChange={event => setEstado(event.target.value)}
+        />
+        
       </div>
       <div className='FormButtons'>
         <Button startIcon={<SaveIcon />}
