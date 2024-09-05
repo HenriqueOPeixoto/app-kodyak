@@ -1,7 +1,7 @@
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
+import { Box, Button, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { NumericFormat, PatternFormat } from "react-number-format"
+import { PatternFormat } from "react-number-format"
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
@@ -132,7 +132,7 @@ export default function Clientes() {
           setEstado('')
           setInativo(false)
         })
-        .catch((error) => {
+        .catch(() => {
           handleAbrirSnack('Não foi possível cadastrar o cliente.')
         })
 
