@@ -1,0 +1,20 @@
+.Title {
+    font-weight: bold;
+}
+
+.BotoesPedidos {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 35%;
+    min-width: 20%;
+}
+
+.Pedidos {
+    display: flex;
+    flex-direction: row;
+}
+
+.ListaPedidos {
+    flex: 1;
+  }
