@@ -31,7 +31,7 @@ function Cadastros() {
       <div className='Cadastros'>
         <div className='BotoesCadastro'>
           {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
-          <Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
+          {/*<Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>*/}
           <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
           <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
           <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
@@ -41,7 +41,7 @@ function Cadastros() {
         <div className='ListaCadastros'>
           {/* As linhas abaixo controlam qual tabela de cadastro deve ser exibida 
             baseando-se no estado dos botões, ou seja, o botão atual ativo pelo useState. */}
-          {activeButton === 'bancos' && <TabelaBancos />}
+          {/*activeButton === 'bancos' && <TabelaBancos />*/}
           {activeButton === 'clientes' && <TabelaClientes />}
           {activeButton === 'motoristas' && <TabelaMotoristas />}
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
