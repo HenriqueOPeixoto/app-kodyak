@@ -3,6 +3,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 import './styles/Cadastros.css'
 import TabelaClientes from './Tabelas/TabelaClientes';
@@ -13,6 +14,7 @@ import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
 import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
 import TabelaProdutos from './Tabelas/TabelaProdutos';
+import Representantes from './Representantes';
 
 function Cadastros() {
 
@@ -36,6 +38,7 @@ function Cadastros() {
           <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
           <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
           <Button startIcon={<LocalShippingIcon />} onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
+          <Button startIcon={<PersonAddAlt1Icon />} onClick={() => {handleButtonClick('representantes')}}>Representantes</Button>
           <Button startIcon={<Person />} onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
         </div>
         <div className='ListaCadastros'>
@@ -47,6 +50,7 @@ function Cadastros() {
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
           {activeButton === 'familia_produtos' && <TabelaFamiliaProdutos/>}
           {activeButton === 'produtos' && <TabelaProdutos/>}
+          {activeButton === 'representantes' && <Representantes />}
         </div>
       </div>
     </>
