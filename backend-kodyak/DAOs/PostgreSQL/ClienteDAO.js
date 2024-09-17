@@ -192,7 +192,7 @@ const alterarStatusCliente = (request, response) => {
     pool.query('UPDATE CLIENTES SET INATIVO = $1 WHERE ID = $2', [inativo, id])
     .then(() => {
         const acaoRealizada = (inativo ? 'inativado' : 'ativado')
-        response.status(200).send(`Usuário com ID ${id} ${acaoRealizada} com sucesso.`)}
+        response.status(200).send(`Cliente com ID ${id} ${acaoRealizada} com sucesso.`)}
     )
     .catch((error) => { response.status(200).send('Ocorreu um erro ao alterar status do cliente ' + error) })
 }
