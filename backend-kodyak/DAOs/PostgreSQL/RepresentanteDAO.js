@@ -48,7 +48,97 @@ const createRepresentante = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível cadastrar o representante. Erro: ' + error) })
 }
 
-const updateRepresentante = (request, response) => {}
+const updateRepresentante = (request, response) => {
+    const id = parseInt(request.params.id)
+
+    const {
+        nome,
+        tipo_pessoa,
+        documento,
+        telefone,
+        email,
+        cep,
+        logradouro,
+        numero,
+        bairro,
+        cidade,
+        estado,
+        banco,
+        conta,
+        agencia
+    } = request.body
+
+    let query = 'UPDATE REPRESENTANTES SET '
+    const updates = []
+    const params = []
+
+    if (nome) {
+        params.push(nome)
+        updates.push(' nome = $' + params.length)
+    }
+    if (tipo_pessoa) {
+        params.push(tipo_pessoa)
+        updates.push(' tipo_pessoa = $' + params.length)
+    }
+    if (documento) {
+        params.push(documento)
+        updates.push(' documento = $' + params.length)
+    }
+    if (telefone) {
+        params.push(telefone)
+        updates.push(' telefone = $' + params.length)
+    }
+    if (email) {
+        params.push(email)
+        updates.push(' email = $' + params.length)
+    }
+    if (cep) {
+        params.push(cep)
+        updates.push(' cep = $' + params.length)
+    }
+    if (logradouro) {
+        params.push(logradouro)
+        updates.push(' logradouro = $' + params.length)
+    }
+    if (numero) {
+        params.push(numero)
+        updates.push(' numero = $' + params.length)
+    }
+    if (bairro) {
+        params.push(bairro)
+        updates.push(' bairro = $' + params.length)
+    }
+    if (cidade) {
+        params.push(cidade)
+        updates.push(' cidade = $' + params.length)
+    }
+    if (estado) {
+        params.push(estado)
+        updates.push(' estado = $' + params.length)
+    }
+    if (banco) {
+        params.push(banco)
+        updates.push(' banco = $' + params.length)
+    }
+    if (conta) {
+        params.push(conta)
+        updates.push(' conta = $' + params.length)
+    }
+    if (agencia) {
+        params.push(agencia)
+        updates.push(' agencia = $' + params.length)
+    }
+
+    if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}
+
+    query += updates.join(', ')
+    query += ' WHERE ID = ' + id
+
+    pool.query(query, params)
+    .then(() => { response.status(200).send('Representante atualizado.') })
+    .catch((error) => { response.status(500).send('Não foi possível atualizar o representante. Erro: ' + error) })
+
+}
 
 const getRepresentante = (request, response) => {
     const { nome, documento, inativo } = request.query
