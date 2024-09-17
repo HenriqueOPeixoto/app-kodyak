@@ -49,8 +49,42 @@ const createRepresentante = (request, response) => {
 }
 
 const updateRepresentante = (request, response) => {}
-const getRepresentante = (request, response) => {}
-const getRepresentanteById = (request, response) => {}
+
+const getRepresentante = (request, response) => {
+    const { nome, documento, inativo } = request.query
+
+    let query = 'SELECT * FROM REPRESENTANTES WHERE 1=1'
+    const params = []
+
+    if (nome) {
+        params.push('%' + nome + '%')
+        query += ' AND UPPER(NOME) LIKE UPPER ($' + params.length + ')'
+    }
+
+    if (documento) {
+        params.push('%' + documento + '%')
+        query += ' AND DOCUMENTO LIKE $' + params.length
+    }
+
+    if (inativo) {
+        params.push(inativo)
+        query += ' AND INATIVO = $' + params.length
+    }
+
+    pool.query(query, params)
+    .then((results) => { response.status(200).send(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível listar os representantes. Erro: ' + error) })
+}
+
+const getRepresentanteById = (request, response) => {
+    const id = parseInt(request.params.id)
+
+    pool.query('SELECT * FROM REPRESENTANTES WHERE ID = $1', [id])
+    .then((results) => { response.status(200).send(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível consultar o representante. Erro: ' + error) })
+
+}
+
 const alterarStatusRepresentante = (request, response) => {}
 
 
