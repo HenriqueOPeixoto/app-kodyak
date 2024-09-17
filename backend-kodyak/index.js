@@ -9,6 +9,7 @@ const nivelAcessoRoutes = require('./routes/NivelAcessoRoutes')
 const familiaProdutosRoutes = require('./routes/FamiliaProdutosRoutes')
 const produtoRoutes = require('./routes/ProdutoRoutes')
 const clienteRoutes = require('./routes/ClienteRoutes')
+const representanteRoutes = require('./routes/RepresentanteRoutes')
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/familia_produtos', familiaProdutosRoutes)
 app.use('/api/nivel_acesso', nivelAcessoRoutes)
 app.use('/api/motoristas', motoristaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/representantes', representanteRoutes)
 
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)
