@@ -175,7 +175,21 @@ const getRepresentanteById = (request, response) => {
 
 }
 
-const alterarStatusRepresentante = (request, response) => {}
+const alterarStatusRepresentante = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { inativo } = request.body
+
+    if (typeof inativo !== 'boolean') {
+        return response.status(400).send('Valor inválido para status. Esperava um boolean.')
+    }
+
+    pool.query('UPDATE REPRESENTANTES SET INATIVO = $1 WHERE ID = $2', [inativo, id])
+    .then(() => {
+        const acaoRealizada = (inativo ? 'inativado' : 'ativado')
+        response.status(200).send(`Representante com ID ${id} ${acaoRealizada} com sucesso.`)}
+    )
+    .catch((error) => { response.status(200).send('Ocorreu um erro ao alterar status do representante ' + error) })
+}
 
 
 module.exports = {
