@@ -1,0 +1,15 @@
+.ContainerFiltros {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.TabelaRepresentantes {
+    height: 100%;
+    width: 100%;
+}
+
+.TxtPesquisarRepresentante {
+    flex-grow: 1;
+}

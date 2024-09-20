@@ -14,7 +14,7 @@ import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
 import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
 import TabelaProdutos from './Tabelas/TabelaProdutos';
-import Representantes from './Representantes';
+import TabelaRepresentantes from './Tabelas/TabelaRepresentantes';
 
 function Cadastros() {
 
@@ -50,7 +50,7 @@ function Cadastros() {
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
           {activeButton === 'familia_produtos' && <TabelaFamiliaProdutos/>}
           {activeButton === 'produtos' && <TabelaProdutos/>}
-          {activeButton === 'representantes' && <Representantes />}
+          {activeButton === 'representantes' && <TabelaRepresentantes />}
         </div>
       </div>
     </>
