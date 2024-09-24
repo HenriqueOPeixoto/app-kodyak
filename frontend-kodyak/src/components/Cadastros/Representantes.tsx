@@ -12,7 +12,7 @@ import { PatternFormat } from "react-number-format";
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
-export default function FamiliaProdutos() {
+export default function Representantes() {
   const { id } = useParams()
   const [nome, setNome] = useState('')
   const [tipoPessoa, setTipoPessoa] = useState('')
@@ -330,7 +330,7 @@ export default function FamiliaProdutos() {
           defaultValue=""
           onChange={event => setAgencia(event.target.value)}
         />
-        
+
       </div>
       <div className='FormButtons'>
         <Button startIcon={<SaveIcon />}
