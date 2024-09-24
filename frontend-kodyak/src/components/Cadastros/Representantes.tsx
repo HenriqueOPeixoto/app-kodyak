@@ -258,6 +258,78 @@ export default function FamiliaProdutos() {
           }}
           
         />
+
+        <TextField
+          id="txtEmail"
+          label="Email"
+          value={email}
+          defaultValue=""
+          onChange={event => setEmail(event.target.value)}
+        />
+        
+        <PatternFormat
+          id="txtCep"
+          label="CEP"
+          value={cep}
+          customInput={TextField}
+          format="#####-###"
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setCep(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+
+        <TextField
+          id="txtLogradouro"
+          label="Logradouro"
+          value={logradouro}
+          defaultValue=""
+          onChange={event => setLogradouro(event.target.value)}
+        />
+        <TextField
+          id="txtNumero"
+          label="Número"
+          value={numero}
+          defaultValue=""
+          onChange={event => setNumero(event.target.value)}
+        />
+        <TextField
+          id="txtBairro"
+          label="Bairro"
+          value={bairro}
+          defaultValue=""
+          onChange={event => setBairro(event.target.value)}
+        />
+        <TextField
+          id="txtCidade"
+          label="Cidade"
+          value={cidade}
+          defaultValue=""
+          onChange={event => setCidade(event.target.value)}
+        />
+        <TextField
+          id="txtEstado"
+          label="Estado"
+          value={estado}
+          defaultValue=""
+          onChange={event => setEstado(event.target.value)}
+        />
+        <TextField
+          id="txtBanco"
+          label="Banco"
+          value={banco}
+          defaultValue=""
+          onChange={event => setBanco(event.target.value)}
+        />
+        <TextField
+          id="txtAgencia"
+          label="Agência"
+          value={agencia}
+          defaultValue=""
+          onChange={event => setAgencia(event.target.value)}
+        />
         
       </div>
       <div className='FormButtons'>
