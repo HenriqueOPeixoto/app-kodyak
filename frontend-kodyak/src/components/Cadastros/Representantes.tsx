@@ -42,7 +42,8 @@ export default function FamiliaProdutos() {
     setDocumento(documento.substring(0,11))
   }
 
-  const format = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##';
+  const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
+  const formatTelefone = telefone.length <= 10 ? '(##) ####-#####' : '(##) # ####-####'
 
   useEffect(() => {
     if (id) {
@@ -235,11 +236,25 @@ export default function FamiliaProdutos() {
           label="Documento"
           value={documento}
           customInput={TextField}
-          format={format}
+          format={formatTipoPessoa}
           mask="_"
           onValueChange={(values) => {
             const floatValue = values.floatValue;
             setDocumento(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+
+        <PatternFormat
+          id="txtTelefone"
+          label="Telefone"
+          value={telefone}
+          customInput={TextField}
+          format={formatTelefone}
+          placeholder="(65) 1234-5678"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setTelefone(floatValue !== undefined ? floatValue.toString() : '');
           }}
           
         />
