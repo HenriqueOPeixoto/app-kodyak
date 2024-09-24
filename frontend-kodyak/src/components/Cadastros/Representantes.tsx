@@ -43,7 +43,12 @@ export default function Representantes() {
   }
 
   const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
-  const formatTelefone = telefone.length <= 10 ? '(##) ####-#####' : '(##) # ####-####'
+  const formatTelefone = !telefone || telefone.length === 0
+  ? ''
+  : telefone.length <= 10
+  ? '(##) ####-####' // Format for 10-digit phone numbers
+  : '(##) # ####-####'; // Format for 11-digit phone numbers
+
 
   useEffect(() => {
     if (id) {
