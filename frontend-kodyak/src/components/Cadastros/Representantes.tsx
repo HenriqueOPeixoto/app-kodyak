@@ -1,74 +1,271 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material"
+import { Link, useParams } from "react-router-dom"
+import { useEffect, useState } from "react";
 
-import Sidebar from '../Sidebar/Sidebar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SaveIcon from '@mui/icons-material/Save';
+import { DoNotDisturb } from '@mui/icons-material';
+import axios from "axios";
 
-import './styles/Representantes.css'
+import DialogInativar from "./Dialogs/DialogInativar";
+import { PatternFormat } from "react-number-format";
 
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any>;
-  },
-  ref: React.Ref<unknown>,
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
-export default function Representantes() {
-  const [open, setOpen] = React.useState(false);
+export default function FamiliaProdutos() {
+  const { id } = useParams()
+  const [nome, setNome] = useState('')
+  const [tipoPessoa, setTipoPessoa] = useState('')
+  const [documento, setDocumento] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [email, setEmail] = useState('')
+  const [cep, setCep] = useState('')
+  const [logradouro, setLogradouro] = useState('')
+  const [numero, setNumero] = useState('')
+  const [bairro, setBairro] = useState('')
+  const [cidade, setCidade] = useState('')
+  const [estado, setEstado] = useState('')
+  const [banco, setBanco] = useState('')
+  const [conta, setConta] = useState('')
+  const [agencia, setAgencia] = useState('')
+  const [inativo, setInativo] = useState(false)
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [snackOpen, setSnackOpen] = useState(false)
+
+  const [snackMessage, setSnackMessage] = useState('')
+
+  const [btnInativarText, setBtnInativarText] = useState('Inativar')
+
+  const handleTipoPessoaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTipoPessoa(event.target.value)
+    setDocumento(documento.substring(0,11))
+  }
+
+  const format = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##';
+
+  useEffect(() => {
+    if (id) {
+      // Buscar dados da família de produtos
+      axios.get(`${backendBaseURL}/api/representantes/${id}`)
+        .then(response => {
+          console.log(response.data)
+          if (response.data.length > 0) { // Checar se response não é vazio
+            // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
+            // retorna um registro.
+            const {
+              nome,
+              tipo_pessoa,
+              documento,
+              telefone,
+              email,
+              cep,
+              logradouro,
+              numero,
+              bairro,
+              cidade,
+              estado,
+              banco,
+              conta,
+              agencia,
+              inativo
+            } = response.data[0]
+
+            setNome(nome)
+            setTipoPessoa(tipo_pessoa)
+            setDocumento(documento)
+            setTelefone(telefone)
+            setEmail(email)
+            setCep(cep)
+            setLogradouro(logradouro)
+            setNumero(numero)
+            setBairro(bairro)
+            setCidade(cidade)
+            setEstado(estado)
+            setBanco(banco)
+            setConta(conta)
+            setAgencia(agencia)
+            setInativo(inativo)
+          }
+        })
+        .catch(error => {
+          console.log('Não foi possível carregar dados do representante: ', error)
+        })
+    }
+  }, [id])
+
+  const handleSubmit = () => {
+    const formData = {
+      nome,
+      tipo_pessoa: tipoPessoa,
+      documento,
+      telefone,
+      email,
+      cep,
+      logradouro,
+      numero,
+      bairro,
+      cidade,
+      estado,
+      banco,
+      conta,
+      agencia,
+      inativo
+    }
+
+    if (id) {
+      axios.put(`${backendBaseURL}/api/representantes/${id}`, formData)
+        .then(() => {
+          handleAbrirSnack('Representante atualizada com sucesso!')
+        })
+        .catch(() => {
+          handleAbrirSnack('Ocorreu um erro ao atualizar o representante.')
+        })
+    } else {
+      axios.post(`${backendBaseURL}/api/representantes/`, formData)
+        .then(() => {
+          handleAbrirSnack('Representante cadastrada com sucesso.')
+
+          setNome('')
+          setNome('')
+          setTipoPessoa('')
+          setDocumento('')
+          setTelefone('')
+          setEmail('')
+          setCep('')
+          setLogradouro('')
+          setNumero('')
+          setBairro('')
+          setCidade('')
+          setEstado('')
+          setBanco('')
+          setConta('')
+          setAgencia('')
+          setInativo(false)
+        })
+        .catch(() => {
+          handleAbrirSnack('Não foi possível cadastrar o representante.')
+        })
+
+    }
+
+  }
+
+  const handleAbrirDialogInativar = () => {
+    setDialogOpen(true)
+  }
+
+  const handleFecharDialogInativar = () => {
+    setDialogOpen(false)
+  }
+
+  const handleAbrirSnack = (message: string) => {
+    setSnackMessage(message)
+    setSnackOpen(true)
+  }
+
+  const handleFecharSnack = () => {
+    setSnackOpen(false)
+  }
+
+  const handleConfirmarDialogInativar = () => {
+    const newInativo = !inativo; // Toggle inativo status
+    axios.patch(`${backendBaseURL}/api/representantes/${id}/alterarStatus`, { inativo: newInativo })
+      .then(response => {
+        handleAbrirSnack(response.data);
+        setInativo(newInativo);
+        //setBtnInativarText(newInativo ? 'Ativar' : 'Inativar'); Não é necessário, o useEffect atualiza automático
+        setDialogOpen(false);
+      })
+      .catch(error => {
+        console.error('Ocorreu um erro ao inativar o representante: ', error);
+        handleAbrirSnack('Ocorreu um erro ao inativar o representante.');
+      });
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+    if (inativo) {
+      setBtnInativarText('Ativar')
+    } else {
+      setBtnInativarText('Inativar')
+    }
+  }, [inativo])
 
   return (
-    <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Incluir
-      </Button>
-      <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ backgroundColor: '#074173', position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Representantes
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Salvar
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <div className='SidebarRepresentante'>Teste</div>
-        <div className='MainRepresentante'>Teste</div>
-      </Dialog>
-    </React.Fragment>
-  );
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '50%' },
+      }}
+      noValidate
+      autoComplete="off"
+    >
+      <div className="Title">
+        Representante
+        <hr />
+      </div>
+      <Link to='/cadastros'>
+        <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
+      </Link>
+      <div>
+        <TextField
+          required
+          id="txtNome"
+          label="Nome"
+          value={nome}
+          defaultValue=""
+          onChange={event => setNome(event.target.value)}
+        />
+
+        <FormControl>
+          <FormLabel id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
+          <RadioGroup
+            aria-labelledby="tipo-pessoa-radio-buttons-group-label"
+            defaultValue="F"
+            name="tipo-pessoa-radio-buttons-group"
+            onChange={handleTipoPessoaChange}
+          >
+            <FormControlLabel value="F" control={<Radio />} label="Pessoa Física (CPF)" />
+            <FormControlLabel value="J" control={<Radio />} label="Pessoa Jurídica (CNPJ)" />
+          </RadioGroup>
+        </FormControl>
+
+        <PatternFormat
+          id="txtDocumento"
+          label="Documento"
+          value={documento}
+          customInput={TextField}
+          format={format}
+          mask="_"
+          onValueChange={(values) => {
+            const floatValue = values.floatValue;
+            setDocumento(floatValue !== undefined ? floatValue.toString() : '');
+          }}
+          
+        />
+        
+      </div>
+      <div className='FormButtons'>
+        <Button startIcon={<SaveIcon />}
+          variant='contained'
+          color='success'
+          onClick={() => { handleSubmit() }}
+        >{id ? 'Atualizar' : 'Gravar'}</Button>
+        <Button startIcon={<DoNotDisturb />}
+          variant='contained'
+          color='error'
+          onClick={handleAbrirDialogInativar}>{btnInativarText}</Button>
+      </div>
+      <DialogInativar
+        open={dialogOpen}
+        handleClose={handleFecharDialogInativar}
+        handleConfirm={handleConfirmarDialogInativar} />
+      <Snackbar
+        open={snackOpen}
+        autoHideDuration={6000}
+        onClose={handleFecharSnack}
+        message={snackMessage}
+      />
+    </Box>
+  )
 }
