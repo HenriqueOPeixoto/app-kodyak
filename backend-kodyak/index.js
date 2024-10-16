@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
 
+const bancoRoutes = require('./routes/BancoRoutes')
 const motoristaRoutes = require('./routes/MotoristaRoutes');
 const usuarioRoutes = require('./routes/UsuarioRoutes');
 const nivelAcessoRoutes = require('./routes/NivelAcessoRoutes')
@@ -22,6 +23,7 @@ const port = process.env.PORT || 5174;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use('/api/bancos', bancoRoutes)
 app.use('/api/clientes', clienteRoutes)
 app.use('/api/produtos', produtoRoutes)
 app.use('/api/familia_produtos', familiaProdutosRoutes)
