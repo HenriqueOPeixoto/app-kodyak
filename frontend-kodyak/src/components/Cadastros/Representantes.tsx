@@ -10,6 +10,8 @@ import axios from "axios";
 import DialogInativar from "./Dialogs/DialogInativar";
 import { PatternFormat } from "react-number-format";
 
+import './styles/Representantes.css'
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function Representantes() {
@@ -39,15 +41,15 @@ export default function Representantes() {
 
   const handleTipoPessoaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTipoPessoa(event.target.value)
-    setDocumento(documento.substring(0,11))
+    setDocumento(documento.substring(0, 11))
   }
 
   const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
   const formatTelefone = !telefone || telefone.length === 0
-  ? ''
-  : telefone.length <= 10
-  ? '(##) ####-####' // Format for 10-digit phone numbers
-  : '(##) # ####-####'; // Format for 11-digit phone numbers
+    ? ''
+    : telefone.length <= 10
+      ? '(##) ####-####' // Format for 10-digit phone numbers
+      : '(##) # ####-####'; // Format for 11-digit phone numbers
 
 
   useEffect(() => {
@@ -223,33 +225,36 @@ export default function Representantes() {
           onChange={event => setNome(event.target.value)}
         />
 
-        <FormControl>
-          <FormLabel id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
-          <RadioGroup
-            aria-labelledby="tipo-pessoa-radio-buttons-group-label"
-            defaultValue="F"
-            name="tipo-pessoa-radio-buttons-group"
-            onChange={handleTipoPessoaChange}
-          >
-            <FormControlLabel value="F" control={<Radio />} label="Pessoa Física (CPF)" />
-            <FormControlLabel value="J" control={<Radio />} label="Pessoa Jurídica (CNPJ)" />
-          </RadioGroup>
-        </FormControl>
+        <div className="FormDocumento">
 
-        <PatternFormat
-          id="txtDocumento"
-          label="Documento"
-          value={documento}
-          customInput={TextField}
-          format={formatTipoPessoa}
-          mask="_"
-          onValueChange={(values) => {
-            const floatValue = values.floatValue;
-            setDocumento(floatValue !== undefined ? floatValue.toString() : '');
-          }}
-          
-        />
+          <FormControl>
+            <FormLabel id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
+            <RadioGroup
+              aria-labelledby="tipo-pessoa-radio-buttons-group-label"
+              defaultValue="F"
+              name="tipo-pessoa-radio-buttons-group"
+              onChange={handleTipoPessoaChange}
+            >
+              <FormControlLabel value="F" control={<Radio />} label="Pessoa Física (CPF)" />
+              <FormControlLabel value="J" control={<Radio />} label="Pessoa Jurídica (CNPJ)" />
+            </RadioGroup>
+          </FormControl>
 
+          <PatternFormat
+            id="txtDocumento"
+            label="Documento"
+            value={documento}
+            customInput={TextField}
+            format={formatTipoPessoa}
+            mask="_"
+            style={{ maxWidth: '200px' }}
+            onValueChange={(values) => {
+              const floatValue = values.floatValue;
+              setDocumento(floatValue !== undefined ? floatValue.toString() : '');
+            }}
+
+          />
+        </div>
         <PatternFormat
           id="txtTelefone"
           label="Telefone"
@@ -261,7 +266,7 @@ export default function Representantes() {
             const floatValue = values.floatValue;
             setTelefone(floatValue !== undefined ? floatValue.toString() : '');
           }}
-          
+
         />
 
         <TextField
@@ -271,7 +276,7 @@ export default function Representantes() {
           defaultValue=""
           onChange={event => setEmail(event.target.value)}
         />
-        
+
         <PatternFormat
           id="txtCep"
           label="CEP"
@@ -283,7 +288,7 @@ export default function Representantes() {
             const floatValue = values.floatValue;
             setCep(floatValue !== undefined ? floatValue.toString() : '');
           }}
-          
+
         />
 
         <TextField
