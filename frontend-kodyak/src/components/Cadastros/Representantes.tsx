@@ -334,6 +334,13 @@ export default function Representantes() {
           onChange={event => setBanco(event.target.value)}
         />
         <TextField
+          id="txtConta"
+          label="Conta"
+          value={conta}
+          defaultValue=""
+          onChange={event => setConta(event.target.value)}
+        />
+        <TextField
           id="txtAgencia"
           label="Agência"
           value={agencia}
