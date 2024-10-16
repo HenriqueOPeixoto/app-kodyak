@@ -47,7 +47,7 @@ const updateBanco = (request, response) => {
 }
 
 const getBanco = (request, response) => {
-    const { cod_banco, nome, sigla } = request.query
+    const { cod_banco, nome, sigla, inativo } = request.query
 
     let query = 'SELECT * FROM BANCOS WHERE 1=1'
     const params = []
@@ -58,13 +58,18 @@ const getBanco = (request, response) => {
     }
 
     if (nome) {
-        params.push(nome)
+        params.push('%' + nome + '%')
         query += ' AND UPPER(NOME) LIKE UPPER($' + params.length + ')'
     }
 
     if (sigla) {
         params.push(sigla)
-        query += 'AND SIGLA = $' + params.length
+        query += ' AND SIGLA = $' + params.length
+    }
+
+    if (inativo) {
+        params.push(inativo)
+        query += ' AND INATIVO = $' + params.length
     }
 
     pool.query(query, params)
