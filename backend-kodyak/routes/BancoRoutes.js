@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BancoController = require('../controllers/BancoController');
 
-router.put('/', BancoController.createBanco)
+router.post('/', BancoController.createBanco)
 router.get('/', BancoController.getBanco)
 router.put('/:id', BancoController.updateBanco)
 router.get('/:id', BancoController.getBancoById)
