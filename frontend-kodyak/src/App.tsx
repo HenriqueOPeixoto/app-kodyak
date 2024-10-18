@@ -17,7 +17,7 @@ const FamiliaProdutos = lazy(() => import('./components/Cadastros/FamiliaProduto
 const Produtos = lazy(() => import('./components/Cadastros/Produtos'));
 const Representantes = lazy(() => import('./components/Cadastros/Representantes'));
 
-const Pedidos = lazy(() => import('./components/Pedidos/Pedidos'));
+const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
 function App() {
   return (
@@ -45,7 +45,7 @@ function App() {
             
             <Route path='/dashboard' element={<Dashboard />} />
             
-            <Route path='/pedidos' element={<Pedidos />} />
+            <Route path='/pedidos' element={<MenuPedidos />} />
             {/* Novas rotas aqui */}
           </Routes>
         </Suspense>

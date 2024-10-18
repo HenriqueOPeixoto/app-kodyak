@@ -7,7 +7,7 @@ import './styles/Pedidos.css'
 
 
 
-function Pedidos() {
+function MenuPedidos() {
 
   const [activeButton, setActiveButton] = useState<string | null>(null);
 
@@ -36,4 +36,4 @@ function Pedidos() {
   )
 }
 
-export default Pedidos
+export default MenuPedidos
