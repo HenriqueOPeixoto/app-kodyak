@@ -2,3 +2,15 @@
     display:flex;
     align-items:center;
 }
+
+.SeletorBanco {
+    width: 50%;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.ContainerSeletor{
+    padding-left: 7px;
+}

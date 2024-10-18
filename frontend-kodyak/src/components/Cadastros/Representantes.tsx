@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material"
+import { Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 
@@ -13,6 +13,13 @@ import { PatternFormat } from "react-number-format";
 import './styles/Representantes.css'
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
+
+type Bancos = {
+  id: number,
+  cod_banco: string,
+  nome: string,
+  sigla: string
+}
 
 export default function Representantes() {
   const { id } = useParams()
@@ -31,6 +38,8 @@ export default function Representantes() {
   const [conta, setConta] = useState('')
   const [agencia, setAgencia] = useState('')
   const [inativo, setInativo] = useState(false)
+
+  const [bancos, setBancos] = useState<Bancos[]>([])
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
@@ -53,6 +62,10 @@ export default function Representantes() {
 
 
   useEffect(() => {
+    axios.get(`${backendBaseURL}/api/bancos`)
+      .then((response) => { setBancos(response.data) })
+      .catch((error) => { console.error('Ocorreu um erro ao listar os bancos: ' + error) })
+
     if (id) {
       // Buscar dados da família de produtos
       axios.get(`${backendBaseURL}/api/representantes/${id}`)
@@ -174,6 +187,10 @@ export default function Representantes() {
 
   const handleFecharSnack = () => {
     setSnackOpen(false)
+  }
+
+  const handleChangeBanco = (event: SelectChangeEvent) => {
+    setBanco(event.target.value as string)
   }
 
   const handleConfirmarDialogInativar = () => {
@@ -326,13 +343,23 @@ export default function Representantes() {
           defaultValue=""
           onChange={event => setEstado(event.target.value)}
         />
-        <TextField
-          id="txtBanco"
-          label="Banco"
-          value={banco}
-          defaultValue=""
-          onChange={event => setBanco(event.target.value)}
-        />
+        <div className="ContainerSeletor">
+          <FormControl className="SeletorBanco" >
+            <InputLabel id="lblBanco">Banco</InputLabel>
+            <Select
+              labelId="lblBanco"
+              id="selBanco"
+              value={banco}
+              label="Banco"
+              onChange={handleChangeBanco}
+            >
+              {bancos.map((banco: Bancos) => (
+                <MenuItem key={banco.id} value={banco.id}>{banco.cod_banco}: {banco.nome}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+
         <TextField
           id="txtConta"
           label="Conta"
