@@ -4,7 +4,7 @@ import { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import './styles/Pedidos.css'
-
+import Pedido from './Pedido';
 
 
 function MenuPedidos() {
@@ -29,7 +29,7 @@ function MenuPedidos() {
         <div className='ListaPedidos'>
           {/* As linhas abaixo controlam qual tabela de pedido deve ser exibida 
             baseando-se no estado dos botões, ou seja, o botão atual ativo pelo useState. */}
-          {activeButton === 'criado' && <p>Pedidos criados</p>}
+          {activeButton === 'criado' && <Pedido />}
         </div>
       </div>
     </>
