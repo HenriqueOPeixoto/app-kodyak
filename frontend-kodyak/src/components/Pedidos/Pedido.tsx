@@ -12,8 +12,10 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { Box, FormControl, InputAdornment, InputLabel, MenuItem, Select, Tab, Tabs, TextField } from '@mui/material';
+import { Box, FormControl, InputAdornment, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
 
 import './styles/Pedido.css'
 
@@ -25,6 +27,12 @@ const Transition = React.forwardRef(function Transition(
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+
+const actions = [
+    { icon: <PrintIcon />, name: 'Print' },
+    { icon: <ShareIcon />, name: 'Share' },
+  ];
 
 export default function Pedido() {
     const [open, setOpen] = React.useState(false);
@@ -144,9 +152,9 @@ export default function Pedido() {
                         </div>
 
                     </div>
-                    <div className='ListaProdutos' style={{width:'100%'}}>
+                    <div className='ListaProdutos' style={{ width: '100%' }}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <Tabs 
+                            <Tabs
                                 centered
                                 value={currentTabIndex}
                                 onChange={handleTabChange}
@@ -169,12 +177,28 @@ export default function Pedido() {
                 {/* Footer AppBar */}
                 <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#074173' }}>
                     <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography variant="body1" component="div">
-                            © 2024 Your Company
-                        </Typography>
-                        <Button color="inherit" onClick={() => alert('Footer Button Clicked')}>
-                            Footer Button
-                        </Button>
+                        <SpeedDial
+                            ariaLabel="SpeedDial basic example"
+                            direction='right'
+                            sx={{ position: 'absolute', bottom: 16, left: 16 }}
+                            icon={<SpeedDialIcon />}
+                            FabProps={{
+                                sx: {
+                                  bgcolor: '#a7cf45',
+                                  '&:hover': {
+                                    bgcolor: '#a7cf45',
+                                  }
+                                }
+                              }}
+                        >
+                            {actions.map((action) => (
+                                <SpeedDialAction
+                                    key={action.name}
+                                    icon={action.icon}
+                                    tooltipTitle={action.name}
+                                />
+                            ))}
+                        </SpeedDial>
                     </Toolbar>
                 </AppBar>
             </Dialog>
