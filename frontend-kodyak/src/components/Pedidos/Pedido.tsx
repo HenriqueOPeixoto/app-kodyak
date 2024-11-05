@@ -199,6 +199,17 @@ export default function Pedido() {
                                 />
                             ))}
                         </SpeedDial>
+                        <div /> {/* Apenas para empurrar as divs abaixo para o meio e para a esquerda*/}
+                        <div style={{backgroundColor: '#a7cf45'}}> {/* Info frete */}
+                            <Typography color={'black'}>
+                                Valor Chapa:<br/>
+                                Valor Frete:
+                            </Typography>
+                        </div>
+                        <div style={{display: 'flex', alignItems: 'center'}}> {/* Valor total */}
+                            <Typography>Valor Total:</Typography>
+                            <Typography style={{marginLeft: '10px'}} variant='h5'>R$ 0,00</Typography>
+                        </div>
                     </Toolbar>
                 </AppBar>
             </Dialog>
