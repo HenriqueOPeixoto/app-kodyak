@@ -12,7 +12,8 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { TextField } from '@mui/material';
+import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import './styles/Pedido.css'
 
@@ -68,19 +69,84 @@ export default function Pedido() {
 
                 <div className='Conteudo' >
 
-                    <div className='Cabecalho' style={{}}>
-                        
+                    <div className='Cabecalho' >
+                        <div>
+                            <TextField
+                                id="txtCliente"
+                                label="Cliente"
+                                defaultValue=""
+                                className='TxtCliente'
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={() => { alert('Aqui vai a seleção de cliente') }}>
+                                                <SearchIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                            />
+
+                            <FormControl style={{ minWidth: '200px', marginLeft: '10px' }}>
+                                <InputLabel
+                                    style={{
+                                        textAlign: 'center',
+                                        width: '100%'
+                                    }}
+                                    id="status-pedido-label">Status do Pedido</InputLabel>
+                                <Select
+                                    labelId="status-pedido-label"
+                                    id="status-pedido-select"
+
+                                    label="Status do Pedido"
+                                    onChange={() => { }}
+
+                                    variant='standard'
+
+                                    style={{ textAlign: 'center' }}
+                                >
+                                    <MenuItem value={10}>Pendente</MenuItem>
+                                    <MenuItem value={20}>Análise Financeira</MenuItem>
+                                    <MenuItem value={30}>Aprovado</MenuItem>
+                                    <MenuItem value={40}>Faturado</MenuItem>
+                                    <MenuItem value={50}>Em Rota</MenuItem>
+                                    <MenuItem value={60}>Entregue</MenuItem>
+                                    <MenuItem value={70}>Pagamento em Atraso</MenuItem>
+                                    <MenuItem value={80}>Recusado</MenuItem>
+                                </Select>
+                            </FormControl>
+
+                        </div>
+                        <div className='Observacao' >
+                            <TextField
+                                id="txtObservacoes"
+                                label="Observações"
+                                defaultValue=""
+                                style={{ width: '80vw' }}
+                                multiline
+                                minRows={3}
+                                maxRows={3}
+                                variant='filled'
+                                InputProps={{
+                                    style: {
+                                        fontSize: '14px'
+                                    }
+                                }}
+                            />
+
+                        </div>
+
                     </div>
                     <div className='ListaProdutos' style={{}}>
-                    <hr />
+                        <hr />
 
-                        
-                    
+
+
                     </div>
                 </div>
 
                 {/* Footer AppBar */}
-                <AppBar position="fixed" sx={{ top: 'auto', bottom: 0 , backgroundColor: '#074173'}}>
+                <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#074173' }}>
                     <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography variant="body1" component="div">
                             © 2024 Your Company

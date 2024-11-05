@@ -7,6 +7,8 @@
 .Cabecalho {
     position: fixed;
     height: 100px;
+    margin-left: 7%;
+    margin-right: 10%;
 }
 
 .ListaProdutos {
@@ -17,4 +19,9 @@
     background-color:yellow;
     margin-bottom:100px;
     margin-right: 20px;
+}
+
+.Observacao {
+    width: 90vw;
+    margin-top: 10px;
 }
