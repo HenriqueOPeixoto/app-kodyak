@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Box, FormControl, InputAdornment, InputLabel, MenuItem, Select, Tab, Tabs, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import './styles/Pedido.css'
@@ -29,6 +29,8 @@ const Transition = React.forwardRef(function Transition(
 export default function Pedido() {
     const [open, setOpen] = React.useState(false);
 
+    const [currentTabIndex, setCurrentTabIndex] = React.useState(0)
+
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -36,6 +38,11 @@ export default function Pedido() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleTabChange = (e: React.SyntheticEvent, tabIndex: number) => {
+        console.log(tabIndex)
+        setCurrentTabIndex(tabIndex)
+    }
 
     return (
         <React.Fragment>
@@ -137,10 +144,24 @@ export default function Pedido() {
                         </div>
 
                     </div>
-                    <div className='ListaProdutos' style={{}}>
-                        <hr />
+                    <div className='ListaProdutos' style={{width:'100%'}}>
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs 
+                                centered
+                                value={currentTabIndex}
+                                onChange={handleTabChange}
+                            >
+                                <Tab label="Itens" />
+                                <Tab label="Histórico" />
+                                <Tab label="Documentos" />
+                                <Tab label="Pagamentos" />
+                            </Tabs>
+                        </Box>
 
-
+                        {currentTabIndex === 0 && <Box><p>Itens</p></Box>}
+                        {currentTabIndex === 1 && <Box><p>Histórico</p></Box>}
+                        {currentTabIndex === 2 && <Box><p>Documentos</p></Box>}
+                        {currentTabIndex === 3 && <Box><p>Pagamentos</p></Box>}
 
                     </div>
                 </div>
