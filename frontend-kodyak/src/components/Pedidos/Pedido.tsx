@@ -143,7 +143,7 @@ export default function Pedido() {
 
                     </div>
                     <div className='ContainerConteudo'>
-                        <Box className='ContainerAbas' >
+                        <Box className='ContainerAbas' sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs
                                 centered
                                 value={currentTabIndex}
