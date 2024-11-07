@@ -1,4 +1,4 @@
-.Conteudo {
+.TelaPedido {
     padding: 16px;
     margin-top: 64px;
     margin-bottom: 64px;
@@ -12,16 +12,89 @@
     min-width: 500px;
 }
 
-.ListaProdutos {
+.ContainerConteudo {
     position: fixed;
     margin-top:170px;
     overflow-y: auto;
     height:50%;
     margin-bottom:100px;
     margin-right: 20px;
+    width: 100%;
+}
+
+.ContainerObservacao {
+    width: 90vw;
+    margin-top: 10px;
+}
+
+.InfoFrete {
+    background-color: #a7cf45;
+    border-radius: 15px;
+    width: 200px; 
+    box-shadow: 3px 3px 5px black;
+    text-align: center;
+    transition: background-color 0.2s ease-out;
+}
+
+.InfoFrete:hover {
+    background-color: #b9cf86;
+}
+
+.MuiAppBar-root {
+    background-color: #074173 !important;
+    position: fixed;
+}
+
+.BarraInferior {
+    top: auto;
+    bottom: 0; 
+}
+
+.MuiToolbar-root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.MuiSpeedDial-root {
+    position: absolute;
+    bottom: 16;
+    left: 16;
+}
+
+.ContainerValorTotal {
+    display: flex;
+    align-items: center;
+}
+
+.LblValor {
+    margin-left: 10px;
+}
+
+.ContainerSelecaoStatus {
+    min-width: 200px;
+    margin-left: 10px;
+}
+
+.LblStatus {
+    text-align: center;
+    width: 100%;
+}
+
+.SelectStatus {
+    text-align: center;
 }
 
 .Observacao {
-    width: 90vw;
-    margin-top: 10px;
+    width: 80vw
+}
+
+.LblNumPedido {
+    margin-left: 2;
+    flex: 1;
+    text-align: center
+}
+
+.ContainerAbas {
+    border-bottom: 1;
+    border-color: divider;
 }

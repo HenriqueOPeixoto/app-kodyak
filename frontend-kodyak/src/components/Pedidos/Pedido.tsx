@@ -63,8 +63,8 @@ export default function Pedido() {
                 onClose={handleClose}
                 TransitionComponent={Transition}
             >
-                <AppBar sx={{ position: 'fixed', backgroundColor: '#074173' }}>
-                    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }} >
+                <AppBar className='BarraSuperior' >
+                    <Toolbar>
                         <IconButton
                             edge="start"
                             color="inherit"
@@ -73,7 +73,7 @@ export default function Pedido() {
                         >
                             <CloseIcon />
                         </IconButton>
-                        <Typography sx={{ ml: 2, flex: 1, textAlign: 'center' }} variant="h6" component="div">
+                        <Typography className='LblNumPedido' variant="h6" component="div">
                             Pedido 00000
                         </Typography>
                         <Button autoFocus color="inherit" onClick={handleClose}>
@@ -82,7 +82,7 @@ export default function Pedido() {
                     </Toolbar>
                 </AppBar>
 
-                <div className='Conteudo' >
+                <div className='TelaPedido' >
 
                     <div className='Cabecalho' >
                         <div>
@@ -102,23 +102,18 @@ export default function Pedido() {
                                 }}
                             />
 
-                            <FormControl style={{ minWidth: '200px', marginLeft: '10px' }}>
-                                <InputLabel
-                                    style={{
-                                        textAlign: 'center',
-                                        width: '100%'
-                                    }}
+                            <FormControl className='ContainerSelecaoStatus'>
+                                <InputLabel className='LblStatus'
                                     id="status-pedido-label">Status do Pedido</InputLabel>
                                 <Select
                                     labelId="status-pedido-label"
                                     id="status-pedido-select"
+                                    className='SelectStatus'
 
                                     label="Status do Pedido"
                                     onChange={() => { }}
 
                                     variant='standard'
-
-                                    style={{ textAlign: 'center' }}
                                 >
                                     <MenuItem value={10}>Pendente</MenuItem>
                                     <MenuItem value={20}>Análise Financeira</MenuItem>
@@ -132,12 +127,12 @@ export default function Pedido() {
                             </FormControl>
 
                         </div>
-                        <div className='Observacao' >
+                        <div className='ContainerObservacao' >
                             <TextField
+                                className='Observacao'
                                 id="txtObservacoes"
                                 label="Observações"
-                                defaultValue=""
-                                style={{ width: '80vw' }}
+                                defaultValue=""                        
                                 multiline
                                 minRows={3}
                                 maxRows={3}
@@ -152,8 +147,8 @@ export default function Pedido() {
                         </div>
 
                     </div>
-                    <div className='ListaProdutos' style={{ width: '100%' }}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <div className='ContainerConteudo'>
+                        <Box className='ContainerAbas' >
                             <Tabs
                                 centered
                                 value={currentTabIndex}
@@ -175,12 +170,11 @@ export default function Pedido() {
                 </div>
 
                 {/* Footer AppBar */}
-                <AppBar position="fixed" sx={{ top: 'auto', bottom: 0, backgroundColor: '#074173' }}>
-                    <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <AppBar className='BarraInferior' >
+                    <Toolbar>
                         <SpeedDial
                             ariaLabel="SpeedDial basic example"
                             direction='right'
-                            sx={{ position: 'absolute', bottom: 16, left: 16 }}
                             icon={<SpeedDialIcon />}
                             FabProps={{
                                 sx: {
@@ -200,15 +194,15 @@ export default function Pedido() {
                             ))}
                         </SpeedDial>
                         <div /> {/* Apenas para empurrar as divs abaixo para o meio e para a esquerda*/}
-                        <div style={{backgroundColor: '#a7cf45'}}> {/* Info frete */}
+                        <div className='InfoFrete' > {/* Info frete */}
                             <Typography color={'black'}>
                                 Valor Chapa:<br/>
                                 Valor Frete:
                             </Typography>
                         </div>
-                        <div style={{display: 'flex', alignItems: 'center'}}> {/* Valor total */}
+                        <div className='ContainerValorTotal'> {/* Valor total */}
                             <Typography>Valor Total:</Typography>
-                            <Typography style={{marginLeft: '10px'}} variant='h5'>R$ 0,00</Typography>
+                            <Typography className='LblValor' variant='h5'>R$ 0,00</Typography>
                         </div>
                     </Toolbar>
                 </AppBar>
