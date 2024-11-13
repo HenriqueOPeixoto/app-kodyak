@@ -44,7 +44,7 @@ export default function Pedido() {
         setOpen(false);
     };
 
-    const handleTabChange = (e: React.SyntheticEvent, tabIndex: number) => {
+    const handleTabChange = (_e: React.SyntheticEvent, tabIndex: number) => {
         setCurrentTabIndex(tabIndex)
     }
 
