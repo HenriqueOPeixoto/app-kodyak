@@ -2,18 +2,19 @@
     padding: 16px;
     margin-top: 64px;
     margin-bottom: 64px;
+    max-height: 500px;
 }
 
 .Cabecalho {
-    position: fixed;
-    height: 100px;
+    
+    height: 10px;
     margin-left: 7%;
     margin-right: 10%;
     min-width: 500px;
 }
 
 .ContainerConteudo {
-    position: fixed;
+    
     margin-top:170px;
     height:50%;
     margin-bottom:100px;
