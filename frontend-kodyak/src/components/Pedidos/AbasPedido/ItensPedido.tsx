@@ -23,8 +23,26 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
 }
 
 export default function ItensPedido() {
-    const staticItem: Item = {
-        nome: "DDG",
+    const staticItem1: Item = {
+        nome: "DDG1",
+        qtde_sacas: 10,
+        peso_total: 500,
+        valor: 2500,
+    };
+    const staticItem2: Item = {
+        nome: "DDG2",
+        qtde_sacas: 10,
+        peso_total: 500,
+        valor: 2500,
+    };
+    const staticItem3: Item = {
+        nome: "DDG3",
+        qtde_sacas: 10,
+        peso_total: 500,
+        valor: 2500,
+    };
+    const staticItem4: Item = {
+        nome: "DDG4",
         qtde_sacas: 10,
         peso_total: 500,
         valor: 2500,
@@ -32,15 +50,10 @@ export default function ItensPedido() {
 
     return (
         <div>
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
-            <CardItem item={ staticItem } />
+            <CardItem item={ staticItem1 } />
+            <CardItem item={ staticItem2 } />
+            <CardItem item={ staticItem3 } />
+            <CardItem item={ staticItem4 } />
         </div>
     )
 }
