@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, Link, Typography } from "@mui/material"
+import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
 
 interface Item {
     nome: string
