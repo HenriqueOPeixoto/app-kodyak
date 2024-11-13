@@ -14,6 +14,7 @@ import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 
 import './styles/Pedido.css'
+import ItensPedido from './AbasPedido/ItensPedido';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -156,7 +157,12 @@ export default function Pedido() {
                             </Tabs>
                         </Box>
 
-                        {currentTabIndex === 0 && <Box><p>Itens</p></Box>}
+                        {currentTabIndex === 0 && (
+                            <Box className='ContainerItensPedido'>
+                                <ItensPedido />
+                            </Box>
+                            )
+                        }
                         {currentTabIndex === 1 && <Box><p>Histórico</p></Box>}
                         {currentTabIndex === 2 && <Box><p>Documentos</p></Box>}
                         {currentTabIndex === 3 && <Box><p>Pagamentos</p></Box>}

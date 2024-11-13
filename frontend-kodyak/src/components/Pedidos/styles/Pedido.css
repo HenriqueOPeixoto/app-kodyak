@@ -15,7 +15,6 @@
 .ContainerConteudo {
     position: fixed;
     margin-top:170px;
-    overflow-y: auto;
     height:50%;
     margin-bottom:100px;
     margin-right: 20px;
@@ -25,6 +24,13 @@
 .ContainerObservacao {
     width: 90vw;
     margin-top: 10px;
+}
+
+.ContainerItensPedido {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-right: 20px;
+    padding-right: 10px;
 }
 
 .InfoFrete {
