@@ -12,7 +12,7 @@ function Sidebar() {
                 <Link to={item.link}>
                   <li>
                     <div>{item.icon}</div>
-                    <div>{item.title}</div>
+                    <div className='TituloItem'>{item.title}</div>
                   </li>
                 </Link>
               )

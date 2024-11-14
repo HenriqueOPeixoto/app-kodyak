@@ -38,3 +38,33 @@
 a {
   text-decoration: none;
 }
+
+@media screen and (max-width: 900px) {
+  .Sidebar {
+    position: fixed;
+    display: flex;
+    height: 100%;
+    /* 
+     * Tamanho do sidebar. Devido ao position:fixed, o .Main (App.css) precisa ter a margem esquerda
+     * igual ao width do sidebar. Senão os elementos se sobrepõem.
+     */
+    width: 64px; 
+    max-width: 64px;
+    background-color: #074173;
+    transition: width 0.5s ease;
+    z-index: 999;
+  }
+
+  .Sidebar:hover .TituloItem {
+    display: flex;
+  }
+  
+  .Sidebar:hover {
+    width: 200px;
+    max-width: 200px;
+  }
+
+  .TituloItem {
+    display: none;
+  }
+}
