@@ -25,6 +25,16 @@
     width: 100%;
 }
 
+@media screen and (max-width: 620px) {
+    .ContainerConteudo {
+        margin-top: 200px;
+    }
+
+    .LblStatus {
+        margin-top: 10px;
+    }
+}
+
 .ContainerObservacao {
     width: 90vw;
     margin-top: 10px;
