@@ -146,9 +146,9 @@ export default function Pedido() {
                     <div className='ContainerConteudo'>
                         <Box className='ContainerAbas' sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <Tabs
-                                centered
                                 value={currentTabIndex}
                                 onChange={handleTabChange}
+                                variant='scrollable'
                             >
                                 <Tab label="Itens" />
                                 <Tab label="Histórico" />
