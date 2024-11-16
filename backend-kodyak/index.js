@@ -10,6 +10,7 @@ const nivelAcessoRoutes = require('./routes/NivelAcessoRoutes')
 const familiaProdutosRoutes = require('./routes/FamiliaProdutosRoutes')
 const produtoRoutes = require('./routes/ProdutoRoutes')
 const clienteRoutes = require('./routes/ClienteRoutes')
+const clientesEnderecosRoutes = require('./routes/ClientesEnderecosRoutes')
 const representanteRoutes = require('./routes/RepresentanteRoutes')
 
 const app = express();
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/bancos', bancoRoutes)
 app.use('/api/clientes', clienteRoutes)
+app.use('/api/clientes_enderecos', clientesEnderecosRoutes)
 app.use('/api/produtos', produtoRoutes)
 app.use('/api/familia_produtos', familiaProdutosRoutes)
 app.use('/api/nivel_acesso', nivelAcessoRoutes)
