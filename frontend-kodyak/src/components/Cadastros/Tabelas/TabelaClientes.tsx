@@ -9,15 +9,8 @@ import axios from "axios"
 interface Cliente {
   id: number
   nome: string
-  inscricao_estadual: string
   cnpj: string
   cpf: string
-  telefone_celular: string
-  logradouro: string
-  numero: number
-  bairro: number
-  cidade: number
-  estado: number
   inativo: boolean
 }
 
@@ -30,12 +23,8 @@ const CardCliente: React.FC<{ cliente: Cliente }> = ({ cliente }) => {
             <Typography variant="subtitle2">#{cliente.id}</Typography>
             <Typography variant="h6">{cliente.nome}</Typography>
             <Typography><hr/></Typography>
-            <Typography>I.E.: {cliente.inscricao_estadual}</Typography>
             <Typography>CNPJ: {cliente.cnpj}</Typography>
             <Typography>CPF: {cliente.cpf}</Typography>
-            <Typography>Celular: {cliente.telefone_celular}</Typography>
-            <Typography>Endereço: {cliente.logradouro}, {cliente.numero} - {cliente.bairro}</Typography>
-            <Typography>{cliente.cidade} - {cliente.estado}</Typography>
           </CardContent>
         </CardActionArea>
       </Link>
