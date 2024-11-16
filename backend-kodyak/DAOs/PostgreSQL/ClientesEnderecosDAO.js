@@ -68,7 +68,7 @@ const updateEndereco = (request, response) => {
     const id = parseInt(request.params.id)
 
     const {
-        inscricao_estadual,
+        //inscricao_estadual,
         telefone_fixo,
         telefone_celular,
         email,
@@ -84,10 +84,10 @@ const updateEndereco = (request, response) => {
     const updates = []
     const params = []
 
-    if (inscricao_estadual) {
+    /*if (inscricao_estadual) {
         params.push(inscricao_estadual)
         updates.push(' inscricao_estadual = $' + params.length)
-    }
+    }*/
     if (telefone_fixo) {
         params.push(telefone_fixo)
         updates.push(' telefone_fixo = $' + params.length)
