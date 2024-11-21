@@ -1,0 +1,40 @@
+.FormCadastroEndereco {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /*overflow-y: auto;*/
+}
+
+.Contato {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.Endereco {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.TxtNumero {
+    max-width: 100px;
+}
+
+.TxtLogradouro {
+    max-width: 500px;
+    flex-grow: 1;
+}
+
+.TxtIE {
+    max-width: 200px;
+}
+
+.TxtCliente {
+    max-width: 400px;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
