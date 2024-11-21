@@ -148,15 +148,15 @@ export default function CadastroEndereco() {
 
     const handleConfirmarDialogInativar = () => {
         const newInativo = !inativo; // Toggle inativo status
-        axios.patch(`${backendBaseURL}/api/produtos/${enderecoId}/alterarStatus`, { inativo: newInativo })
+        axios.patch(`${backendBaseURL}/api/clientes_enderecos/${enderecoId}/alterarStatus`, { inativo: newInativo })
             .then(response => {
                 handleAbrirSnack(response.data);
                 setInativo(newInativo);
                 setDialogOpen(false);
             })
             .catch(error => {
-                console.error('Ocorreu um erro ao inativar o produto: ', error);
-                handleAbrirSnack('Ocorreu um erro ao inativar o produto.');
+                console.error('Ocorreu um erro ao inativar o endereco: ', error);
+                handleAbrirSnack('Ocorreu um erro ao inativar o endereço.');
             });
     };
 
