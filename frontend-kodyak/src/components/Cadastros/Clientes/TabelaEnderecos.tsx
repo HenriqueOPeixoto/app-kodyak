@@ -27,7 +27,7 @@ interface Enderecos {
 const CardEnderecos: React.FC<{ enderecos: Enderecos }> = ({ enderecos }) => {
     return (
         <Card className="CardEndereco" variant="outlined">
-            <Link to={`/cadastros/editar_endereco/${enderecos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to={`/cadastros/editar_cliente/${enderecos.cliente}/editar_endereco/${enderecos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <CardActionArea>
                     <CardContent>
                         <Typography variant="h6">{enderecos.inscricao_estadual}</Typography>
@@ -58,8 +58,6 @@ const TabelaEnderecos: React.FC<TabelaEnderecosProps> = ({ clienteId }) => {
         }
         )
             .then(response => {
-                console.log('end: ' + response.data)
-                console.log(clienteId)
                 setEnderecos(response.data);
             })
             .catch(error => {
@@ -85,7 +83,7 @@ const TabelaEnderecos: React.FC<TabelaEnderecosProps> = ({ clienteId }) => {
                     </FormControl>
                     <div className="Botoes">
                         {/* <Button className="BtnPesquisar" variant="contained">Pesquisar</Button> */}
-                        <Link to='/cadastros/novo_endereco'>
+                        <Link to={`/cadastros/editar_cliente/${clienteId}/novo_endereco`}>
                             <Button className="BtnIncluir" variant="contained" color="success">Incluir</Button>
                         </Link>
                     </div>
