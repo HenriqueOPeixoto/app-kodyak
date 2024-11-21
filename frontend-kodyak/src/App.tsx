@@ -11,6 +11,7 @@ import Bancos from './components/Cadastros/Bancos';
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const Clientes = lazy(() => import('./components/Cadastros/Clientes'));
+const Enderecos = lazy(() => import('./components/Cadastros/Clientes/CadastroEndereco'));
 const Motoristas = lazy(() => import('./components/Cadastros/Motoristas'));
 const Usuarios = lazy(() => import('./components/Cadastros/Usuarios'));
 const FamiliaProdutos = lazy(() => import('./components/Cadastros/FamiliaProdutos'));
@@ -30,6 +31,8 @@ function App() {
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
+            <Route path='/cadastros/editar_cliente/:clienteId/novo_endereco' element={<Enderecos />} />
+            <Route path='/cadastros/editar_cliente/:clienteId/editar_endereco/:enderecoId' element={<Enderecos />} />
             <Route path='/cadastros/novo_banco' element={<Bancos />} />
             <Route path='/cadastros/editar_banco/:id' element={<Bancos />} />
             <Route path='/cadastros/novo_motorista' element={<Motoristas />} />
