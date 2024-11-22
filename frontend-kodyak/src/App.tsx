@@ -4,9 +4,10 @@ import Sidebar from './components/Sidebar/Sidebar';
 import '@fontsource/roboto/400.css';
 
 import { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import Bancos from './components/Cadastros/Bancos';
+import Pedido from './components/Pedidos/Pedido';
 
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
@@ -21,10 +22,16 @@ const Representantes = lazy(() => import('./components/Cadastros/Representantes'
 const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
 function App() {
+  const location = useLocation()
+  const isPedidoRoute = location.pathname === '/pedidos/novo_pedido'
+  const showSidebar = isPedidoRoute
+
   return (
     <div className='App'>
-      <div className='Sidebar'><Sidebar /></div>
-      <div className='Main'>
+      {!isPedidoRoute &&
+        <div className='Sidebar'><Sidebar /></div>
+      }
+      <div className={`Main ${showSidebar ? 'sem-sidebar' : ''}`}>
         {/* O conteúdo da página atual será carregado aqui */}
         <Suspense fallback={<div><CircularProgress /></div>}>
           <Routes>
@@ -49,6 +56,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             
             <Route path='/pedidos' element={<MenuPedidos />} />
+            <Route path='/pedidos/novo_pedido' element={<Pedido />} />
             {/* Novas rotas aqui */}
           </Routes>
         </Suspense>

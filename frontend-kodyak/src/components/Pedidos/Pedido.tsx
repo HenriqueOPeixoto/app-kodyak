@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -12,18 +11,10 @@ import { Box, FormControl, InputAdornment, InputLabel, MenuItem, Select, SpeedDi
 import SearchIcon from '@mui/icons-material/Search';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import { useNavigate } from 'react-router-dom';
 
 import './styles/Pedido.css'
 import ItensPedido from './AbasPedido/ItensPedido';
-
-const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement<unknown>;
-    },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 
 const actions = [
@@ -32,16 +23,12 @@ const actions = [
   ];
 
 export default function Pedido() {
-    const [open, setOpen] = React.useState(false);
+    const navigate = useNavigate(); 
 
     const [currentTabIndex, setCurrentTabIndex] = React.useState(0)
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
     const handleClose = () => {
-        setOpen(false);
+        navigate('/pedidos')
     };
 
     const handleTabChange = (_e: React.SyntheticEvent, tabIndex: number) => {
@@ -49,16 +36,7 @@ export default function Pedido() {
     }
 
     return (
-        <React.Fragment>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Criar Pedido
-            </Button>
-            <Dialog
-                fullScreen
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Transition}
-            >
+        <div className='Pedido'>
                 <AppBar className='BarraSuperior' >
                     <Toolbar>
                         <IconButton
@@ -98,7 +76,7 @@ export default function Pedido() {
                                 }}
                             />
 
-                            <FormControl className='ContainerSelecaoStatus'>
+                            <FormControl className='ContainerSelecaoStatus' sx={{ marginLeft: '10px' }}>
                                 <InputLabel className='LblStatus'
                                     id="status-pedido-label">Status do Pedido</InputLabel>
                                 <Select
@@ -110,6 +88,7 @@ export default function Pedido() {
                                     onChange={() => { }}
 
                                     variant='standard'
+                                    
                                 >
                                     <MenuItem value={10}>Pendente</MenuItem>
                                     <MenuItem value={20}>Análise Financeira</MenuItem>
@@ -171,8 +150,9 @@ export default function Pedido() {
                 </div>
 
                 {/* Footer AppBar */}
-                <AppBar className='BarraInferior' >
+                <AppBar className='BarraInferior' sx={{position: 'fixed', bottom: 0, top:'auto'}}>
                     <Toolbar>
+
                         <SpeedDial
                             ariaLabel="SpeedDial basic example"
                             direction='right'
@@ -207,7 +187,6 @@ export default function Pedido() {
                         </div>
                     </Toolbar>
                 </AppBar>
-            </Dialog>
-        </React.Fragment>
+        </div>
     );
 }
