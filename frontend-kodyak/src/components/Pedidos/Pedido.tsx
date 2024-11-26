@@ -15,6 +15,7 @@ import ItensPedido from './AbasPedido/ItensPedido';
 import axios from 'axios';
 
 interface Cliente {
+    label: string,
     id: number,
     nome: string
 }
@@ -87,6 +88,7 @@ export default function Pedido() {
                         options={listaClientes}
                         sx={{ width: 300 }}
                         value={cliente}
+                        getOptionLabel={(option) => option.label} // Como exibir cada opção
                         onChange={(event, novoCliente) => {
                             setCliente(novoCliente)
                         }}
