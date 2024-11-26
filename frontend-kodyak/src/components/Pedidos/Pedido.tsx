@@ -20,6 +20,12 @@ interface Cliente {
     nome: string
 }
 
+interface Endereco {
+    label: string,
+    id: number,
+    inscricao_estadual: string
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
@@ -31,9 +37,14 @@ export default function Pedido() {
     const navigate = useNavigate();
 
     const [clientes, setClientes] = React.useState<Cliente[]>([])
+    const [enderecos, setEnderecos] = React.useState<Endereco[]>([])
+    
     const [currentTabIndex, setCurrentTabIndex] = React.useState(0)
     const [cliente, setCliente] = React.useState<Cliente | null>(null)
+    const [endereco, setEndereco] = React.useState<Endereco | null>(null)
+    const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
 
+    // Listagem de clientes
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/clientes`)
             .then((results) => {
@@ -42,6 +53,34 @@ export default function Pedido() {
             .catch((error) => { console.error('Não foi possível listar os clientes: ' + error) })
     }, [])
 
+    // Quando um cliente for selecionado, buscar a lista de endereços dele
+    React.useEffect(() => {
+        setEndereco(null)
+        axios.get<Endereco[]>(`${backendBaseURL}/api/clientes_enderecos`, {
+            params: {
+                "cliente": cliente?.id,
+                "inativo": false
+            }
+        }
+        )
+        .then((results) => {
+            setEnderecos(results.data)
+        })
+        .catch((error) => {
+            console.error('Não foi possível listar os endereços do cliente: ' + cliente?.id + ': ' + error)
+        })
+    }, [cliente])
+
+    React.useEffect(() => {
+        setListaEnderecos(enderecos.map((endereco) => {
+            return {
+                label: `${endereco.id} - ${endereco.inscricao_estadual}`,
+                id: endereco.id,
+                inscricao_estadual: endereco.inscricao_estadual
+            }
+        }))
+    }, [enderecos])
+
     const listaClientes = clientes.map((cliente) => {
         return {
             label: `${cliente.id} - ${cliente.nome}`,
@@ -49,6 +88,8 @@ export default function Pedido() {
             nome: cliente.nome
         }
     })
+
+    
 
     const handleClose = () => {
         navigate('/pedidos')
@@ -93,6 +134,19 @@ export default function Pedido() {
                             setCliente(novoCliente)
                         }}
                         renderInput={(params) => <TextField {...params} label="Cliente" />}
+                        isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    />
+                    <Autocomplete
+                        className='TxtEndereco'
+                        disablePortal
+                        options={listaEnderecos}
+                        sx={{ width: 300 }}
+                        value={endereco}
+                        getOptionLabel={(option) => option.label} // Como exibir cada opção
+                        onChange={(event, novoEndereco) => {
+                            setEndereco(novoEndereco)
+                        }}
+                        renderInput={(params) => <TextField {...params} label="Endereço" />}
                         isOptionEqualToValue={(option, value) => option.id === value?.id}
                     />
 
