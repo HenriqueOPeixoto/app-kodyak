@@ -5,42 +5,21 @@ const createCliente = (request, response) => {
         razao_social,
         nome,
         cnpj,
-        cpf,
-        inscricao_estadual,
-        telefone_fixo,
-        telefone_celular,
-        email,
-        cep,
-        logradouro,
-        numero,
-        bairro,
-        cidade,
-        estado
+        cpf
     } = request.body
 
     const query =
         `INSERT INTO CLIENTES (
-            razao_social, nome, cnpj, cpf, inscricao_estadual, telefone_fixo, telefone_celular,
-        email, cep, logradouro, numero, bairro, cidade, estado
+            razao_social, nome, cnpj, cpf
         ) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        VALUES ($1, $2, $3, $4)
         RETURNING ID`
     
     const values = [
         razao_social,
         nome,
         cnpj,
-        cpf,
-        inscricao_estadual,
-        telefone_fixo,
-        telefone_celular,
-        email,
-        cep,
-        logradouro,
-        numero,
-        bairro,
-        cidade,
-        estado
+        cpf
     ]
 
     pool.query(query, values)
@@ -88,17 +67,7 @@ const updateCliente = (request, response) => {
         razao_social,
         nome,
         cnpj,
-        cpf,
-        inscricao_estadual,
-        telefone_fixo,
-        telefone_celular,
-        email,
-        cep,
-        logradouro,
-        numero,
-        bairro,
-        cidade,
-        estado
+        cpf
     } = request.body
 
     let query = 'UPDATE CLIENTES SET '
@@ -120,46 +89,6 @@ const updateCliente = (request, response) => {
     if (cpf) {
         params.push(cpf)
         updates.push(' cpf = $' + params.length)
-    }
-    if (inscricao_estadual) {
-        params.push(inscricao_estadual)
-        updates.push(' inscricao_estadual = $' + params.length)
-    }
-    if (telefone_fixo) {
-        params.push(telefone_fixo)
-        updates.push(' telefone_fixo = $' + params.length)
-    }
-    if (telefone_celular) {
-        params.push(telefone_celular)
-        updates.push(' telefone_celular = $' + params.length)
-    }
-    if (email) {
-        params.push(email)
-        updates.push(' email = $' + params.length)
-    }
-    if (cep) {
-        params.push(cep)
-        updates.push(' cep = $' + params.length)
-    }
-    if (logradouro) {
-        params.push(logradouro)
-        updates.push(' logradouro = $' + params.length)
-    }
-    if (numero) {
-        params.push(numero)
-        updates.push(' numero = $' + params.length)
-    }
-    if (bairro) {
-        params.push(bairro)
-        updates.push(' bairro = $' + params.length)
-    }
-    if (estado) {
-        params.push(estado)
-        updates.push(' estado = $' + params.length)
-    }
-    if (cidade) {
-        params.push(cidade)
-        updates.push(' cidade = $' + params.length)
     }
 
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}
