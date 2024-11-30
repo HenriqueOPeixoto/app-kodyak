@@ -4,13 +4,13 @@ const createCliente = (request, response) => {
     const {
         razao_social,
         nome,
-        cnpj,
-        cpf
+        tipo_pessoa,
+        documento
     } = request.body
 
     const query =
         `INSERT INTO CLIENTES (
-            razao_social, nome, cnpj, cpf
+            razao_social, nome, tipo_pessoa, documento
         ) 
         VALUES ($1, $2, $3, $4)
         RETURNING ID`
@@ -29,7 +29,7 @@ const createCliente = (request, response) => {
 }
 
 const getClientes = (request, response) => {
-    const { nome, cnpj, cpf, inativo } = request.query
+    const { nome, documento, inativo } = request.query
 
     let query = 'SELECT * FROM CLIENTES WHERE 1=1'
     const params = []
@@ -40,14 +40,9 @@ const getClientes = (request, response) => {
 
     }
 
-    if (cpf) {
-        params.push('%' + cpf + '%')
-        query += ' AND CPF LIKE $' + params.length
-    }
-
-    if (cnpj) {
-        params.push('%' + cnpj + '%')
-        query += ' AND CNPJ LIKE $' + params.length
+    if (documento) {
+        params.push('%' + documento + '%')
+        query += ' AND DOCUMENTO LIKE $' + params.length
     }
 
     if (inativo) {
@@ -66,8 +61,8 @@ const updateCliente = (request, response) => {
     const {
         razao_social,
         nome,
-        cnpj,
-        cpf
+        tipo_pessoa,
+        documento
     } = request.body
 
     let query = 'UPDATE CLIENTES SET '
@@ -82,13 +77,13 @@ const updateCliente = (request, response) => {
         params.push(nome)
         updates.push(' nome = $' + params.length)
     }
-    if (cnpj) {
-        params.push(cnpj)
-        updates.push(' cnpj = $' + params.length)
+    if (tipo_pessoa) {
+        params.push(tipo_pessoa)
+        updates.push(' tipo_pessoa = $' + params.length)
     }
-    if (cpf) {
-        params.push(cpf)
-        updates.push(' cpf = $' + params.length)
+    if (documento) {
+        params.push(documento)
+        updates.push(' documento = $' + params.length)
     }
 
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}
