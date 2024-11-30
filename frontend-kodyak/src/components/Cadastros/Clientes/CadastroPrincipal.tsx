@@ -31,7 +31,8 @@ export default function CadastroPrincipal() {
                             razao_social,
                             nome,
                             tipo_pessoa,
-                            documento
+                            documento,
+                            inativo
                         } = response.data[0]
 
                         setRazaoSocial(razao_social)
