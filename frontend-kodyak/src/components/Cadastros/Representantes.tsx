@@ -251,6 +251,7 @@ export default function Representantes() {
               defaultValue="F"
               name="tipo-pessoa-radio-buttons-group"
               onChange={handleTipoPessoaChange}
+              value={tipoPessoa}
             >
               <FormControlLabel value="F" control={<Radio />} label="Pessoa Física (CPF)" />
               <FormControlLabel value="J" control={<Radio />} label="Pessoa Jurídica (CNPJ)" />
