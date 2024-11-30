@@ -25,6 +25,10 @@ export default function CadastroEndereco() {
     const [cidade, setCidade] = useState('')
     const [estado, setEstado] = useState('')
     const [inativo, setInativo] = useState(false)
+    const [descricao, setDescricao,] = useState('')
+    const [complementoCnpj, setComplementoCnpj,] = useState('')
+    const [digitoCnpj, setDigitoCnpj] = useState('')
+
 
     const [nomeCliente, setNomeCliente] = useState('')
 
@@ -57,7 +61,10 @@ export default function CadastroEndereco() {
                             bairro,
                             cidade,
                             estado,
-                            inativo
+                            inativo,
+                            descricao,
+                            complemento_cnpj,
+                            digito_cnpj
                         } = response.data[0]
 
                         setInscricaoEstadual(inscricao_estadual)
@@ -71,6 +78,9 @@ export default function CadastroEndereco() {
                         setCidade(cidade)
                         setEstado(estado)
                         setInativo(inativo)
+                        setDescricao(descricao)
+                        setComplementoCnpj(complemento_cnpj)
+                        setDigitoCnpj(digito_cnpj)
                     }
                 })
                 .catch(error => {
@@ -92,7 +102,10 @@ export default function CadastroEndereco() {
             cidade,
             estado,
             cliente: clienteId,
-            inativo
+            inativo,
+            descricao,
+            complemento_cnpj: complementoCnpj,
+            digito_cnpj: digitoCnpj
         }
 
         if (enderecoId) {
@@ -119,6 +132,9 @@ export default function CadastroEndereco() {
                     setCidade('')
                     setEstado('')
                     setInativo(false)
+                    setDescricao('')
+                    setComplementoCnpj('')
+                    setDigitoCnpj('')
                 })
                 .catch(() => {
                     handleAbrirSnack('Não foi possível cadastrar o endereço.')
@@ -186,14 +202,52 @@ export default function CadastroEndereco() {
                 defaultValue=""
                 disabled
             />
-            <TextField
-                id="txtIE"
-                className="TxtIE"
-                label="Inscrição Estadual"
-                value={inscricaoEstadual}
-                defaultValue=""
-                onChange={event => setInscricaoEstadual(event.target.value)}
-            />
+            <div className="CabecalhoEndereco">
+                <TextField
+                    id="txtDescricao"
+                    className="TxtDescricao"
+                    label="Descrição Endereço"
+                    value={descricao}
+                    defaultValue=""
+                    onChange={event => setDescricao(event.target.value)}
+                />
+                <TextField
+                    id="txtIE"
+                    className="TxtIE"
+                    label="Inscrição Estadual"
+                    value={inscricaoEstadual}
+                    defaultValue=""
+                    onChange={event => setInscricaoEstadual(event.target.value)}
+                />
+                <PatternFormat
+                    id="txtComplCnpj"
+                    label="Compl. CNPJ"
+                    className="TxtComplCnpj"
+                    value={complementoCnpj}
+                    customInput={TextField}
+                    format="####"
+                    mask="_"
+                    onValueChange={(values) => {
+                        const floatValue = values.floatValue;
+                        setComplementoCnpj(floatValue !== undefined ? floatValue.toString() : '');
+                    }}
+
+                />
+                <PatternFormat
+                    id="txtDigCnpj"
+                    label="Dígito CNPJ"
+                    className="TxtDigCnpj"
+                    value={digitoCnpj}
+                    customInput={TextField}
+                    format="##"
+                    mask="_"
+                    onValueChange={(values) => {
+                        const floatValue = values.floatValue;
+                        setDigitoCnpj(floatValue !== undefined ? floatValue.toString() : '');
+                    }}
+
+                />
+            </div>
             <Divider sx={{ marginY: '10px' }} textAlign="center" >Contato</Divider>
 
             <div className="Contato">

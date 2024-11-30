@@ -12,13 +12,17 @@ const createEndereco = (request, response) => {
         bairro,
         cidade,
         estado,
-        cliente
+        cliente,
+        descricao,
+        complemento_cnpj,
+        digito_cnpj
     } = request.body
 
     const query =
         `INSERT INTO CLIENTES_ENDERECOS (
             inscricao_estadual, telefone_fixo, telefone_celular,
-        email, cep, logradouro, numero, bairro, cidade, estado, cliente
+        email, cep, logradouro, numero, bairro, cidade, estado, cliente,
+        descricao, complemento_cnpj, digito_cnpj
         ) 
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         RETURNING ID`
@@ -34,7 +38,10 @@ const createEndereco = (request, response) => {
         bairro,
         cidade,
         estado,
-        cliente
+        cliente,
+        descricao,
+        complemento_cnpj,
+        digito_cnpj
     ]
 
     pool.query(query, values)
@@ -77,7 +84,10 @@ const updateEndereco = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado
+        estado,
+        descricao,
+        complemento_cnpj,
+        digito_cnpj
     } = request.body
 
     let query = 'UPDATE CLIENTES_ENDERECOS SET '
@@ -123,6 +133,18 @@ const updateEndereco = (request, response) => {
     if (cidade) {
         params.push(cidade)
         updates.push(' cidade = $' + params.length)
+    }
+    if (descricao) {
+        params.push(descricao)
+        updates.push(' descricao = $' + params.length)
+    }
+    if (complemento_cnpj) {
+        params.push(complemento_cnpj)
+        updates.push(' complemento_cnpj = $' + params.length)
+    }
+    if (digito_cnpj) {
+        params.push(digito_cnpj)
+        updates.push(' digito_cnpj = $' + params.length)
     }
 
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}

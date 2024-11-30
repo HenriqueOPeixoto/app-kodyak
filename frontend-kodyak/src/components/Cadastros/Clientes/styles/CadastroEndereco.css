@@ -5,6 +5,25 @@
     /*overflow-y: auto;*/
 }
 
+.CabecalhoEndereco {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.TxtDescricao {
+    min-width: 350px;
+    
+}
+
+.TxtComplCnpj {
+    max-width: 100px;
+}
+
+.TxtDigCnpj {
+    max-width: 100px;
+}
+
 .Contato {
     display: flex;
     flex-wrap: wrap;
