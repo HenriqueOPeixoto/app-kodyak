@@ -8,11 +8,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { useNavigate } from 'react-router-dom';
 
 import './styles/Pedido.css'
 import ItensPedido from './AbasPedido/ItensPedido';
 import axios from 'axios';
+import NovoItemPedido from './AbasPedido/NovoItemPedido';
 
 interface Cliente {
     label: string,
@@ -30,8 +32,9 @@ interface Endereco {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
-    { icon: <PrintIcon />, name: 'Print' },
-    { icon: <ShareIcon />, name: 'Share' },
+    { icon: <AddShoppingCartIcon />, name: 'AdicionarItem', label: 'Adicionar Item' },
+    { icon: <PrintIcon />, name: 'Print', label: 'Imprimir' },
+    { icon: <ShareIcon />, name: 'Share', label: 'Compartilhar' },
 ];
 
 export default function Pedido() {
@@ -44,6 +47,8 @@ export default function Pedido() {
     const [cliente, setCliente] = React.useState<Cliente | null>(null)
     const [endereco, setEndereco] = React.useState<Endereco | null>(null)
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
+
+    const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
 
     // Listagem de clientes
     React.useEffect(() => {
@@ -99,6 +104,32 @@ export default function Pedido() {
 
     const handleTabChange = (_e: React.SyntheticEvent, tabIndex: number) => {
         setCurrentTabIndex(tabIndex)
+    }
+
+    const handleOpenNovoItemDialog = () => {
+        setOpenNovoItemDialog(true)
+    }
+
+    const handleCloseNovoItemDialog = () => {
+        setOpenNovoItemDialog(false)
+    }
+
+    const handleConfirmNovoItem = () => {
+        alert('Item selecionado')
+    }
+
+    const handleAcaoSpeedDial = (actionname: string) => {
+        switch (actionname) {
+            case 'AdicionarItem':
+                handleOpenNovoItemDialog()
+                break
+            case 'Print':
+                alert('Não implementado')
+                break
+            case 'Share':
+                alert('Não implementado')
+                break
+        }
     }
 
     return (
@@ -244,7 +275,8 @@ export default function Pedido() {
                             <SpeedDialAction
                                 key={action.name}
                                 icon={action.icon}
-                                tooltipTitle={action.name}
+                                tooltipTitle={action.label}
+                                onClick={() => { handleAcaoSpeedDial(action.name) }}
                             />
                         ))}
                     </SpeedDial>
@@ -261,6 +293,7 @@ export default function Pedido() {
                     </div>
                 </Toolbar>
             </AppBar>
+            <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} handleConfirm={handleConfirmNovoItem} />
         </div>
     );
 }
