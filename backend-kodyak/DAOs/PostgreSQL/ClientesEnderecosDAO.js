@@ -24,7 +24,7 @@ const createEndereco = (request, response) => {
         email, cep, logradouro, numero, bairro, cidade, estado, cliente,
         descricao, complemento_cnpj, digito_cnpj
         ) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING ID`
     
     const values = [
