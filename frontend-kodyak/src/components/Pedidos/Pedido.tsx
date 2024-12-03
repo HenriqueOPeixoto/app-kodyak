@@ -23,7 +23,8 @@ interface Cliente {
 interface Endereco {
     label: string,
     id: number,
-    inscricao_estadual: string
+    inscricao_estadual: string,
+    descricao: string
 }
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
@@ -74,9 +75,10 @@ export default function Pedido() {
     React.useEffect(() => {
         setListaEnderecos(enderecos.map((endereco) => {
             return {
-                label: `${endereco.id} - ${endereco.inscricao_estadual}`,
+                label: `${endereco.id} - ${endereco.inscricao_estadual} - ${endereco.descricao}`,
                 id: endereco.id,
-                inscricao_estadual: endereco.inscricao_estadual
+                inscricao_estadual: endereco.inscricao_estadual,
+                descricao: endereco.descricao
             }
         }))
     }, [enderecos])
