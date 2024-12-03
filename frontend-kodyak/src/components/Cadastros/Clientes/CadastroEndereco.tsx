@@ -26,7 +26,7 @@ export default function CadastroEndereco() {
     const [estado, setEstado] = useState('')
     const [inativo, setInativo] = useState(false)
     const [descricao, setDescricao,] = useState('')
-    const [complementoCnpj, setComplementoCnpj,] = useState('')
+    const [complementoCnpj, setComplementoCnpj] = useState('')
     const [digitoCnpj, setDigitoCnpj] = useState('')
 
 
@@ -228,8 +228,7 @@ export default function CadastroEndereco() {
                     format="####"
                     mask="_"
                     onValueChange={(values) => {
-                        const floatValue = values.floatValue;
-                        setComplementoCnpj(floatValue !== undefined ? floatValue.toString() : '');
+                        setComplementoCnpj(values.value.toString());
                     }}
 
                 />
@@ -242,8 +241,7 @@ export default function CadastroEndereco() {
                     format="##"
                     mask="_"
                     onValueChange={(values) => {
-                        const floatValue = values.floatValue;
-                        setDigitoCnpj(floatValue !== undefined ? floatValue.toString() : '');
+                        setDigitoCnpj(values.value.toString());
                     }}
 
                 />

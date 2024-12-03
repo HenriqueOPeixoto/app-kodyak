@@ -267,8 +267,7 @@ export default function Representantes() {
             mask="_"
             style={{ maxWidth: '200px' }}
             onValueChange={(values) => {
-              const floatValue = values.floatValue;
-              setDocumento(floatValue !== undefined ? floatValue.toString() : '');
+              setDocumento(values.value.toString());
             }}
 
           />
