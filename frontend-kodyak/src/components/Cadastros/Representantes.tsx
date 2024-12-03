@@ -137,7 +137,7 @@ export default function Representantes() {
     if (id) {
       axios.put(`${backendBaseURL}/api/representantes/${id}`, formData)
         .then(() => {
-          handleAbrirSnack('Representante atualizada com sucesso!')
+          handleAbrirSnack('Representante atualizado com sucesso!')
         })
         .catch(() => {
           handleAbrirSnack('Ocorreu um erro ao atualizar o representante.')
@@ -145,7 +145,7 @@ export default function Representantes() {
     } else {
       axios.post(`${backendBaseURL}/api/representantes/`, formData)
         .then(() => {
-          handleAbrirSnack('Representante cadastrada com sucesso.')
+          handleAbrirSnack('Representante cadastrado com sucesso.')
 
           setNome('')
           setNome('')
