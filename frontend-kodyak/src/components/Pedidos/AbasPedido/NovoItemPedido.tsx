@@ -9,6 +9,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import axios from 'axios';
+import { debounce } from 'lodash'
 
 
 interface NovoItemPedidoProps {
@@ -59,15 +60,39 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
     }, [])
 
     // TODO: Buscar os produtos e criar uma lista para selecionar.
-    React.useEffect(() => {
+
+    const fetchProdutos = (buscaProduto = '') => {
         axios.get(`${backendBaseURL}/api/produtos`, {
             params: {
+                nome: buscaProduto,
                 inativo: false
             }
         })
-            .then((results) => { console.log(results.data); setListaProdutos(results.data) })
-            .catch((error) => { console.error('Não foi possível listar os produtos: ' + error) })
+        .then((results) => {
+            setListaProdutos(results.data);
+        })
+        .catch((error) => {
+            console.error('Não foi possível listar os produtos: ' + error);
+        });
+    };
+
+    const debouncedGetProdutos = debounce((buscaProduto) => {
+        fetchProdutos(buscaProduto);
+    }, 500)
+    
+    React.useEffect(() => {
+        if (buscaProduto) {
+            debouncedGetProdutos(buscaProduto);
+        } else {
+            fetchProdutos();
+        }
+        // Cleanup debounce function when the component is unmounted or buscaProduto changes
+        return () => {
+            debouncedGetProdutos.cancel();
+        };
     }, [familiaProdutos, buscaProduto])
+
+
 
     const handleChangeFamiliaProduto = (event: SelectChangeEvent) => {
         setFamiliaProdutos(event.target.value as string)
