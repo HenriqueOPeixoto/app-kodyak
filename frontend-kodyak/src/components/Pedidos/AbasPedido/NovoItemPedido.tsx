@@ -7,8 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
 import axios from 'axios';
+
 
 interface NovoItemPedidoProps {
     open: boolean,
@@ -21,6 +22,19 @@ interface FamiliaProduto {
     nome: string
 }
 
+interface Produto {
+    id: number
+    nome: string
+    valor: number
+    indicacoes: string
+    modo_uso: string
+    restricoes: number
+    peso: number
+    consumo_diario: number
+    familia_produtos: number
+    inativo: boolean
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, handleConfirm }) => {
@@ -30,6 +44,9 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
 
     const [familiaProdutos, setFamiliaProdutos] = React.useState('')
     const [familiasProdutos, setFamiliasProdutos] = React.useState<FamiliaProduto[]>([])
+    const [listaProdutos, setListaProdutos] = React.useState<Produto[]>([])
+    const [produto, setProduto] = React.useState('')
+    const [buscaProduto, setBuscaProduto] = React.useState('')
 
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/familia_produtos/`, {
@@ -37,13 +54,37 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                 inativo: false
             }
         })
-        .then((results) => { setFamiliasProdutos(results.data) })
-        .catch((error) => { console.error('Não foi possível listar as famílias de produtos: ' + error) })
+            .then((results) => { setFamiliasProdutos(results.data) })
+            .catch((error) => { console.error('Não foi possível listar as famílias de produtos: ' + error) })
     }, [])
+
+    // TODO: Buscar os produtos e criar uma lista para selecionar.
+    React.useEffect(() => {
+        axios.get(`${backendBaseURL}/api/produtos`, {
+            params: {
+                inativo: false
+            }
+        })
+            .then((results) => { console.log(results.data); setListaProdutos(results.data) })
+            .catch((error) => { console.error('Não foi possível listar os produtos: ' + error) })
+    }, [familiaProdutos, buscaProduto])
 
     const handleChangeFamiliaProduto = (event: SelectChangeEvent) => {
         setFamiliaProdutos(event.target.value as string)
     }
+
+    const handleTxtBuscaProdutos = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setBuscaProduto(event.target.value as string)
+    }
+
+    // Formatar preço no padrão pt-BR
+    const formatarPreco = (preco: number | bigint) => {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+        }).format(preco);
+    };
 
     return (
         <React.Fragment>
@@ -57,8 +98,8 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                 <DialogTitle id="alert-dialog-title">
                     {"Novo Item"}
                 </DialogTitle>
-                <DialogContent sx={{display:'flex', flexDirection: 'column', gap: '15px', minWidth: '480px'}}>
-                    <TextField label="Buscar produto"/>
+                <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '15px', minWidth: '480px' }}>
+                    <TextField className='TxtBuscaProduto' label="Buscar produto" onChange={handleTxtBuscaProdutos} />
                     <FormControl className='ContainerSelecaoFamilia'>
                         <InputLabel className='LblSelecaoFamilia'
                             id="selecao-familia-label">Família de Produtos</InputLabel>
@@ -78,6 +119,15 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             ))}
                         </Select>
                     </FormControl>
+                    <List sx={{ overflowY: 'auto' }}>
+                        {listaProdutos.map((produto) => (
+                            <ListItem key={produto.id} disablePadding>
+                                <ListItemButton onClick={() => { }/*handleAddToCart(product)*/}>
+                                    <ListItemText primary={produto.nome} secondary={formatarPreco(produto.valor)} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancelar</Button>
