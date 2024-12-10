@@ -123,7 +123,8 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                     {"Novo Item"}
                 </DialogTitle>
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '15px', minWidth: '480px' }}>
-                    <TextField className='TxtBuscaProduto' label="Buscar produto" onChange={handleTxtBuscaProdutos} />
+                    {/* Sem o marginTop, o label do txtBuscaProduto fica para fora da caixa de diálogo */}
+                    <TextField sx={{marginTop: '10px'}} className='TxtBuscaProduto' label="Buscar produto" onChange={handleTxtBuscaProdutos} />
                     <FormControl className='ContainerSelecaoFamilia'>
                         <InputLabel className='LblSelecaoFamilia'
                             id="selecao-familia-label">Família de Produtos</InputLabel>
@@ -138,6 +139,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             variant='standard'
 
                         >
+                            <MenuItem key={undefined} value={undefined}>Nenhum</MenuItem>
                             {familiasProdutos.map((familia: FamiliaProduto) => (
                                 <MenuItem key={familia.id} value={familia.id}>{familia.nome}</MenuItem>
                             ))}
