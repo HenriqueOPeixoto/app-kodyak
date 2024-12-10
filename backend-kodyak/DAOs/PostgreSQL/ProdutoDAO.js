@@ -28,7 +28,7 @@ const createProduto = (request, response) => {
 }
 
 const getProdutos = (request, response) => {
-    const { nome, inativo } = request.query
+    const { nome, inativo, familia_produtos } = request.query
 
     let query = 'SELECT * FROM PRODUTOS WHERE 1 = 1'
     const params = []
@@ -41,6 +41,11 @@ const getProdutos = (request, response) => {
     if (inativo) {
         params.push(inativo)
         query += ' AND INATIVO = ($' + params.length + ')'
+    }
+    
+    if (familia_produtos) {
+        params.push(familia_produtos)
+        query += ' AND FAMILIA_PRODUTOS = ($' + params.length + ')'
     }
 
     pool.query(query, params)
