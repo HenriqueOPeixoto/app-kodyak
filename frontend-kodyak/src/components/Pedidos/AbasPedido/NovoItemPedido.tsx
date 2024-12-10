@@ -59,12 +59,11 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
             .catch((error) => { console.error('Não foi possível listar as famílias de produtos: ' + error) })
     }, [])
 
-    // TODO: Buscar os produtos e criar uma lista para selecionar.
-
     const fetchProdutos = (buscaProduto = '') => {
         axios.get(`${backendBaseURL}/api/produtos`, {
             params: {
                 nome: buscaProduto,
+                familia_produtos: familiaProdutos,
                 inativo: false
             }
         })
@@ -79,7 +78,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
     const debouncedGetProdutos = debounce((buscaProduto) => {
         fetchProdutos(buscaProduto);
     }, 500)
-    
+
     React.useEffect(() => {
         if (buscaProduto) {
             debouncedGetProdutos(buscaProduto);
