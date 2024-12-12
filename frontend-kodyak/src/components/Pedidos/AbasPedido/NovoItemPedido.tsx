@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash'
 
@@ -38,10 +38,15 @@ interface Produto {
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
+const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
+
 const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, handleConfirm }) => {
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+    const [activeStep, setActiveStep] = React.useState(0);
+    const [skipped, setSkipped] = React.useState(new Set<number>());
 
     const [familiaProdutos, setFamiliaProdutos] = React.useState('')
     const [familiasProdutos, setFamiliasProdutos] = React.useState<FamiliaProduto[]>([])
@@ -67,12 +72,12 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                 inativo: false
             }
         })
-        .then((results) => {
-            setListaProdutos(results.data);
-        })
-        .catch((error) => {
-            console.error('Não foi possível listar os produtos: ' + error);
-        });
+            .then((results) => {
+                setListaProdutos(results.data);
+            })
+            .catch((error) => {
+                console.error('Não foi possível listar os produtos: ' + error);
+            });
     };
 
     const debouncedGetProdutos = debounce((buscaProduto) => {
@@ -110,6 +115,39 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
         }).format(preco);
     };
 
+    const isStepSkipped = (step: number) => {
+        return skipped.has(step);
+    };
+
+    const handleNext = () => {
+        // Esses passos permitem que o usuário consiga pular uma etapa opcional e volte para preencher
+        // caso mude de ideia. Ao voltar para o passo opcional e não pulá-lo novamente, o sistema considera
+        // a etapa concluída.
+        // Pode ser que não seja necessário nessa tela, mas vou manter caso surja a necessidade.
+        let newSkipped = skipped;
+        if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
+        }
+
+        setActiveStep((prevActiveStep) => {
+            if (activeStep < steps.length) {
+                return prevActiveStep + 1
+            }
+
+            return prevActiveStep
+        });
+        setSkipped(newSkipped);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleReset = () => {
+        setActiveStep(0);
+      };
+
     return (
         <React.Fragment>
             <Dialog
@@ -123,41 +161,67 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                     {"Novo Item"}
                 </DialogTitle>
                 <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '15px', minWidth: '480px' }}>
-                    {/* Sem o marginTop, o label do txtBuscaProduto fica para fora da caixa de diálogo */}
-                    <TextField sx={{marginTop: '10px'}} className='TxtBuscaProduto' label="Buscar produto" onChange={handleTxtBuscaProdutos} />
-                    <FormControl className='ContainerSelecaoFamilia'>
-                        <InputLabel className='LblSelecaoFamilia'
-                            id="selecao-familia-label">Família de Produtos</InputLabel>
-                        <Select
-                            labelId="selecao-familia-label"
-                            id="familia-produto-select"
-                            className='SelectFamiliaProduto'
+                    <Stepper activeStep={activeStep}>
+                        {steps.map((label, index) => {
+                            const stepProps: { completed?: boolean } = {};
+                            const labelProps: {
+                                optional?: React.ReactNode;
+                            } = {};
+                            if (isStepSkipped(index)) {
+                                stepProps.completed = false;
+                            }
+                            return (
+                                <Step key={label} {...stepProps}>
+                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                    {activeStep === 0 && (
+                        <>
+                            <TextField sx={{ marginTop: '10px' }} className='TxtBuscaProduto' label='Buscar produto' onChange={handleTxtBuscaProdutos} />
+                            <FormControl className='ContainerSelecaoFamilia'>
+                                <InputLabel className='LblSelecaoFamilia'
+                                    id="selecao-familia-label">Família de Produtos</InputLabel>
+                                <Select
+                                    labelId="selecao-familia-label"
+                                    id="familia-produto-select"
+                                    className='SelectFamiliaProduto'
 
-                            label="Família de Produtos"
-                            onChange={handleChangeFamiliaProduto}
+                                    label="Família de Produtos"
+                                    onChange={handleChangeFamiliaProduto}
 
-                            variant='standard'
+                                    variant='standard'
 
-                        >
-                            <MenuItem key={undefined} value={undefined}>Nenhum</MenuItem>
-                            {familiasProdutos.map((familia: FamiliaProduto) => (
-                                <MenuItem key={familia.id} value={familia.id}>{familia.nome}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <List sx={{ overflowY: 'auto' }}>
-                        {listaProdutos.map((produto) => (
-                            <ListItem key={produto.id} disablePadding>
-                                <ListItemButton onClick={() => { }/*handleAddToCart(product)*/}>
-                                    <ListItemText primary={produto.nome} secondary={formatarPreco(produto.valor)} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                                >
+                                    <MenuItem key={undefined} value={undefined}>Nenhum</MenuItem>
+                                    {familiasProdutos.map((familia: FamiliaProduto) => (
+                                        <MenuItem key={familia.id} value={familia.id}>{familia.nome}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <List sx={{ overflowY: 'auto' }}>
+                                {listaProdutos.map((produto) => (
+                                    <ListItem key={produto.id} disablePadding>
+                                        <ListItemButton onClick={() => { }/*handleAddToCart(product)*/}>
+                                            <ListItemText primary={produto.nome} secondary={formatarPreco(produto.valor)} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </>
+                    )
+                }
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancelar</Button>
-                    <Button color='error' onClick={handleConfirm} autoFocus>
+                    {/** Se for a primeira tela, o usuário pode fechar a tela,
+                     *  caso contrário volta apenas um passo.
+                     */}
+                    {activeStep > 0 ?
+                        (<Button onClick={handleBack} autoFocus>Voltar</Button>) :
+                        <Button color='error' onClick={handleClose}>Cancelar</Button>
+                    }
+                    <Button onClick={handleNext} autoFocus>
                         Continuar
                     </Button>
                 </DialogActions>
