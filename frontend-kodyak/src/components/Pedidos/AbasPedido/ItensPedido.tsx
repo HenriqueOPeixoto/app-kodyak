@@ -1,9 +1,13 @@
 import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
 
 interface Item {
-    nome: string
+    produto: number
     quantidade: number
     valor: number
+}
+
+interface ItensPedidoProps {
+    listaItens: Item[]
 }
 
 const CardItem: React.FC<{ item: Item }> = ({ item }) => {
@@ -11,7 +15,7 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
         <Card variant="outlined">
             <CardActionArea>
                 <CardContent>
-                    <Typography variant="h6">{item.nome}</Typography>
+                    <Typography variant="h6">{item.produto}</Typography>
                     <Typography>Quant. Sacas: {item.quantidade}</Typography>
                     <Typography>R$ {item.valor}</Typography>
                 </CardContent>
@@ -20,34 +24,15 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
     )
 }
 
-export default function ItensPedido() {
-    const staticItem1: Item = {
-        nome: "DDG1",
-        quantidade: 10,
-        valor: 2500,
-    };
-    const staticItem2: Item = {
-        nome: "DDG2",
-        quantidade: 10,
-        valor: 2500,
-    };
-    const staticItem3: Item = {
-        nome: "DDG3",
-        quantidade: 10,
-        valor: 2500,
-    };
-    const staticItem4: Item = {
-        nome: "DDG4",
-        quantidade: 10,
-        valor: 2500,
-    };
+const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens }) => {
 
     return (
         <div>
-            <CardItem item={ staticItem1 } />
-            <CardItem item={ staticItem2 } />
-            <CardItem item={ staticItem3 } />
-            <CardItem item={ staticItem4 } />
+            {listaItens.map((item: Item) => (
+                <CardItem item={item} />
+            ))}
         </div>
     )
 }
+
+export default ItensPedido
