@@ -65,7 +65,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
     // Passo 2
     const [quantidade, setQuantidade] = React.useState<number | null>(null);
     const [valor, setValor] = React.useState<number | null>(null)
-    const [sufixoQtde, setSufixoQtde] = React.useState('kg')
+    const [sufixoQtde, setSufixoQtde] = React.useState(' kg')
 
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/familia_produtos/`, {
