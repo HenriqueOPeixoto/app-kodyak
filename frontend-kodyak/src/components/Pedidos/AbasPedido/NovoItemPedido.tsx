@@ -44,12 +44,6 @@ interface ItemPedido {
 
 }
 
-interface Unidade {
-    id: number
-    nome: string
-    abreviacao: string
-}
-
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
@@ -175,7 +169,6 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
     };
 
     const handleSelecionarProduto = (produto: Produto) => {
-        console.log(produto)
         setProduto(produto)
         handleNext()
     }
