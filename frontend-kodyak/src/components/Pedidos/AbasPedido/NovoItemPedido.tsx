@@ -7,9 +7,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
+import { Box, FormControl, FormControlLabel, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash'
+import { NumericFormat } from 'react-number-format';
 
 
 interface NovoItemPedidoProps {
@@ -44,15 +45,17 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
     const [activeStep, setActiveStep] = React.useState(0);
     const [skipped, setSkipped] = React.useState(new Set<number>());
 
+    // Passo 1
     const [familiaProdutos, setFamiliaProdutos] = React.useState('')
     const [familiasProdutos, setFamiliasProdutos] = React.useState<FamiliaProduto[]>([])
     const [listaProdutos, setListaProdutos] = React.useState<Produto[]>([])
-    const [produto, setProduto] = React.useState('')
+    const [produto, setProduto] = React.useState<Produto | null>(null)
     const [buscaProduto, setBuscaProduto] = React.useState('')
+
+    // Passo 2
 
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/familia_produtos/`, {
@@ -146,7 +149,15 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
 
     const handleReset = () => {
         setActiveStep(0);
-      };
+        setProduto(null)
+        handleClose()
+    };
+
+    const handleSelecionarProduto = (produto: Produto) => {
+        console.log(produto)
+        setProduto(produto)
+        handleNext()
+    }
 
     return (
         <React.Fragment>
@@ -203,7 +214,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             <List sx={{ overflowY: 'auto' }}>
                                 {listaProdutos.map((produto) => (
                                     <ListItem key={produto.id} disablePadding>
-                                        <ListItemButton onClick={() => { }/*handleAddToCart(product)*/}>
+                                        <ListItemButton onClick={() => { handleSelecionarProduto(produto) }/*handleAddToCart(product)*/}>
                                             <ListItemText primary={produto.nome} secondary={formatarPreco(produto.valor)} />
                                         </ListItemButton>
                                     </ListItem>
@@ -211,19 +222,91 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             </List>
                         </>
                     )
-                }
+                    }
+                    {activeStep === 1 && (
+                        <>
+                            <Typography>{produto?.nome || 'Produto não selecionado'}</Typography>
+                            <Box
+                                sx={{
+                                    width: 200,       // Set the width of the rectangle
+                                    height: 100,      // Set the height of the rectangle
+                                    backgroundColor: 'gray', // Set the background color
+                                    border: '1px solid black', // Optional border
+                                    alignContent: 'center',
+                                    textAlign: 'center'
+                                }}
+                            >Foto Produto </Box>
+                            <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+                                <NumericFormat
+                                    label="Peso"
+                                    customInput={TextField}
+                                    thousandSeparator="."
+                                    decimalSeparator=","
+                                    value={1}
+                                    prefix=""
+                                    suffix="kg"
+                                    onValueChange={(values) => { }}
+                                />
+                                <FormControl>
+                                    {/*<FormLabel id="tipo-unidade-form-label"></FormLabel>*/}
+                                    <RadioGroup
+                                        aria-labelledby="tipo-unidade-group-label"
+                                        defaultValue="kg"
+                                        name="tipo-unidade-radio-buttons-group"
+                                    >
+                                        <FormControlLabel value="kg" control={<Radio />} label="Kg" />
+                                        <FormControlLabel value="saca" control={<Radio />} label="Saca" />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center', flexGrow: '1' }}>
+                                <FormControl sx={{ flexGrow: '1' }} className='ContainerSelecaoFamilia'>
+                                    <InputLabel className='LblSelecaoFamilia'
+                                        id="selecao-familia-label">Tabela de Referência</InputLabel>
+                                    <Select
+                                        labelId="selecao-familia-label"
+                                        id="familia-produto-select"
+                                        className='SelectFamiliaProduto'
+                                        label="Tabela de Referência"
+                                        onChange={(valor) => { console.log(valor) }}
+
+                                        variant='standard'
+
+                                    >
+                                        <MenuItem key={undefined} value={undefined}>Nenhum</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <div>
+                                <NumericFormat
+                                    label="Valor"
+                                    customInput={TextField}
+                                    thousandSeparator="."
+                                    decimalSeparator=","
+                                    value={1}
+                                    prefix="R$ "
+                                    decimalScale={3}
+                                    fixedDecimalScale
+                                    onValueChange={(values) => { }}
+                                />
+                            </div>
+                        </>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     {/** Se for a primeira tela, o usuário pode fechar a tela,
                      *  caso contrário volta apenas um passo.
                      */}
                     {activeStep > 0 ?
-                        (<Button onClick={handleBack} autoFocus>Voltar</Button>) :
-                        <Button color='error' onClick={handleClose}>Cancelar</Button>
+                        (<>
+                            <Button onClick={handleBack} autoFocus>Voltar</Button>
+                            <Button onClick={handleNext} autoFocus>
+                                Continuar
+                            </Button>
+                        </>
+                        ) :
+                        <Button color='error' onClick={handleReset}>Cancelar</Button>
                     }
-                    <Button onClick={handleNext} autoFocus>
-                        Continuar
-                    </Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
