@@ -37,6 +37,19 @@ interface Produto {
     inativo: boolean
 }
 
+interface ItemPedido {
+    produto: number
+    quantidade: number
+    unidade: number
+
+}
+
+interface Unidade {
+    id: number
+    nome: string
+    abreviacao: string
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
@@ -56,6 +69,9 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
     const [buscaProduto, setBuscaProduto] = React.useState('')
 
     // Passo 2
+    const [quantidade, setQuantidade] = React.useState<number | null>(null);
+    const [valor, setValor] = React.useState<number | null>(null)
+    const [sufixoQtde, setSufixoQtde] = React.useState('kg')
 
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/familia_produtos/`, {
@@ -145,18 +161,27 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+        // Se o usuário voltar para a primeira tela, apagar todas as alterações feitas
+        if (activeStep === 1) {
+            handleReset()
+        }
     };
 
     const handleReset = () => {
-        setActiveStep(0);
         setProduto(null)
-        handleClose()
+        setQuantidade(null)
+        setValor(null)
     };
 
     const handleSelecionarProduto = (produto: Produto) => {
         console.log(produto)
         setProduto(produto)
         handleNext()
+    }
+
+    const handleUnidadeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSufixoQtde(event.target.value === 'kg' ? ' kg' : ' sc')
     }
 
     return (
@@ -225,7 +250,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                     }
                     {activeStep === 1 && (
                         <>
-                            <Typography>{produto?.nome || 'Produto não selecionado'}</Typography>
+                            <Typography variant='h6' sx={{ textAlign: 'center' }}>{produto?.nome || 'Produto não selecionado'}</Typography>
                             <Box
                                 sx={{
                                     width: 200,       // Set the width of the rectangle
@@ -238,14 +263,14 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             >Foto Produto </Box>
                             <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
                                 <NumericFormat
-                                    label="Peso"
+                                    label="Quantidade"
                                     customInput={TextField}
                                     thousandSeparator="."
                                     decimalSeparator=","
-                                    value={1}
+                                    value={quantidade}
                                     prefix=""
-                                    suffix="kg"
-                                    onValueChange={(values) => { }}
+                                    suffix={sufixoQtde}
+                                    onValueChange={(values) => { setQuantidade(values.floatValue as number) }}
                                 />
                                 <FormControl>
                                     {/*<FormLabel id="tipo-unidade-form-label"></FormLabel>*/}
@@ -253,9 +278,10 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                                         aria-labelledby="tipo-unidade-group-label"
                                         defaultValue="kg"
                                         name="tipo-unidade-radio-buttons-group"
+                                        onChange={handleUnidadeChange}
                                     >
-                                        <FormControlLabel value="kg" control={<Radio />} label="Kg" />
-                                        <FormControlLabel value="saca" control={<Radio />} label="Saca" />
+                                        <FormControlLabel value='kg' control={<Radio />} label='kg' />
+                                        <FormControlLabel value='saca' control={<Radio />} label='saca' />
                                     </RadioGroup>
                                 </FormControl>
                             </Box>
@@ -283,11 +309,11 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                                     customInput={TextField}
                                     thousandSeparator="."
                                     decimalSeparator=","
-                                    value={1}
+                                    value={valor}
                                     prefix="R$ "
                                     decimalScale={3}
                                     fixedDecimalScale
-                                    onValueChange={(values) => { }}
+                                    onValueChange={(values) => { setValor(values.floatValue as number) }}
                                 />
                             </div>
                         </>
@@ -305,7 +331,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
                             </Button>
                         </>
                         ) :
-                        <Button color='error' onClick={handleReset}>Cancelar</Button>
+                        <Button color='error' onClick={handleClose}>Cancelar</Button>
                     }
                 </DialogActions>
             </Dialog>
