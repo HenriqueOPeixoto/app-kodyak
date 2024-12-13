@@ -2,8 +2,7 @@ import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
 
 interface Item {
     nome: string
-    qtde_sacas: number
-    peso_total: number
+    quantidade: number
     valor: number
 }
 
@@ -13,8 +12,7 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
             <CardActionArea>
                 <CardContent>
                     <Typography variant="h6">{item.nome}</Typography>
-                    <Typography>Quant. Sacas: {item.qtde_sacas}</Typography>
-                    <Typography>Peso Total: {item.peso_total}</Typography>
+                    <Typography>Quant. Sacas: {item.quantidade}</Typography>
                     <Typography>R$ {item.valor}</Typography>
                 </CardContent>
             </CardActionArea>
@@ -25,26 +23,22 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
 export default function ItensPedido() {
     const staticItem1: Item = {
         nome: "DDG1",
-        qtde_sacas: 10,
-        peso_total: 500,
+        quantidade: 10,
         valor: 2500,
     };
     const staticItem2: Item = {
         nome: "DDG2",
-        qtde_sacas: 10,
-        peso_total: 500,
+        quantidade: 10,
         valor: 2500,
     };
     const staticItem3: Item = {
         nome: "DDG3",
-        qtde_sacas: 10,
-        peso_total: 500,
+        quantidade: 10,
         valor: 2500,
     };
     const staticItem4: Item = {
         nome: "DDG4",
-        qtde_sacas: 10,
-        peso_total: 500,
+        quantidade: 10,
         valor: 2500,
     };
 
