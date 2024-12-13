@@ -29,6 +29,12 @@ interface Endereco {
     descricao: string
 }
 
+interface Item {
+    produto: number,
+    quantidade: number,
+    valor: number
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
@@ -49,6 +55,8 @@ export default function Pedido() {
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
+
+    const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
 
     // Listagem de clientes
     React.useEffect(() => {
@@ -131,6 +139,10 @@ export default function Pedido() {
                 break
         }
     }
+
+    const adicionarItemAoPedido = (item: Item) => {
+        setItensPedido((prevItens) => [...prevItens, item]); // Adiciona novo item na lista
+      };
 
     return (
         <div className='Pedido'>
@@ -243,7 +255,7 @@ export default function Pedido() {
 
                     {currentTabIndex === 0 && (
                         <Box className='ContainerItensPedido'>
-                            <ItensPedido />
+                            <ItensPedido listaItens={itensPedido}/>
                         </Box>
                     )
                     }
@@ -293,7 +305,7 @@ export default function Pedido() {
                     </div>
                 </Toolbar>
             </AppBar>
-            <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} handleConfirm={handleConfirmNovoItem} />
+            <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} handleConfirm={handleConfirmNovoItem} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
         </div>
     );
 }

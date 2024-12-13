@@ -17,6 +17,7 @@ interface NovoItemPedidoProps {
     open: boolean,
     handleClose: () => void,
     handleConfirm: () => void
+    onAdicionarItemAoCarrinho: (itemPedido: ItemPedido) => void
 }
 
 interface FamiliaProduto {
@@ -40,7 +41,7 @@ interface Produto {
 interface ItemPedido {
     produto: number
     quantidade: number
-    unidade: number
+    valor: number
 
 }
 
@@ -48,7 +49,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
 
-const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, handleConfirm }) => {
+const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, handleConfirm , onAdicionarItemAoCarrinho}) => {
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -109,7 +110,17 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
         };
     }, [familiaProdutos, buscaProduto])
 
-
+    const handleAdicionarItem = () => {
+        const novoItemPedido = {
+            produto: produto?.id,
+            quantidade: quantidade,
+            valor: valor
+        } as ItemPedido
+        onAdicionarItemAoCarrinho(novoItemPedido);
+        handleReset()
+        handleClose()
+        
+      };
 
     const handleChangeFamiliaProduto = (event: SelectChangeEvent) => {
         setFamiliaProdutos(event.target.value as string)
@@ -151,6 +162,10 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
             return prevActiveStep
         });
         setSkipped(newSkipped);
+
+        if (activeStep >= 1) {
+            handleAdicionarItem()
+        }
     };
 
     const handleBack = () => {
@@ -166,6 +181,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, hand
         setProduto(null)
         setQuantidade(null)
         setValor(null)
+        setActiveStep(0)
     };
 
     const handleSelecionarProduto = (produto: Produto) => {
