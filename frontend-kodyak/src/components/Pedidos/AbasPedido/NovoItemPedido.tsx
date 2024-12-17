@@ -38,7 +38,7 @@ interface Produto {
 }
 
 interface ItemPedido {
-    produto: number
+    produto: Produto
     quantidade: number
     valor: number
 
@@ -111,7 +111,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
 
     const handleAdicionarItem = () => {
         const novoItemPedido = {
-            produto: produto?.id,
+            produto: produto,
             quantidade: quantidade,
             valor: valor
         } as ItemPedido

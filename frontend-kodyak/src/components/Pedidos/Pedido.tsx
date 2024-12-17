@@ -29,8 +29,21 @@ interface Endereco {
     descricao: string
 }
 
+interface Produto {
+    id: number
+    nome: string
+    valor: number
+    indicacoes: string
+    modo_uso: string
+    restricoes: number
+    peso: number
+    consumo_diario: number
+    familia_produtos: number
+    inativo: boolean
+}
+
 interface Item {
-    produto: number,
+    produto: Produto,
     quantidade: number,
     valor: number
 }

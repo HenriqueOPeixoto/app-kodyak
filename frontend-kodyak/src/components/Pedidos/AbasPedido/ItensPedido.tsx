@@ -1,7 +1,13 @@
 import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
 
+interface Produto {
+    id: number,
+    nome: string,
+    peso: number
+}
+
 interface Item {
-    produto: number
+    produto: Produto
     quantidade: number
     valor: number
 }
@@ -15,9 +21,17 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
         <Card variant="outlined">
             <CardActionArea>
                 <CardContent>
-                    <Typography variant="h6">{item.produto}</Typography>
-                    <Typography>Quant. Sacas: {item.quantidade}</Typography>
-                    <Typography>R$ {item.valor}</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }} variant="h6">{item.produto.nome}</Typography>
+                    <Typography>
+                        Quant. Sacas: { // Mostra entre 0 e 3 casas decimais
+                            new Intl.NumberFormat('pt-BR', {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 3
+                            }).format(item.quantidade / item.produto.peso)
+                        }
+                    </Typography>
+                    <Typography>Peso total: {item.quantidade} Kg</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }} variant="h6">R$ {item.valor}</Typography>
                 </CardContent>
             </CardActionArea>
         </Card>
