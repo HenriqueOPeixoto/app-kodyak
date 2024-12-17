@@ -324,8 +324,9 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     decimalSeparator=","
                                     value={valor}
                                     prefix="R$ "
-                                    decimalScale={3}
+                                    decimalScale={2}
                                     fixedDecimalScale
+                                    allowNegative={false}
                                     onValueChange={(values) => { setValor(values.floatValue as number) }}
                                 />
                             </div>
