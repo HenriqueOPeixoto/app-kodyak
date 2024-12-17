@@ -122,10 +122,6 @@ export default function Pedido() {
         setOpenNovoItemDialog(false)
     }
 
-    const handleConfirmNovoItem = () => {
-        alert('Item selecionado')
-    }
-
     const handleAcaoSpeedDial = (actionname: string) => {
         switch (actionname) {
             case 'AdicionarItem':
@@ -175,7 +171,7 @@ export default function Pedido() {
                         sx={{ width: 300 }}
                         value={cliente}
                         getOptionLabel={(option) => option.label} // Como exibir cada opção
-                        onChange={(event, novoCliente) => {
+                        onChange={(_event, novoCliente) => {
                             setCliente(novoCliente)
                         }}
                         renderInput={(params) => <TextField {...params} label="Cliente" />}
@@ -188,7 +184,7 @@ export default function Pedido() {
                         sx={{ width: 300 }}
                         value={endereco}
                         getOptionLabel={(option) => option.label} // Como exibir cada opção
-                        onChange={(event, novoEndereco) => {
+                        onChange={(_event, novoEndereco) => {
                             setEndereco(novoEndereco)
                         }}
                         renderInput={(params) => <TextField {...params} label="Endereço" />}
@@ -305,7 +301,7 @@ export default function Pedido() {
                     </div>
                 </Toolbar>
             </AppBar>
-            <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} handleConfirm={handleConfirmNovoItem} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
+            <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
         </div>
     );
 }

@@ -16,7 +16,6 @@ import { NumericFormat } from 'react-number-format';
 interface NovoItemPedidoProps {
     open: boolean,
     handleClose: () => void,
-    handleConfirm: () => void
     onAdicionarItemAoCarrinho: (itemPedido: ItemPedido) => void
 }
 
@@ -49,7 +48,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
 
-const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, handleConfirm , onAdicionarItemAoCarrinho}) => {
+const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAdicionarItemAoCarrinho}) => {
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
