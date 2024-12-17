@@ -70,6 +70,7 @@ export default function Pedido() {
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
 
     const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
+    const [valorTotal, setValorTotal] = React.useState<number>(0.0)
 
     // Listagem de clientes
     React.useEffect(() => {
@@ -117,7 +118,14 @@ export default function Pedido() {
         }
     })
 
-    
+    // Quando um novo item for adicionado ao pedido, atualizar label de valor total.
+    React.useEffect(() => {
+        let novoValorTotal = 0.0
+        itensPedido.map((item) => {
+            novoValorTotal += item.valor
+        })
+        setValorTotal(novoValorTotal)
+    }, [itensPedido])
 
     const handleClose = () => {
         navigate('/pedidos')
@@ -310,7 +318,13 @@ export default function Pedido() {
                     </div>
                     <div className='ContainerValorTotal'> {/* Valor total */}
                         <Typography>Valor Total:</Typography>
-                        <Typography className='LblValor' variant='h5'>R$ 0,00</Typography>
+                        <Typography className='LblValor' variant='h5'>{
+                                new Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(valorTotal)
+                            }
+                        </Typography>
                     </div>
                 </Toolbar>
             </AppBar>
