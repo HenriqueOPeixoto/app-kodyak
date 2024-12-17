@@ -294,13 +294,13 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                 </FormControl>
                             </Box>
                             <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center', flexGrow: '1' }}>
-                                <FormControl sx={{ flexGrow: '1' }} className='ContainerSelecaoFamilia'>
-                                    <InputLabel className='LblSelecaoFamilia'
-                                        id="selecao-familia-label">Tabela de Referência</InputLabel>
+                                <FormControl sx={{ flexGrow: '1' }} className='ContainerSelecaoTabRef'>
+                                    <InputLabel className='LblSelecaoTabRef'
+                                        id="selecao-tab-ref-label">Tabela de Referência</InputLabel>
                                     <Select
-                                        labelId="selecao-familia-label"
-                                        id="familia-produto-select"
-                                        className='SelectFamiliaProduto'
+                                        labelId="selecao-tab-ref-label"
+                                        id="tab-ref-select"
+                                        className='SelectTabRef'
                                         label="Tabela de Referência"
                                         onChange={(valor) => { console.log(valor) }}
 
