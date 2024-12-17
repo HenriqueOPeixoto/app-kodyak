@@ -18,8 +18,8 @@ const createCliente = (request, response) => {
     const values = [
         razao_social,
         nome,
-        cnpj,
-        cpf
+        tipo_pessoa,
+        documento
     ]
 
     pool.query(query, values)
