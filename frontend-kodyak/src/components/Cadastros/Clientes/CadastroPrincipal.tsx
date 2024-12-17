@@ -129,7 +129,7 @@ export default function CadastroPrincipal() {
         setDocumento(documento.substring(0, 11))
     }
 
-    const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
+    const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###' : '###.###.###'
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px'}}>
