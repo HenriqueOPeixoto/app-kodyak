@@ -65,7 +65,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
     // Passo 2
     const [quantidade, setQuantidade] = React.useState<number | null>(null);
     const [valor, setValor] = React.useState<number | null>(null)
-    const [sufixoQtde, setSufixoQtde] = React.useState(' kg')
+    const [isSaca, setSaca] = React.useState(false)
 
     React.useEffect(() => {
         axios.get(`${backendBaseURL}/api/familia_produtos/`, {
@@ -115,6 +115,10 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
             quantidade: quantidade,
             valor: valor
         } as ItemPedido
+
+        if (isSaca && produto) {
+            novoItemPedido.quantidade *= produto?.peso
+        }
         onAdicionarItemAoCarrinho(novoItemPedido);
         handleReset()
         handleClose()
@@ -180,6 +184,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
         setProduto(null)
         setQuantidade(null)
         setValor(null)
+        setSaca(false)
         setActiveStep(0)
     };
 
@@ -189,7 +194,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
     }
 
     const handleUnidadeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSufixoQtde(event.target.value === 'kg' ? ' kg' : ' sc')
+        setSaca(event.target.value === 'kg' ? false : true)
     }
 
     return (
@@ -277,7 +282,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     decimalSeparator=","
                                     value={quantidade}
                                     prefix=""
-                                    suffix={sufixoQtde}
+                                    suffix={isSaca ? ' sc' : ' kg'}
                                     onValueChange={(values) => { setQuantidade(values.floatValue as number) }}
                                 />
                                 <FormControl>
