@@ -31,7 +31,15 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
                         }
                     </Typography>
                     <Typography>Peso total: {item.quantidade} Kg</Typography>
-                    <Typography sx={{ fontWeight: 'bold' }} variant="h6">R$ {item.valor}</Typography>
+                    <Typography sx={{ fontWeight: 'bold' }} variant="h6">{
+                            new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }).format(item.valor)
+                        }
+                    </Typography>
                 </CardContent>
             </CardActionArea>
         </Card>
