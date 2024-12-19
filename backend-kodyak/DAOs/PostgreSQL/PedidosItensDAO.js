@@ -67,7 +67,12 @@ const deletePedidoItem = (request, response) => {
     const id = parseInt(request.params.id)
 
     pool.query('DELETE FROM PEDIDOS_ITENS WHERE ID = $1', [id])
-    .then(() => { response.status(200).send('Item de pedido deletado') })
+    .then((result) => {
+        if (result.rowCount === 0) { return response.status(404).send('Item de pedido não encontrado') }
+        else {
+            response.status(200).send('Item de pedido deletado')
+        }
+    })
     .catch((error) => { response.status(500).send('Não foi possível deletar o item de pedido. Erro: ' + error) })
 }
 
