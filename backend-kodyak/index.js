@@ -12,6 +12,8 @@ const produtoRoutes = require('./routes/ProdutoRoutes')
 const clienteRoutes = require('./routes/ClienteRoutes')
 const clientesEnderecosRoutes = require('./routes/ClientesEnderecosRoutes')
 const representanteRoutes = require('./routes/RepresentanteRoutes')
+const pedidoRoutes = require('./routes/PedidoRoutes')
+const pedidoItensRoutes = require('./routes/PedidoItensRoutes')
 
 const app = express();
 
@@ -33,6 +35,8 @@ app.use('/api/nivel_acesso', nivelAcessoRoutes)
 app.use('/api/motoristas', motoristaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/representantes', representanteRoutes)
+app.use('/api/pedidos', pedidoRoutes)
+app.use('/api/pedidos_itens', pedidoItensRoutes)
 
 app.listen(port, () => {
     console.log(`Escutando no endereço localhost:${port}`)
