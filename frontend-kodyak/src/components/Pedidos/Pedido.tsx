@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Select, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
+import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Select, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -59,6 +59,7 @@ const actions = [
 export default function Pedido() {
     const navigate = useNavigate();
 
+    const [idPedido, setIdPedido] = React.useState<number>(0)
     const [clientes, setClientes] = React.useState<Cliente[]>([])
     const [enderecos, setEnderecos] = React.useState<Endereco[]>([])
     
@@ -69,6 +70,8 @@ export default function Pedido() {
     const [observacoes, setObservacoes] = React.useState<string>('')
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
+    const [snackOpen, setSnackOpen] = React.useState(false) 
+    const [snackMessage, setSnackMessage] = React.useState('')
 
     const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
     const [valorTotal, setValorTotal] = React.useState<number>(0.0)
@@ -154,7 +157,11 @@ export default function Pedido() {
     }
 
     const handleOpenNovoItemDialog = () => {
-        setOpenNovoItemDialog(true)
+        if (idPedido) {
+            setOpenNovoItemDialog(true)
+        } else {
+            handleAbrirSnack('Salve o pedido antes de adicionar itens.')
+        }
     }
 
     const handleCloseNovoItemDialog = () => {
@@ -178,6 +185,15 @@ export default function Pedido() {
     const adicionarItemAoPedido = (item: Item) => {
         setItensPedido((prevItens) => [...prevItens, item]); // Adiciona novo item na lista
       };
+
+    const handleAbrirSnack = (message: string) => {
+        setSnackMessage(message)
+        setSnackOpen(true)
+    }
+
+    const handleFecharSnack = () => {
+        setSnackOpen(false)
+    }
 
     return (
         <div className='Pedido'>
@@ -351,6 +367,12 @@ export default function Pedido() {
                 </Toolbar>
             </AppBar>
             <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
+            <Snackbar
+                open={snackOpen}
+                autoHideDuration={6000}
+                onClose={handleFecharSnack}
+                message={snackMessage}
+            />
         </div>
     );
 }
