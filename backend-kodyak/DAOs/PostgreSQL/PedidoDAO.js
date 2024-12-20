@@ -7,7 +7,10 @@ const createPedido = (request, response) => {
         `INSERT INTO PEDIDOS (data, status, observacoes, cliente_endereco) VALUES ($1, $2, $3, $4) RETURNING ID`
     
         pool.query(query, [data, status, observacoes, cliente_endereco])
-        .then((results) => { response.status(201).send(`Pedido cadastrado com ID ${results.rows[0].id}`) })
+        .then((results) => { 
+            const newId = results.rows[0].id;
+            response.status(201).json({ id: newId, message: `Pedido cadastrado com ID ${newId}` });
+         })
         .catch((error) => { response.status(500).send('Não foi possível cadastrar o pedido. Erro: ' + error)})
 }
 
