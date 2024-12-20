@@ -132,6 +132,23 @@ export default function Pedido() {
         navigate('/pedidos')
     };
 
+    const handleSalvarPedido = () => {
+        // Salvar pedido no backend
+        axios.put(`${backendBaseURL}/api/pedidos`, {
+            "cliente_endereco": endereco?.id,
+            "status": 10,
+            "observacoes": observacoes,
+            "data": new Date().toISOString(),
+        })
+        .then(() => {
+            console.log('Pedido salvo com sucesso!')
+            navigate('/pedidos')
+        })
+        .catch((error) => {
+            console.error('Não foi possível salvar o pedido: ' + error)
+        })
+    }
+
     const handleTabChange = (_e: React.SyntheticEvent, tabIndex: number) => {
         setCurrentTabIndex(tabIndex)
     }
@@ -177,7 +194,7 @@ export default function Pedido() {
                     <Typography className='LblNumPedido' variant="h6" component="div">
                         Pedido 00000
                     </Typography>
-                    <Button autoFocus color="inherit" onClick={handleClose}>
+                    <Button autoFocus color="inherit" onClick={handleSalvarPedido}>
                         save
                     </Button>
                 </Toolbar>
