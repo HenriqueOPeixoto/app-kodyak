@@ -66,6 +66,7 @@ export default function Pedido() {
     const [cliente, setCliente] = React.useState<Cliente | null>(null)
     const [endereco, setEndereco] = React.useState<Endereco | null>(null)
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
+    const [observacoes, setObservacoes] = React.useState<string>('')
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
 
@@ -246,6 +247,10 @@ export default function Pedido() {
                             minRows={3}
                             maxRows={3}
                             variant='filled'
+                            value={observacoes}
+                            onChange={(event) => {
+                                setObservacoes(event.target.value)
+                            }}
                             InputProps={{
                                 style: {
                                     fontSize: '14px'
