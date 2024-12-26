@@ -9,7 +9,7 @@ import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Select, Snackbar,
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import './styles/Pedido.css'
 import ItensPedido from './AbasPedido/ItensPedido';
@@ -26,7 +26,8 @@ interface Endereco {
     label: string,
     id: number,
     inscricao_estadual: string,
-    descricao: string
+    descricao: string,
+    cliente: number
 }
 
 interface Produto {
@@ -48,6 +49,14 @@ interface Item {
     valor: number
 }
 
+interface PedidoVenda {
+    id: number,
+    endereco: number,
+    status: number,
+    observacoes: string,
+    data: string
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
@@ -59,7 +68,11 @@ const actions = [
 export default function Pedido() {
     const navigate = useNavigate();
 
-    const [idPedido, setIdPedido] = React.useState<number>(0)
+    // ID do pedido atual
+    // Se id != null, bloquear edição de cliente/endereço
+    // Se id == null, bloquear adição de itens
+    const { id } = useParams()
+    const [pedido, setPedido] = React.useState<PedidoVenda | null>(null)
     const [clientes, setClientes] = React.useState<Cliente[]>([])
     const [enderecos, setEnderecos] = React.useState<Endereco[]>([])
     
@@ -109,7 +122,8 @@ export default function Pedido() {
                 label: `${endereco.id} - ${endereco.inscricao_estadual} - ${endereco.descricao}`,
                 id: endereco.id,
                 inscricao_estadual: endereco.inscricao_estadual,
-                descricao: endereco.descricao
+                descricao: endereco.descricao,
+                cliente: endereco.cliente
             }
         }))
     }, [enderecos])
@@ -157,7 +171,7 @@ export default function Pedido() {
     }
 
     const handleOpenNovoItemDialog = () => {
-        if (idPedido) {
+        if (id) {
             setOpenNovoItemDialog(true)
         } else {
             handleAbrirSnack('Salve o pedido antes de adicionar itens.')
@@ -208,7 +222,7 @@ export default function Pedido() {
                         <CloseIcon />
                     </IconButton>
                     <Typography className='LblNumPedido' variant="h6" component="div">
-                        Pedido 00000
+                        Pedido {id ? id : 'Novo'}
                     </Typography>
                     <Button autoFocus color="inherit" onClick={handleSalvarPedido}>
                         save
@@ -222,6 +236,7 @@ export default function Pedido() {
                     <Autocomplete
                         className='TxtCliente'
                         disablePortal
+                        disabled={id ? true : false}
                         options={listaClientes}
                         sx={{ width: 300 }}
                         value={cliente}
@@ -235,6 +250,7 @@ export default function Pedido() {
                     <Autocomplete
                         className='TxtEndereco'
                         disablePortal
+                        disabled={id ? true : false}
                         options={listaEnderecos}
                         sx={{ width: 300 }}
                         value={endereco}
