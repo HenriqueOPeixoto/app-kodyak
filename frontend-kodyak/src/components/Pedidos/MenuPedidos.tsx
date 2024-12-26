@@ -5,6 +5,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import './styles/MenuPedidos.css'
 import { Link } from 'react-router-dom';
+import TabelaPedidos from './TabelaPedidos';
 
 
 function MenuPedidos() {
@@ -29,7 +30,8 @@ function MenuPedidos() {
         <div className='ListaPedidos'>
           {/* As linhas abaixo controlam qual tabela de pedido deve ser exibida 
             baseando-se no estado dos botões, ou seja, o botão atual ativo pelo useState. */}
-          {activeButton === 'criado' && <Link to={'/pedidos/novo_pedido'}>Novo Pedido</Link>}
+          {/*activeButton === 'criado' && <Link to={'/pedidos/novo_pedido'}>Novo Pedido</Link>*/}
+          {activeButton === 'criado' && <TabelaPedidos />}
         </div>
       </div>
     </>
