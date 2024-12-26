@@ -16,7 +16,7 @@ interface Pedido {
 const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
   return (
     <Card className="CardPedido" variant="outlined">
-      <Link to={`/cadastros/editar_pedido/${pedidos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to={`/pedidos/editar_pedido/${pedidos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <CardActionArea>
           <CardContent>
             <Typography sx={{ fontWeight: 'bold' }}>Pedido {pedidos.id}</Typography>
