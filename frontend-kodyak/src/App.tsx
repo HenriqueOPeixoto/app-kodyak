@@ -23,7 +23,7 @@ const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
 function App() {
   const location = useLocation()
-  const isPedidoRoute = location.pathname === '/pedidos/novo_pedido'
+  const isPedidoRoute = location.pathname.startsWith('/pedidos/')
   const showSidebar = isPedidoRoute
 
   return (
@@ -57,6 +57,7 @@ function App() {
             
             <Route path='/pedidos' element={<MenuPedidos />} />
             <Route path='/pedidos/novo_pedido' element={<Pedido />} />
+            <Route path='/pedidos/editar_pedido/:id' element={<Pedido />} />
             {/* Novas rotas aqui */}
           </Routes>
         </Suspense>
