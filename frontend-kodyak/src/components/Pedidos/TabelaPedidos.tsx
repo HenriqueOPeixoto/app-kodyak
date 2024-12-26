@@ -40,14 +40,19 @@ const TabelaPedidos: React.FC = () => {
   const [data, setData] = useState<string>('')
 
   useEffect(() => {
-    axios.get<Pedido[]>(`${backendBaseURL}/api/pedidos/view`)
+    axios.get<Pedido[]>(`${backendBaseURL}/api/pedidos/view`, {
+      params: {
+        razao_social: razao_social,
+        id: id,
+        data: data
+    }})
       .then(response => {
         setPedidos(response.data);
       })
       .catch(error => {
         console.error(error);
       });
-  }, [razao_social]);
+  }, [id, razao_social, data]);
 
   const handleTxtPesquisarIDChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setId(event.target.value)
