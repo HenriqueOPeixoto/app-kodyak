@@ -115,10 +115,19 @@ const getViewPedidos = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível encontrar os pedidos.' + error) })   
 }
 
+    const getPedidoById = (request, response) => {
+        const id = parseInt(request.params.id)
+    
+        pool.query('SELECT * FROM PEDIDOS WHERE ID = $1', [id])
+        .then((results) => { response.status(200).json(results.rows) })
+        .catch((error) => { response.status(500).send('Não foi possível encontrar o pedido.' + error) })
+    }
+
 module.exports = {
     createPedido,
     updatePedido,
     getPedidos,
     deletePedido,
-    getViewPedidos
+    getViewPedidos,
+    getPedidoById
 }

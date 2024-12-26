@@ -20,3 +20,7 @@ exports.deletePedido = (req, res) => {
 exports.getViewPedidos = (req, res) => {
     PedidoDAO.getViewPedidos(req, res)
 }
+
+exports.getPedidoById = (req, res) => {
+    PedidoDAO.getPedidoById(req, res)
+}
