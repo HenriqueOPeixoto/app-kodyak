@@ -107,7 +107,7 @@ const getViewPedidos = (request, response) => {
 
     if (razao_social) {
         params.push('%' + razao_social + '%')
-        query += ' AND RAZAO_SOCIAL LIKE $' + params.length
+        query += ' AND UPPER(RAZAO_SOCIAL) LIKE UPPER($' + params.length + ')'
     }
 
     pool.query(query, params)
