@@ -16,3 +16,7 @@ exports.getPedidos = (req, res) => {
 exports.deletePedido = (req, res) => {
     PedidoDAO.deletePedido(req, res)
 }
+
+exports.getViewPedidos = (req, res) => {
+    PedidoDAO.getViewPedidos(req, res)
+}

@@ -89,9 +89,16 @@ const deletePedido = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível deletar o pedido.' + error) })
 }
 
+const getViewPedidos = (request, response) => {
+    pool.query('SELECT * FROM VW_PEDIDOS')
+    .then((results) => { response.status(200).json(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível encontrar os pedidos.' + error) })   
+}
+
 module.exports = {
     createPedido,
     updatePedido,
     getPedidos,
-    deletePedido
+    deletePedido,
+    getViewPedidos
 }

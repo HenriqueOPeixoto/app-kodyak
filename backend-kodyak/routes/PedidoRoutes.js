@@ -6,5 +6,6 @@ router.put('/', PedidoController.createPedido)
 router.get('/', PedidoController.getPedidos)
 router.put('/:id', PedidoController.updatePedido)
 router.delete('/:id', PedidoController.deletePedido)
+router.get('/view', PedidoController.getViewPedidos)
 
 module.exports = router;
