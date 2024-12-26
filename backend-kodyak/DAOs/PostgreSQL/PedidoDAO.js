@@ -90,7 +90,27 @@ const deletePedido = (request, response) => {
 }
 
 const getViewPedidos = (request, response) => {
-    pool.query('SELECT * FROM VW_PEDIDOS')
+    const { id, data, razao_social } = request.query
+    
+    let query = 'SELECT * FROM VW_PEDIDOS WHERE 1=1 '
+    const params = []
+    
+    if (id) {
+        params.push(id)
+        query += ' AND ID = $' + params.length
+    }
+
+    if (data) {
+        params.push(data)
+        query += ' AND DATA = $' + params.length
+    }
+
+    if (razao_social) {
+        params.push('%' + razao_social + '%')
+        query += ' AND RAZAO_SOCIAL LIKE $' + params.length
+    }
+
+    pool.query(query, params)
     .then((results) => { response.status(200).json(results.rows) })
     .catch((error) => { response.status(500).send('Não foi possível encontrar os pedidos.' + error) })   
 }
