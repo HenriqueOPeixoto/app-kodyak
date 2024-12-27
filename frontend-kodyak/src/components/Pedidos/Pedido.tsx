@@ -128,13 +128,15 @@ export default function Pedido() {
         }))
     }, [enderecos])
 
-    const listaClientes = clientes.map((cliente) => {
-        return {
-            label: `${cliente.id} - ${cliente.nome}`,
-            id: cliente.id,
-            nome: cliente.nome
-        }
-    })
+    const listaClientes = React.useMemo(() => { 
+        return clientes.map((cliente) => {
+            return {
+                label: `${cliente.id} - ${cliente.nome}`,
+                id: cliente.id,
+                nome: cliente.nome
+            }
+        })
+    }, [clientes])
 
     // Quando um novo item for adicionado ao pedido, atualizar label de valor total.
     React.useEffect(() => {
