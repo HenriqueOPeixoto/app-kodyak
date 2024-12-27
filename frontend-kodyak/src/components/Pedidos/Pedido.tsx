@@ -51,7 +51,7 @@ interface Item {
 
 interface PedidoVenda {
     id: number,
-    endereco: number,
+    cliente_endereco: number,
     status: number,
     observacoes: string,
     data: string
@@ -96,12 +96,36 @@ export default function Pedido() {
                 setClientes(results.data)
             })
             .catch((error) => { console.error('Não foi possível listar os clientes: ' + error) })
+        if (id) {
+            axios.get(`${backendBaseURL}/api/pedidos/${id}`)
+                .then((pedidoResults) => {
+                    const pedidoData = pedidoResults.data[0]
+                    setPedido(pedidoData)
+                    setObservacoes(pedidoData.observacoes)
+    
+                    return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
+                })
+                .then((enderecoResults) => {
+                    const enderecoData = enderecoResults.data[0]
+                    enderecoData.label = `${enderecoData.id} - ${enderecoData.inscricao_estadual} - ${enderecoData.descricao}`
+                    setEndereco(enderecoData)
+                
+                    return axios.get(`${backendBaseURL}/api/clientes/${enderecoData.cliente}`)
+                })
+                .then((clienteResults) => {
+                    const clienteData = clienteResults.data[0]
+                    clienteData.label = `${clienteData.id} - ${clienteData.nome}`
+                    setCliente(clienteData)
+                    
+                })
+                .catch((error) => { console.error('Ocorreu um erro ao buscar os dados do pedido: ' + error) })
+            }
     }, [])
 
     // Quando um cliente for selecionado, buscar a lista de endereços dele
     React.useEffect(() => {
-        if (cliente) {
-            setEndereco(null)
+        if (cliente && !id) {
+            //setEndereco(null)
             axios.get<Endereco[]>(`${backendBaseURL}/api/clientes_enderecos`, {
                 params: {
                     "cliente": cliente?.id,
