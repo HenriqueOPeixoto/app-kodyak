@@ -174,8 +174,8 @@ export default function CadastroPrincipal() {
             mask="_"
             style={{ maxWidth: '200px' }}
             onValueChange={(values) => {
-              const floatValue = values.floatValue;
-              setDocumento(floatValue !== undefined ? floatValue.toString() : '');
+              //const floatValue = values.floatValue;
+              setDocumento(values.value.toString());
             }}
 
           />
