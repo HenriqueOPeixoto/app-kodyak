@@ -100,20 +100,22 @@ export default function Pedido() {
 
     // Quando um cliente for selecionado, buscar a lista de endereços dele
     React.useEffect(() => {
-        setEndereco(null)
-        axios.get<Endereco[]>(`${backendBaseURL}/api/clientes_enderecos`, {
-            params: {
-                "cliente": cliente?.id,
-                "inativo": false
+        if (cliente) {
+            setEndereco(null)
+            axios.get<Endereco[]>(`${backendBaseURL}/api/clientes_enderecos`, {
+                params: {
+                    "cliente": cliente?.id,
+                    "inativo": false
+                }
             }
+            )
+            .then((results) => {
+                setEnderecos(results.data)
+            })
+            .catch((error) => {
+                console.error('Não foi possível listar os endereços do cliente: ' + cliente?.id + ': ' + error)
+            })
         }
-        )
-        .then((results) => {
-            setEnderecos(results.data)
-        })
-        .catch((error) => {
-            console.error('Não foi possível listar os endereços do cliente: ' + cliente?.id + ': ' + error)
-        })
     }, [cliente])
 
     React.useEffect(() => {
@@ -293,7 +295,6 @@ export default function Pedido() {
                             className='Observacao'
                             id="txtObservacoes"
                             label="Observações"
-                            defaultValue=""
                             multiline
                             minRows={3}
                             maxRows={3}
