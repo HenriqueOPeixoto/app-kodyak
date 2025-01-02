@@ -38,6 +38,7 @@ interface Produto {
 }
 
 interface ItemPedido {
+    id: number
     produto: Produto
     quantidade: number
     valor: number

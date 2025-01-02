@@ -44,6 +44,7 @@ interface Produto {
 }
 
 interface Item {
+    id: number
     produto: Produto,
     quantidade: number,
     valor: number
@@ -117,6 +118,31 @@ export default function Pedido() {
                     clienteData.label = `${clienteData.id} - ${clienteData.nome}`
                     setCliente(clienteData)
                     
+                    return axios.get(`${backendBaseURL}/api/pedidos_itens/pedido/${id}/completo`)
+                })
+                .then((itensPedidoResults) => {
+                    
+                    setItensPedido(itensPedidoResults.data.map((item: any) => {
+                        const produtoItem: Produto = {
+                            id: item.id_produto,
+                            nome: item.nome,
+                            valor: item.valor,
+                            indicacoes: item.indicacoes,
+                            modo_uso: item.modo_uso,
+                            restricoes: item.restricoes,
+                            peso: item.peso,
+                            consumo_diario: item.consumo_diario,
+                            familia_produtos: item.familia_produtos,
+                            inativo: item.inativo
+                        }
+                        return {
+                            id: item.id,
+                            produto: produtoItem,
+                            quantidade: item.quantidade,
+                            valor: item.valor
+                        }
+                    }))
+
                 })
                 .catch((error) => { console.error('Ocorreu um erro ao buscar os dados do pedido: ' + error) })
             }
@@ -186,6 +212,20 @@ export default function Pedido() {
             "data": new Date().toISOString(),
         })
         .then(() => {
+            itensPedido.map((item) => {
+                if (!item.id) {
+                    axios.post(`${backendBaseURL}/api/pedidos_itens`, {
+                        "pedido": id,
+                        "produto": item.produto.id,
+                        "quantidade": item.quantidade,
+                        "valor": item.valor
+                    })
+                    .catch((error) => {
+                        console.error('Não foi possível salvar o item do pedido: ' + error)
+                    })
+                }
+            })
+
             console.log('Pedido salvo com sucesso!')
             navigate('/pedidos')
         })
