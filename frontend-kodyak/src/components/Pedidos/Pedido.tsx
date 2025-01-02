@@ -82,6 +82,7 @@ export default function Pedido() {
     const [endereco, setEndereco] = React.useState<Endereco | null>(null)
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
     const [observacoes, setObservacoes] = React.useState<string>('')
+    const [status, setStatus] = React.useState<number>(10)
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState(false) 
@@ -194,7 +195,7 @@ export default function Pedido() {
     React.useEffect(() => {
         let novoValorTotal = 0.0
         itensPedido.map((item) => {
-            novoValorTotal += item.valor
+            novoValorTotal = Number(novoValorTotal) + Number(item.valor)
         })
         setValorTotal(novoValorTotal)
     }, [itensPedido])
@@ -340,6 +341,7 @@ export default function Pedido() {
 
                             label="Status do Pedido"
                             onChange={() => { }}
+                            value={status}
 
                             variant='standard'
 
