@@ -76,10 +76,19 @@ const deletePedidoItem = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível deletar o item de pedido. Erro: ' + error) })
 }
 
+const getItensCompletosByPedido = (request, response) => {
+    const pedido = parseInt(request.params.pedido)
+
+    pool.query('SELECT * FROM VW_PEDIDOS_ITENS WHERE PEDIDO = $1', [pedido])
+    .then((results) => { response.status(200).json(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível encontrar o item de pedido. Erro: ' + error) })
+}
+
 module.exports = {
     createPedidoItem,
     updatePedidoItem,
     getPedidoItem,
     getItensByPedido,
-    deletePedidoItem
+    deletePedidoItem,
+    getItensCompletosByPedido
 }

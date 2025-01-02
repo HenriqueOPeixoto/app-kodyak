@@ -19,3 +19,7 @@ exports.getItensByPedido = (req, res) => {
 exports.deletePedidoItem = (req, res) => {
     PedidoItensDAO.deletePedidoItem(req, res)
 }
+
+exports.getItensCompletosByPedido = (req, res) => {
+    PedidoItensDAO.getItensCompletosByPedido(req, res)
+}
