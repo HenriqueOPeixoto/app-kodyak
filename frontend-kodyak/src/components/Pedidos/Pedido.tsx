@@ -220,6 +220,7 @@ export default function Pedido() {
                     navigate('/pedidos/editar_pedido/' + response.data.id)
                 })
                 .catch((error) => {
+                    handleAbrirSnack('Não foi possível salvar o pedido: ' + error)
                     console.error('Não foi possível salvar o pedido: ' + error)
                 })
         } else {
