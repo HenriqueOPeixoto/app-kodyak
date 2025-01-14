@@ -92,20 +92,19 @@ export default function Produtos() {
                 .then(() => {
                     handleAbrirSnack('Produto cadastrado com sucesso.')
 
+                    setNome('')
+                    setValor(0.0)
+                    setIndicacoes('')
+                    setModoUso('')
+                    setRestricoes('')
+                    setPeso(0.0)
+                    setConsumoDiario(0.0)
+                    setFamiliaProdutos('')
+                    setInativo(false)
                 })
                 .catch(() => {
                     handleAbrirSnack('Não foi possível cadastrar o produto.')
                 })
-
-                setNome('')
-                setValor(0.0)
-                setIndicacoes('')
-                setModoUso('')
-                setRestricoes('')
-                setPeso(0.0)
-                setConsumoDiario(0.0)
-                setFamiliaProdutos('')
-                setInativo(false)
         }
 
     }
