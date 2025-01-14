@@ -40,7 +40,11 @@ export default function Produtos() {
     const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
     useEffect(() => {
-        axios.get(`${backendBaseURL}/api/familia_produtos`)
+        axios.get(`${backendBaseURL}/api/familia_produtos`, {
+            params: {
+                inativo: false
+            }
+        })
         .then((response) => {setFamiliasProdutos(response.data)})
         .catch((error) => {console.error('Ocorreu um erro ao listar as famílias de produtos: ' + error)})
 
@@ -65,7 +69,7 @@ export default function Produtos() {
                     }
                 })
                 .catch(error => {
-                    console.log('Não foi possível carregar dados do produto: ', error)
+                    console.error('Não foi possível carregar dados do produto: ', error)
                 })
         }
     }, [id])
@@ -74,8 +78,6 @@ export default function Produtos() {
         const formData = {
             nome, valor, indicacoes, modo_uso: modoUso, restricoes, peso, consumo_diario: consumoDiario, familia_produtos: familiaProdutos, inativo
         }
-
-        console.log(formData)
 
         if (id) {
             axios.put(`${backendBaseURL}/api/produtos/${id}`, formData)
