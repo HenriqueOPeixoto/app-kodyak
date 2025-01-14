@@ -206,33 +206,23 @@ export default function Pedido() {
 
     const handleSalvarPedido = () => {
         // Salvar pedido no backend
-        axios.put(`${backendBaseURL}/api/pedidos`, {
-            "cliente_endereco": endereco?.id,
-            "status": 10,
-            "observacoes": observacoes,
-            "data": new Date().toISOString(),
-        })
-        .then(() => {
-            itensPedido.map((item) => {
-                if (!item.id) {
-                    axios.post(`${backendBaseURL}/api/pedidos_itens`, {
-                        "pedido": id,
-                        "produto": item.produto.id,
-                        "quantidade": item.quantidade,
-                        "valor": item.valor
-                    })
-                    .catch((error) => {
-                        console.error('Não foi possível salvar o item do pedido: ' + error)
-                    })
-                }
+        // se id não for informado, cria um novo pedido
+        if (!id) {
+            axios.post(`${backendBaseURL}/api/pedidos`, {
+                "cliente_endereco": endereco?.id,
+                "status": 10,
+                "observacoes": observacoes,
+                "data": new Date().toISOString(),
             })
-
-            console.log('Pedido salvo com sucesso!')
-            navigate('/pedidos')
-        })
-        .catch((error) => {
-            console.error('Não foi possível salvar o pedido: ' + error)
-        })
+                .then((response) => {
+                    console.log('Pedido salvo com sucesso!')
+                    //navigate('/pedidos')
+                    navigate('/pedidos/editar_pedido/' + response.data.id)
+                })
+                .catch((error) => {
+                    console.error('Não foi possível salvar o pedido: ' + error)
+                })
+        }
     }
 
     const handleTabChange = (_e: React.SyntheticEvent, tabIndex: number) => {
@@ -266,8 +256,20 @@ export default function Pedido() {
     }
 
     const adicionarItemAoPedido = (item: Item) => {
-        setItensPedido((prevItens) => [...prevItens, item]); // Adiciona novo item na lista
-      };
+        axios.post(`${backendBaseURL}/api/pedidos_itens`, {
+            "pedido": id,
+            "produto": item.produto.id,
+            "quantidade": item.quantidade,
+            "valor": item.valor
+        })
+        .then((response) => {
+            const newItem = { ...item, id: response.data.id };
+            setItensPedido((prevItens) => [...prevItens, newItem]); // Adiciona novo item na lista com ID
+        })
+        .catch((error) => {
+            console.error('Não foi possível salvar o item do pedido: ' + error)
+        });
+    };
 
     const handleAbrirSnack = (message: string) => {
         setSnackMessage(message)
