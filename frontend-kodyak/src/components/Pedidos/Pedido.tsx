@@ -215,13 +215,18 @@ export default function Pedido() {
                 "data": new Date().toISOString(),
             })
                 .then((response) => {
-                    console.log('Pedido salvo com sucesso!')
+                    handleAbrirSnack('Pedido salvo com sucesso!')
                     //navigate('/pedidos')
                     navigate('/pedidos/editar_pedido/' + response.data.id)
                 })
                 .catch((error) => {
                     console.error('Não foi possível salvar o pedido: ' + error)
                 })
+        } else {
+            axios.put(`${backendBaseURL}/api/pedidos/${id}`, {
+                "observacoes": observacoes // por enquanto só será alterada a observação
+            })
+            .then(() => { handleAbrirSnack('Pedido alterado com sucesso!') })
         }
     }
 
