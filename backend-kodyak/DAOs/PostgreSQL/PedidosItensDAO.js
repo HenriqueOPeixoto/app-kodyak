@@ -9,7 +9,7 @@ const createPedidoItem = (request, response) => {
         `INSERT INTO PEDIDOS_ITENS (pedido, produto, quantidade, valor) VALUES ($1, $2, $3, $4) RETURNING ID`
     
         pool.query(query, [pedido, produto, quantidade, valor])
-        .then((results) => { response.status(201).send(`Item de pedido cadastrado com ID ${results.rows[0].id}`) })
+        .then((results) => { response.status(201).send({ id: results.rows[0].id, message:`Item de pedido cadastrado com ID ${results.rows[0].id}`}) })
         .catch((error) => { response.status(500).send('Não foi possível cadastrar o item de pedido. Erro: ' + error)})
 }
 
