@@ -1,4 +1,6 @@
-import { Card, CardActionArea, CardContent, Typography } from "@mui/material"
+import { Delete, Edit, MoreVert } from "@mui/icons-material"
+import { Card, CardActionArea, CardContent, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material"
+import React from "react"
 
 interface Produto {
     id: number,
@@ -17,6 +19,15 @@ interface ItensPedidoProps {
 }
 
 const CardItem: React.FC<{ item: Item }> = ({ item }) => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleItemMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleItemMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <Card variant="outlined">
             <CardActionArea>
@@ -40,6 +51,35 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
                             }).format(item.valor)
                         }
                     </Typography>
+                    <IconButton 
+                        sx={{ position: 'absolute', right: 8, top: 8}}
+                        onClick={handleItemMenuClick}
+                    >
+                        <MoreVert />
+                    </IconButton>
+                    <Menu
+                        id="menu-item"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleItemMenuClose}
+                        MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={handleItemMenuClose}>
+                            <ListItemIcon>
+                                <Edit fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText>Alterar</ListItemText>
+                        </MenuItem>
+                        <MenuItem onClick={handleItemMenuClose}>
+                            <ListItemIcon>
+                                <Delete sx={{color: 'red'}} fontSize="small" />
+                            </ListItemIcon>
+                            <ListItemText sx={{ color: 'red' }}>Excluir</ListItemText>
+                        </MenuItem>
+                    </Menu>
+                    
                 </CardContent>
             </CardActionArea>
         </Card>
