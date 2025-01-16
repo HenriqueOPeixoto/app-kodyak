@@ -9,6 +9,7 @@ interface Produto {
 }
 
 interface Item {
+    id: number
     produto: Produto
     quantidade: number
     valor: number
@@ -16,17 +17,23 @@ interface Item {
 
 interface ItensPedidoProps {
     listaItens: Item[]
+    onDeleteItem: (itemId: number) => void // callback chamado quando deleta, vai permitir que a tela de pedido faça a exclusão
 }
 
-const CardItem: React.FC<{ item: Item }> = ({ item }) => {
+const CardItem: React.FC<{ item: Item, onDeleteItem: (itemId: number) => void}> = ({ item, onDeleteItem }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    
     const handleItemMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleItemMenuClose = () => {
         setAnchorEl(null);
     };
+    const handleDeleteButtonClick = () => {
+        onDeleteItem(item.id)
+        setAnchorEl(null)
+    }
 
     return (
         <Card variant="outlined">
@@ -72,7 +79,7 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
                             </ListItemIcon>
                             <ListItemText>Alterar</ListItemText>
                         </MenuItem>
-                        <MenuItem onClick={handleItemMenuClose}>
+                        <MenuItem onClick={handleDeleteButtonClick}>
                             <ListItemIcon>
                                 <Delete sx={{color: 'red'}} fontSize="small" />
                             </ListItemIcon>
@@ -86,12 +93,12 @@ const CardItem: React.FC<{ item: Item }> = ({ item }) => {
     )
 }
 
-const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens }) => {
+const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem }) => {
 
     return (
         <div>
             {listaItens.map((item: Item) => (
-                <CardItem item={item} />
+                <CardItem key={item.id} item={item} onDeleteItem={onDeleteItem} />
             ))}
         </div>
     )

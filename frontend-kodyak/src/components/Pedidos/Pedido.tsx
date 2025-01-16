@@ -277,6 +277,17 @@ export default function Pedido() {
         });
     };
 
+    const removerItemDoPedido = (itemId: number) => {
+        axios.delete(`${backendBaseURL}/api/pedidos_itens/${itemId}`)
+        .then(() => {
+            setItensPedido(itensPedido.filter((item) => item.id !== itemId))
+        })
+        .catch((error) => {
+            handleAbrirSnack('Não foi possível remover o item do pedido')
+            console.error('Não foi possível remover o item do pedido: ' + error)
+        })
+    }
+
     const handleAbrirSnack = (message: string) => {
         setSnackMessage(message)
         setSnackOpen(true)
@@ -403,7 +414,7 @@ export default function Pedido() {
 
                     {currentTabIndex === 0 && (
                         <Box className='ContainerItensPedido'>
-                            <ItensPedido listaItens={itensPedido}/>
+                            <ItensPedido listaItens={itensPedido} onDeleteItem={removerItemDoPedido} />
                         </Box>
                     )
                     }
