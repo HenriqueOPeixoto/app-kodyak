@@ -120,6 +120,8 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
         if (isSaca && produto) {
             novoItemPedido.quantidade *= produto?.peso
         }
+        novoItemPedido.valor *= novoItemPedido.quantidade // unitário x qtde
+
         onAdicionarItemAoCarrinho(novoItemPedido);
         handleReset()
         handleClose()
@@ -319,7 +321,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                             </Box>
                             <div>
                                 <NumericFormat
-                                    label="Valor"
+                                    label='Valor/kg'
                                     customInput={TextField}
                                     thousandSeparator="."
                                     decimalSeparator=","
