@@ -1,5 +1,5 @@
 import { Delete, Edit, MoreVert } from "@mui/icons-material"
-import { Card, CardActionArea, CardContent, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material"
+import { Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material"
 import React from "react"
 
 interface Produto {
@@ -20,7 +20,7 @@ interface ItensPedidoProps {
     onDeleteItem: (itemId: number) => void // callback chamado quando deleta, vai permitir que a tela de pedido faça a exclusão
 }
 
-const CardItem: React.FC<{ item: Item, onDeleteItem: (itemId: number) => void}> = ({ item, onDeleteItem }) => {
+const CardItem: React.FC<{ item: Item, onOpenDialog: (itemId: number) => void}> = ({ item, onOpenDialog }) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     
@@ -31,7 +31,7 @@ const CardItem: React.FC<{ item: Item, onDeleteItem: (itemId: number) => void}> 
         setAnchorEl(null);
     };
     const handleDeleteButtonClick = () => {
-        onDeleteItem(item.id)
+        onOpenDialog(item.id)
         setAnchorEl(null)
     }
 
@@ -95,11 +95,43 @@ const CardItem: React.FC<{ item: Item, onDeleteItem: (itemId: number) => void}> 
 
 const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem }) => {
 
+    const [openDialog, setOpenDialog] = React.useState(false)
+    const [itemAExcluir, setItemAExcluir] = React.useState<number | null>(null)
+
+    const handleOpenDialog = (itemId: number) => {
+        setItemAExcluir(itemId)
+        setOpenDialog(true)
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
+        setItemAExcluir(null)
+    }
+
+    const handleConfirmDelete = () => {
+        if (itemAExcluir) {
+            onDeleteItem(itemAExcluir)
+        }
+        handleCloseDialog()
+    }
+
     return (
         <div>
             {listaItens.map((item: Item) => (
-                <CardItem key={item.id} item={item} onDeleteItem={onDeleteItem} />
+                <CardItem key={item.id} item={item} onOpenDialog={handleOpenDialog} />
             ))}
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Confirmar Exclusão</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Tem certeza que deseja excluir este item?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Cancelar</Button>
+                    <Button onClick={handleConfirmDelete} color="error">Excluir</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
