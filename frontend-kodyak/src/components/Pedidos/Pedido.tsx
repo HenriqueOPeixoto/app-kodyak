@@ -331,6 +331,7 @@ export default function Pedido() {
                         getOptionLabel={(option) => option.label} // Como exibir cada opção
                         onChange={(_event, novoCliente) => {
                             setCliente(novoCliente)
+                            setEndereco(null)
                         }}
                         renderInput={(params) => <TextField {...params} label="Cliente" />}
                         isOptionEqualToValue={(option, value) => option.id === value?.id}
