@@ -4,7 +4,6 @@ import { useState } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import './styles/MenuPedidos.css'
-import { Link } from 'react-router-dom';
 import TabelaPedidos from './TabelaPedidos';
 
 
