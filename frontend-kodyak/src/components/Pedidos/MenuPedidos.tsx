@@ -26,6 +26,14 @@ function MenuPedidos() {
         <div className='BotoesPedidos'>
           {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
           <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('criado')}}>Criado</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('pendente')}}>Pendente</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('análise_financeira')}}>Análise Financeira</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('aprovado')}}>Aprovado</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('faturado')}}>Faturado</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('em_rota')}}>Em Rota</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('entregue')}}>Entregue</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('pagamento_em_atraso')}}>Pagto em Atraso</Button>
+          <Button startIcon={<AddCircleIcon />} onClick={() => {handleButtonClick('recusado')}}>Recusado</Button>
         </div>
         <div className='ListaPedidos'>
           {/* As linhas abaixo controlam qual tabela de pedido deve ser exibida 
