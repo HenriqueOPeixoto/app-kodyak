@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Box, FormControl, InputLabel, MenuItem, Select, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
+import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -88,6 +88,8 @@ export default function Pedido() {
     const [snackOpen, setSnackOpen] = React.useState(false) 
     const [snackMessage, setSnackMessage] = React.useState('')
 
+    const [loadingBackdropOpen, setLoadingBackdropOpen] = React.useState(true)
+
     const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
     const [valorTotal, setValorTotal] = React.useState<number>(0.0)
 
@@ -98,13 +100,14 @@ export default function Pedido() {
                 setClientes(results.data)
             })
             .catch((error) => { console.error('Não foi possível listar os clientes: ' + error) })
-        if (id) {
-            axios.get(`${backendBaseURL}/api/pedidos/${id}`)
+            .finally(() => { if (!id) setLoadingBackdropOpen(false) })
+            if (id) {
+                axios.get(`${backendBaseURL}/api/pedidos/${id}`)
                 .then((pedidoResults) => {
                     const pedidoData = pedidoResults.data[0]
                     setPedido(pedidoData)
                     setObservacoes(pedidoData.observacoes)
-    
+                    
                     return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
                 })
                 .then((enderecoResults) => {
@@ -146,6 +149,7 @@ export default function Pedido() {
 
                 })
                 .catch((error) => { console.error('Ocorreu um erro ao buscar os dados do pedido: ' + error) })
+                .finally(() => { setLoadingBackdropOpen(false) })
             }
     }, [])
 
@@ -299,6 +303,12 @@ export default function Pedido() {
 
     return (
         <div className='Pedido'>
+            <Backdrop
+                sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
+                open={loadingBackdropOpen}
+                >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <AppBar className='BarraSuperior' >
                 <Toolbar>
                     <IconButton
