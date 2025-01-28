@@ -22,6 +22,9 @@ export default function CadastroPrincipal() {
     const [snackMessage, setSnackMessage] = useState('')
     const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
+    const [msgTextoErro, setMsgTextoErro] = useState('') // Texto usado para exibir mensagem de erro ao informar documento
+    const [inputErrado, setInputErrado] = useState(false) // Flag para exibir mensagem de erro ao informar documento
+
     useEffect(() => {
         if (id) {
             axios.get(`${backendBaseURL}/api/clientes/${id}`)
@@ -49,39 +52,50 @@ export default function CadastroPrincipal() {
     }, [id])
 
     const handleSubmit = () => {
-        const formData = {
-            razao_social: razaoSocial,
-            nome,
-            tipo_pessoa: tipoPessoa,
-            documento,
-            inativo
-        }
-
-        if (id) {
-            axios.put(`${backendBaseURL}/api/clientes/${id}`, formData)
-                .then(() => {
-                    handleAbrirSnack('Cliente atualizado com sucesso!')
-                })
-                .catch(() => {
-                    handleAbrirSnack('Ocorreu um erro ao atualizar o cliente.')
-                })
+        if ((tipoPessoa == 'F') && (documento.length < 11)) {
+            setMsgTextoErro('CPF precisa conter 11 dígitos')
+            setInputErrado(true)
+            return
+        } else if ((tipoPessoa == 'J') && (documento.length < 8)) {
+            setMsgTextoErro('Raíz do CNPJ precisa conter 8 dígitos')
+            setInputErrado(true)
+            return
         } else {
-            axios.put(`${backendBaseURL}/api/clientes/`, formData)
-                .then(() => {
-                    handleAbrirSnack('Cliente cadastrado com sucesso.')
-
-                    setRazaoSocial('')
-                    setNome('')
-                    setTipoPessoa('')
-                    setDocumento('')
-                    setInativo(false)
-                })
-                .catch(() => {
-                    handleAbrirSnack('Não foi possível cadastrar o cliente.')
-                })
-
-
+            const formData = {
+                razao_social: razaoSocial,
+                nome,
+                tipo_pessoa: tipoPessoa,
+                documento,
+                inativo
+            }
+    
+            if (id) {
+                axios.put(`${backendBaseURL}/api/clientes/${id}`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Cliente atualizado com sucesso!')
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Ocorreu um erro ao atualizar o cliente.')
+                    })
+            } else {
+                axios.put(`${backendBaseURL}/api/clientes/`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Cliente cadastrado com sucesso.')
+    
+                        setRazaoSocial('')
+                        setNome('')
+                        setTipoPessoa('')
+                        setDocumento('')
+                        setInativo(false)
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Não foi possível cadastrar o cliente.')
+                    })
+    
+            }
         }
+
+
     }
 
 
@@ -129,7 +143,7 @@ export default function CadastroPrincipal() {
         setDocumento(documento.substring(0, 11))
     }
 
-    const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###' : '###.###.###'
+    const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###' : '###.###.###-##'
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px'}}>
@@ -171,9 +185,13 @@ export default function CadastroPrincipal() {
             format={formatTipoPessoa}
             mask="_"
             style={{ maxWidth: '200px' }}
+            error={inputErrado}
+            helperText={msgTextoErro}
             onValueChange={(values) => {
               //const floatValue = values.floatValue;
               setDocumento(values.value.toString());
+              setInputErrado(false);
+              setMsgTextoErro('');
             }}
 
           />
