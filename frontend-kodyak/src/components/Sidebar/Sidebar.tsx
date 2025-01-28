@@ -9,7 +9,7 @@ function Sidebar() {
         <ul className='SidebarData'>
             {SidebarData().map(item => {
               return (
-                <Link to={item.link}>
+                <Link to={item.link} key={item.title}>
                   <li>
                     <div>{item.icon}</div>
                     <div className='TituloItem'>{item.title}</div>

@@ -136,7 +136,6 @@ export default function CadastroPrincipal() {
             <TextField
                 id="txtNome"
                 label="Nome"
-                defaultValue=""
                 value={nome}
                 required
                 onChange={event => setNome(event.target.value)}
@@ -144,7 +143,6 @@ export default function CadastroPrincipal() {
             <TextField
                 id="txtRazaoSocial"
                 label="Razão Social"
-                defaultValue=""
                 value={razaoSocial}
                 required
                 onChange={event => setRazaoSocial(event.target.value)}

@@ -199,7 +199,6 @@ export default function CadastroEndereco() {
                 label="Cliente"
                 value={nomeCliente}
                 variant="filled"
-                defaultValue=""
                 disabled
             />
             <div className="CabecalhoEndereco">
@@ -208,7 +207,6 @@ export default function CadastroEndereco() {
                     className="TxtDescricao"
                     label="Descrição Endereço"
                     value={descricao}
-                    defaultValue=""
                     onChange={event => setDescricao(event.target.value)}
                 />
                 <TextField
@@ -216,7 +214,6 @@ export default function CadastroEndereco() {
                     className="TxtIE"
                     label="Inscrição Estadual"
                     value={inscricaoEstadual}
-                    defaultValue=""
                     onChange={event => setInscricaoEstadual(event.target.value)}
                 />
                 <PatternFormat
@@ -280,7 +277,6 @@ export default function CadastroEndereco() {
                     id="txtEmail"
                     label="E-mail"
                     value={email}
-                    defaultValue=""
                     onChange={event => setEmail(event.target.value)}
                 />
             </div>
@@ -308,7 +304,6 @@ export default function CadastroEndereco() {
                     className="TxtLogradouro"
                     label="Logradouro"
                     value={logradouro}
-                    defaultValue=""
                     onChange={event => setLogradouro(event.target.value)}
                 />
                 <TextField
@@ -316,7 +311,6 @@ export default function CadastroEndereco() {
                     className="TxtNumero"
                     label="Número"
                     value={numero}
-                    defaultValue=""
                     onChange={event => setNumero(event.target.value)}
                 />
 
@@ -326,21 +320,18 @@ export default function CadastroEndereco() {
                     id="txtBairro"
                     label="Bairro"
                     value={bairro}
-                    defaultValue=""
                     onChange={event => setBairro(event.target.value)}
                 />
                 <TextField
                     id="txtCidade"
                     label="Cidade"
                     value={cidade}
-                    defaultValue=""
                     onChange={event => setCidade(event.target.value)}
                 />
                 <TextField
                     id="txtEstado"
                     label="Estado"
                     value={estado}
-                    defaultValue=""
                     onChange={event => setEstado(event.target.value)}
                 />
             </div>

@@ -175,7 +175,6 @@ export default function Produtos() {
                     id="txtNome"
                     label="Nome"
                     value={nome}
-                    defaultValue=""
                     onChange={event => setNome(event.target.value)}
                     />
                 <div className="ContainerNumeros">

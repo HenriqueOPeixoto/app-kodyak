@@ -37,8 +37,7 @@ const CardItem: React.FC<{ item: Item, onOpenDialog: (itemId: number) => void}> 
 
     return (
         <Card variant="outlined">
-            <CardActionArea>
-                <CardContent>
+                <CardContent sx={{ position: 'relative' }}>
                     <Typography sx={{ fontWeight: 'bold' }} variant="h6">{item.produto.nome}</Typography>
                     <Typography>
                         Quant. Sacas: { // Mostra entre 0 e 3 casas decimais
@@ -88,7 +87,6 @@ const CardItem: React.FC<{ item: Item, onOpenDialog: (itemId: number) => void}> 
                     </Menu>
                     
                 </CardContent>
-            </CardActionArea>
         </Card>
     )
 }

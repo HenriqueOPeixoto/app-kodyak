@@ -22,7 +22,7 @@ const CardCliente: React.FC<{ cliente: Cliente }> = ({ cliente }) => {
           <CardContent>
             <Typography variant="subtitle2">#{cliente.id}</Typography>
             <Typography variant="h6">{cliente.nome}</Typography>
-            <Typography><hr/></Typography>
+            <Typography component={"div"}><hr/></Typography>
             <Typography>CNPJ: {cliente.cnpj}</Typography>
             <Typography>CPF: {cliente.cpf}</Typography>
           </CardContent>
