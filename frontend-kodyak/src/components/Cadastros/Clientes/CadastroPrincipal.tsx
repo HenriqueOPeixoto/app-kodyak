@@ -52,11 +52,11 @@ export default function CadastroPrincipal() {
     }, [id])
 
     const handleSubmit = () => {
-        if ((tipoPessoa == 'F') && (documento.length < 11)) {
+        if ((tipoPessoa === 'F') && (documento.length < 11)) {
             setMsgTextoErro('CPF precisa conter 11 dígitos')
             setInputErrado(true)
             return
-        } else if ((tipoPessoa == 'J') && (documento.length < 8)) {
+        } else if ((tipoPessoa === 'J') && (documento.length < 8)) {
             setMsgTextoErro('Raíz do CNPJ precisa conter 8 dígitos')
             setInputErrado(true)
             return
