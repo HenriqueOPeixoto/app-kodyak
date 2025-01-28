@@ -31,6 +31,7 @@ export default function CadastroEndereco() {
 
 
     const [nomeCliente, setNomeCliente] = useState('')
+    const [desabilitarCamposPJ, setDesabilitarCamposPJ] = useState(false)
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [snackOpen, setSnackOpen] = useState(false)
@@ -41,8 +42,14 @@ export default function CadastroEndereco() {
         axios.get(`${backendBaseURL}/api/clientes/${clienteId}`)
             .then(response => {
                 if (response.data.length > 0) {
-                    const { nome } = response.data[0]
+                    const { nome, tipo_pessoa } = response.data[0]
                     setNomeCliente(nome)
+
+                    if (tipo_pessoa === 'F') {
+                        setDesabilitarCamposPJ(true)
+                    } else {
+                        setDesabilitarCamposPJ(false)
+                    }
                 }
             })
 
@@ -224,6 +231,7 @@ export default function CadastroEndereco() {
                     customInput={TextField}
                     format="####"
                     mask="_"
+                    disabled={desabilitarCamposPJ}
                     onValueChange={(values) => {
                         setComplementoCnpj(values.value.toString());
                     }}
@@ -237,6 +245,7 @@ export default function CadastroEndereco() {
                     customInput={TextField}
                     format="##"
                     mask="_"
+                    disabled={desabilitarCamposPJ}
                     onValueChange={(values) => {
                         setDigitoCnpj(values.value.toString());
                     }}
