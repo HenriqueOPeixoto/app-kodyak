@@ -9,8 +9,8 @@ import axios from "axios"
 interface Cliente {
   id: number
   nome: string
-  cnpj: string
-  cpf: string
+  documento: string
+  tipo_pessoa: string
   inativo: boolean
 }
 
@@ -23,8 +23,10 @@ const CardCliente: React.FC<{ cliente: Cliente }> = ({ cliente }) => {
             <Typography variant="subtitle2">#{cliente.id}</Typography>
             <Typography variant="h6">{cliente.nome}</Typography>
             <Typography component={"div"}><hr/></Typography>
-            <Typography>CNPJ: {cliente.cnpj}</Typography>
-            <Typography>CPF: {cliente.cpf}</Typography>
+            <Typography>{cliente.tipo_pessoa === 'F' ? 
+              'CPF: ' + cliente.documento.replace(/(\d{3})(\d{3})(\d{3})(\d{1})/, "$1.$2.$3-$4") :
+              'CNPJ: ' + cliente.documento.replace(/(\d{2})(\d{3})(\d{3})/, "$1.$2.$3")}
+            </Typography>
           </CardContent>
         </CardActionArea>
       </Link>
@@ -36,7 +38,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaClientes: React.FC = () => {
 
-  const [cliente, setCliente] = useState<Cliente[]>([])
+  const [clientes, setClientes] = useState<Cliente[]>([])
   const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)
 
@@ -49,7 +51,7 @@ const TabelaClientes: React.FC = () => {
       }
     )
       .then(response => {
-        setCliente(response.data);
+        setClientes(response.data);
       })
       .catch(error => {
         console.error("Erro ao listar os clientes: ", error);
@@ -83,7 +85,7 @@ const TabelaClientes: React.FC = () => {
           </div>
         </div>
         <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
-          {cliente.map((cliente) => (
+          {clientes.map((cliente) => (
             <Grid item xs={12} key={cliente.id}>
               <CardCliente cliente={cliente} />
             </Grid>
