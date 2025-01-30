@@ -245,7 +245,7 @@ export default function Produtos() {
                             onChange={handleChangeFamiliaProdutos}
                         >
                             {familiasProdutos.map((familia_produto: FamiliaProdutos) => (
-                                <MenuItem key={familia_produto.id} value={familia_produto.id}>{familia_produto.id}:{familia_produto.nome}</MenuItem>
+                                <MenuItem sx={{justifyContent: 'center'}} key={familia_produto.id} value={familia_produto.id}>{familia_produto.nome}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
