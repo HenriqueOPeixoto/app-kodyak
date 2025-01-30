@@ -11,6 +11,7 @@ interface TabelaEnderecosProps {
 
 interface Enderecos {
     id: number
+    descricao: string
     inscricao_estadual: string
     telefone_fixo: string
     telefone_celular: string
@@ -30,9 +31,11 @@ const CardEnderecos: React.FC<{ enderecos: Enderecos }> = ({ enderecos }) => {
             <Link to={`/cadastros/editar_cliente/${enderecos.cliente}/editar_endereco/${enderecos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <CardActionArea>
                     <CardContent>
-                        <Typography variant="h6">{enderecos.inscricao_estadual}</Typography>
-                        <Typography variant="h6">{enderecos.logradouro}, {enderecos.numero} - {enderecos.bairro}</Typography>
-                        <Typography variant="h6">{enderecos.cidade}, {enderecos.estado}</Typography>
+                        <Typography>{enderecos.descricao}</Typography>
+                        <hr />
+                        <Typography>IE: <b>{enderecos.inscricao_estadual}</b></Typography>
+                        <Typography>Endereço: {enderecos.logradouro}, {enderecos.numero} - {enderecos.bairro}</Typography>
+                        <Typography>{enderecos.cidade}, {enderecos.estado}</Typography>
                     </CardContent>
                 </CardActionArea>
             </Link>
