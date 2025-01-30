@@ -71,7 +71,7 @@ const TabelaMotoristas: React.FC = () => {
           <TextField className="TxtPesquisarMotorista" id="pesquisar-motorista" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
           <FormControl>
             <FormLabel id="ativo-radio-button">Filtros</FormLabel>
-            <RadioGroup defaultValue="ativo" row onChange={handleInativoRadioButtonChange}>
+            <RadioGroup defaultValue="false" row onChange={handleInativoRadioButtonChange}>
               <FormControlLabel value="false" control={<Radio />} label="Ativo"/>
               <FormControlLabel value="true" control={<Radio />} label="Inativo" />
             </RadioGroup>
