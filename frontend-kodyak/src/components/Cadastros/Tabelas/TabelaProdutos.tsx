@@ -1,4 +1,4 @@
-import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import { Autocomplete, Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import '../styles/Cadastros.css'
 import './styles/TabelaProdutos.css'
@@ -17,6 +17,11 @@ interface Produto {
   consumo_diario: number
   familia_produtos: number
   inativo: boolean
+}
+
+interface FamiliaProdutos {
+  id: number
+  nome: string
 }
 
 const CardProduto: React.FC<{ produto: Produto }> = ({ produto }) => {
@@ -40,12 +45,25 @@ const TabelaProdutos: React.FC = () => {
 
   const [produto, setProdutos] = useState<Produto[]>([])
   const [nome, setNome] = useState<string>('')
+  const [familiaProdutos, setFamiliaProdutos] = useState<FamiliaProdutos | null>(null)
+  const [familiasProdutos, setFamiliasProdutos] = useState<FamiliaProdutos[]>([])
   const [inativo, setInativo] = useState<boolean>(false)
+
+  useEffect(() => {
+    axios.get<FamiliaProdutos[]>(`${backendBaseURL}/api/familia_produtos`, {
+      params: {
+        "inativo": false
+      }
+    })
+      .then((response) => { setFamiliasProdutos(response.data) })
+      .catch((error) => { console.error('Não foi possível listar as famílias de produtos: ' + error) })
+  }, [])
 
   useEffect(() => {
     axios.get<Produto[]>(`${backendBaseURL}/api/produtos`, {
         params: {
           "nome": nome,
+          "familia_produtos": familiaProdutos?.id,
           "inativo": inativo
         }
       }
@@ -56,7 +74,7 @@ const TabelaProdutos: React.FC = () => {
       .catch(error => {
         console.error("Erro ao listar os produtos: ", error);
       });
-  }, [nome, inativo]);
+  }, [nome, familiaProdutos, inativo]);
 
   const handleTxtPesquisarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNome(event.target.value)
@@ -69,7 +87,22 @@ const TabelaProdutos: React.FC = () => {
     return (
       <div className="TabelaProdutos">
         <div className="ContainerFiltros">
-          <TextField className="TxtPesquisarProduto" id="pesquisar-produto" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
+          <TextField className="TxtPesquisarProduto" id="pesquisar-produto" label="Produto" variant="standard" onChange={handleTxtPesquisarChange} />
+          <div>
+              <Autocomplete
+                className='TxtFamiliaProduto'
+                disablePortal
+                options={familiasProdutos}
+                sx={{ width: 300, marginLeft: '20px', marginRight: '20px' }}
+                value={familiaProdutos}
+                getOptionLabel={(option) => option.nome} // Como exibir cada opção
+                onChange={(_event, buscaFamilia) => {
+                    setFamiliaProdutos(buscaFamilia)
+                }}
+                renderInput={(params) => <TextField {...params} label="Família de Produtos" />}
+                isOptionEqualToValue={(option, value) => option.id === value?.id}
+            />
+          </div>
           <FormControl>
             <FormLabel id="ativo-radio-button">Filtros</FormLabel>
             <RadioGroup defaultValue="false" row onChange={handleInativoRadioButtonChange}>
