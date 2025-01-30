@@ -40,12 +40,14 @@ const TabelaClientes: React.FC = () => {
 
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [nome, setNome] = useState<string>('')
+  const [documento, setDocumento] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
     axios.get<Cliente[]>(`${backendBaseURL}/api/clientes`, {
         params: {
           "nome": nome,
+          "documento": documento,
           "inativo": inativo
         }
       }
@@ -56,10 +58,13 @@ const TabelaClientes: React.FC = () => {
       .catch(error => {
         console.error("Erro ao listar os clientes: ", error);
       });
-  }, [nome, inativo]);
+  }, [nome, documento, inativo]);
 
   const handleTxtPesquisarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNome(event.target.value)
+  }
+  const handleTxtDocumentoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDocumento(event.target.value)
   }
 
   const handleInativoRadioButtonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,6 +75,7 @@ const TabelaClientes: React.FC = () => {
       <div className="TabelaClientes">
         <div className="ContainerFiltros">
           <TextField className="TxtPesquisarCliente" id="pesquisar-cliente" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
+          <TextField className="TxtPesquisarDocumento" id="pesquisar-documento" label="Documento" variant="standard" onChange={handleTxtDocumentoChange} />
           <FormControl>
             <FormLabel id="ativo-radio-button">Filtros</FormLabel>
             <RadioGroup defaultValue="ativo" row onChange={handleInativoRadioButtonChange}>
