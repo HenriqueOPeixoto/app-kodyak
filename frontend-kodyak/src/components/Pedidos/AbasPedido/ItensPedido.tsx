@@ -1,5 +1,5 @@
 import { Delete, Edit, MoreVert } from "@mui/icons-material"
-import { Button, Card, CardActionArea, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material"
+import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material"
 import React from "react"
 
 interface Produto {

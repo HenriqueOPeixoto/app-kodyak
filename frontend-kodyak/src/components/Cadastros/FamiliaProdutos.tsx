@@ -55,6 +55,7 @@ export default function FamiliaProdutos() {
                 })
                 .catch(error => {
                     handleAbrirSnack('Ocorreu um erro ao atualizar a família de produtos.')
+                    console.error('Ocorreu um erro ao atualizar a família de produtos: ' + error)
                 })
         } else {
             axios.post(`${backendBaseURL}/api/familia_produtos/`, formData)
@@ -64,6 +65,7 @@ export default function FamiliaProdutos() {
                 })
                 .catch(error => {
                     handleAbrirSnack('Não foi possível cadastrar a família de produtos.')
+                    console.error('Não foi possível cadastrar a família de produtos: ' + error)
                 })
 
                 setNome('')

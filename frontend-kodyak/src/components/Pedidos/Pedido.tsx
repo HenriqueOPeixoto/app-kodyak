@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
+import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -50,14 +50,6 @@ interface Item {
     valor: number
 }
 
-interface PedidoVenda {
-    id: number,
-    cliente_endereco: number,
-    status: number,
-    observacoes: string,
-    data: string
-}
-
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
@@ -73,7 +65,6 @@ export default function Pedido() {
     // Se id != null, bloquear edição de cliente/endereço
     // Se id == null, bloquear adição de itens
     const { id } = useParams()
-    const [pedido, setPedido] = React.useState<PedidoVenda | null>(null)
     const [clientes, setClientes] = React.useState<Cliente[]>([])
     const [enderecos, setEnderecos] = React.useState<Endereco[]>([])
     
@@ -82,7 +73,7 @@ export default function Pedido() {
     const [endereco, setEndereco] = React.useState<Endereco | null>(null)
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
     const [observacoes, setObservacoes] = React.useState<string>('')
-    const [status, setStatus] = React.useState<number>(10)
+    const [status, setStatus] = React.useState<string>('1')
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState(false) 
@@ -105,7 +96,6 @@ export default function Pedido() {
                 axios.get(`${backendBaseURL}/api/pedidos/${id}`)
                 .then((pedidoResults) => {
                     const pedidoData = pedidoResults.data[0]
-                    setPedido(pedidoData)
                     setObservacoes(pedidoData.observacoes)
                     
                     return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
@@ -370,20 +360,20 @@ export default function Pedido() {
                             className='SelectStatus'
 
                             label="Status do Pedido"
-                            onChange={() => { }}
+                            onChange={(event: SelectChangeEvent) => { setStatus(event.target.value) }}
                             value={status}
 
                             variant='standard'
 
                         >
-                            <MenuItem value={10}>Pendente</MenuItem>
-                            <MenuItem value={20}>Análise Financeira</MenuItem>
-                            <MenuItem value={30}>Aprovado</MenuItem>
-                            <MenuItem value={40}>Faturado</MenuItem>
-                            <MenuItem value={50}>Em Rota</MenuItem>
-                            <MenuItem value={60}>Entregue</MenuItem>
-                            <MenuItem value={70}>Pagamento em Atraso</MenuItem>
-                            <MenuItem value={80}>Recusado</MenuItem>
+                            <MenuItem value={'1'}>Pendente</MenuItem>
+                            <MenuItem value={'2'}>Análise Financeira</MenuItem>
+                            <MenuItem value={'3'}>Aprovado</MenuItem>
+                            <MenuItem value={'4'}>Faturado</MenuItem>
+                            <MenuItem value={'5'}>Em Rota</MenuItem>
+                            <MenuItem value={'6'}>Entregue</MenuItem>
+                            <MenuItem value={'7'}>Pagamento em Atraso</MenuItem>
+                            <MenuItem value={'8'}>Recusado</MenuItem>
                         </Select>
                     </FormControl>
                     <div className='ContainerObservacao' >
