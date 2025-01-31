@@ -48,6 +48,8 @@ const getProdutos = (request, response) => {
         query += ' AND FAMILIA_PRODUTOS = ($' + params.length + ')'
     }
 
+    query += ' ORDER BY UPPER(NOME)'
+
     pool.query(query, params)
     .then((results) => {
         response.status(200).send(results.rows)

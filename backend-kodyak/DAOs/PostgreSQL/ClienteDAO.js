@@ -50,6 +50,8 @@ const getClientes = (request, response) => {
         query += ' AND INATIVO = $' + params.length
     }
 
+    query += ' ORDER BY UPPER(NOME)'
+
     pool.query(query, params)
     .then((results) => { response.status(200).send(results.rows) })
     .catch((error) => { response.status(500).send('Não foi possível listar os clientes. Erro: ' + error)})
