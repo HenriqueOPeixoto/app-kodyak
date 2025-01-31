@@ -97,6 +97,7 @@ export default function Pedido() {
                 .then((pedidoResults) => {
                     const pedidoData = pedidoResults.data[0]
                     setObservacoes(pedidoData.observacoes)
+                    setStatus(pedidoData.status)
                     
                     return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
                 })
@@ -204,7 +205,7 @@ export default function Pedido() {
         if (!id) {
             axios.post(`${backendBaseURL}/api/pedidos`, {
                 "cliente_endereco": endereco?.id,
-                "status": 10,
+                "status": status,
                 "observacoes": observacoes,
                 "data": new Date().toISOString(),
             })
@@ -219,7 +220,8 @@ export default function Pedido() {
                 })
         } else {
             axios.put(`${backendBaseURL}/api/pedidos/${id}`, {
-                "observacoes": observacoes // por enquanto só será alterada a observação
+                "observacoes": observacoes,
+                "status": status
             })
             .then(() => { handleAbrirSnack('Pedido alterado com sucesso!') })
         }
