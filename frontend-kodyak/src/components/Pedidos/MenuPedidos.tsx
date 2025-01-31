@@ -38,7 +38,15 @@ function MenuPedidos() {
           {/* As linhas abaixo controlam qual tabela de pedido deve ser exibida 
             baseando-se no estado dos botões, ou seja, o botão atual ativo pelo useState. */}
           {/*activeButton === 'criado' && <Link to={'/pedidos/novo_pedido'}>Novo Pedido</Link>*/}
-          {activeButton === 'criado' && <TabelaPedidos />}
+          {activeButton === 'criado' && <TabelaPedidos statusPedido='0' />}
+          {activeButton === 'pendente' && <TabelaPedidos statusPedido='1' />}
+          {activeButton === 'análise_financeira' && <TabelaPedidos statusPedido='2' />}
+          {activeButton === 'aprovado' && <TabelaPedidos statusPedido='3' />}
+          {activeButton === 'faturado' && <TabelaPedidos statusPedido='4' />}
+          {activeButton === 'em_rota' && <TabelaPedidos statusPedido='5' />}
+          {activeButton === 'entregue' && <TabelaPedidos statusPedido='6' />}
+          {activeButton === 'pagamento_em_atraso' && <TabelaPedidos statusPedido='7' />}
+          {activeButton === 'recusado' && <TabelaPedidos statusPedido='8' />}
         </div>
       </div>
     </>
