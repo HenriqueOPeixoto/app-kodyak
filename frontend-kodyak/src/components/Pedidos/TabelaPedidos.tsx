@@ -66,14 +66,14 @@ const TabelaPedidos: React.FC = () => {
 
     return (
       <div className="TabelaPedidos">
-        <div className="ContainerFiltros">
-          <TextField className="TxtPesquisarPedidosPorID" id="pesquisar-pedidos-por-id" label="ID" variant="standard" onChange={handleTxtPesquisarIDChange} />
-          <TextField className="TxtPesquisarPedidosPorCliente" id="pesquisar-pedidos-por-cliente" label="Cliente" variant="standard" onChange={handleTxtPesquisarClienteChange} />
+        <div style={{display: 'flex', gap: '20px'}} className="ContainerFiltros">
+          <TextField sx={{maxWidth: '60px'}} className="TxtPesquisarPedidosPorID" id="pesquisar-pedidos-por-id" label="ID" variant="outlined" onChange={handleTxtPesquisarIDChange} />
+          <TextField sx={{flexGrow: '1'}} className="TxtPesquisarPedidosPorCliente" id="pesquisar-pedidos-por-cliente" label="Nome Cliente" variant="outlined" onChange={handleTxtPesquisarClienteChange} />
           <PatternFormat 
             id="pesquisar-pedidos-por-data"
             customInput={TextField}
             label="Data" 
-            variant="standard" 
+            variant="outlined" 
             onChange={handleTxtPesquisarDataChange} 
             format="##/##/####" 
             mask="_"
@@ -85,7 +85,7 @@ const TabelaPedidos: React.FC = () => {
           </Link>
           </div>
         </div>
-        <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh' }}>
+        <Grid container spacing={2} style={{ overflowY: 'auto', height: '80vh', marginTop: '20px', maxHeight: '100%' }}>
           {pedidos.map((pedidos) => (
             <Grid item xs={12} key={pedidos.id}>
               <CardPedidos pedidos={pedidos} />
