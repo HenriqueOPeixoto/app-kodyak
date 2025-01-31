@@ -13,6 +13,10 @@ interface Pedido {
     documento: string
 }
 
+interface TabelaPedidosProps {
+  statusPedido: string
+}
+
 const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
   return (
     <Card className="CardPedido" variant="outlined">
@@ -32,7 +36,7 @@ const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
-const TabelaPedidos: React.FC = () => {
+const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
 
   const [pedidos, setPedidos] = useState<Pedido[]>([])
   const [razao_social, setRazaoSocial] = useState<string>('')
@@ -44,6 +48,7 @@ const TabelaPedidos: React.FC = () => {
       params: {
         razao_social: razao_social,
         id: id,
+        status: statusPedido,
         data: data
     }})
       .then(response => {
