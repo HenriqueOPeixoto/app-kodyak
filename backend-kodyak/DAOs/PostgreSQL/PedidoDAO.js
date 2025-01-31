@@ -90,7 +90,7 @@ const deletePedido = (request, response) => {
 }
 
 const getViewPedidos = (request, response) => {
-    const { id, data, razao_social } = request.query
+    const { id, data, razao_social, status } = request.query
     
     let query = 'SELECT * FROM VW_PEDIDOS WHERE 1=1 '
     const params = []
@@ -98,6 +98,11 @@ const getViewPedidos = (request, response) => {
     if (id) {
         params.push(id)
         query += ' AND ID = $' + params.length
+    }
+
+    if (status) {
+        params.push(status)
+        query += ' AND STATUS = $' + params.length
     }
 
     if (data) {
