@@ -110,6 +110,8 @@ const getViewPedidos = (request, response) => {
         query += ' AND UPPER(RAZAO_SOCIAL) LIKE UPPER($' + params.length + ')'
     }
 
+    query += ' ORDER BY ID DESC'
+
     pool.query(query, params)
     .then((results) => { response.status(200).json(results.rows) })
     .catch((error) => { response.status(500).send('Não foi possível encontrar os pedidos.' + error) })   
