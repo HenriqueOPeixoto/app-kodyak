@@ -73,7 +73,7 @@ export default function Pedido() {
     const [endereco, setEndereco] = React.useState<Endereco | null>(null)
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
     const [observacoes, setObservacoes] = React.useState<string>('')
-    const [status, setStatus] = React.useState<string>('1')
+    const [status, setStatus] = React.useState<string>('0')
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState(false) 
@@ -368,6 +368,7 @@ export default function Pedido() {
                             variant='standard'
 
                         >
+                            <MenuItem value={'0'}>Criado</MenuItem>
                             <MenuItem value={'1'}>Pendente</MenuItem>
                             <MenuItem value={'2'}>Análise Financeira</MenuItem>
                             <MenuItem value={'3'}>Aprovado</MenuItem>
