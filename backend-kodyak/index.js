@@ -14,6 +14,7 @@ const clientesEnderecosRoutes = require('./routes/ClientesEnderecosRoutes')
 const representanteRoutes = require('./routes/RepresentanteRoutes')
 const pedidoRoutes = require('./routes/PedidoRoutes')
 const pedidoItensRoutes = require('./routes/PedidoItensRoutes')
+const localidadesRoutes = require('./routes/LocalidadesRoutes')
 
 const app = express();
 
@@ -37,5 +38,6 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/representantes', representanteRoutes)
 app.use('/api/pedidos', pedidoRoutes)
 app.use('/api/pedidos_itens', pedidoItensRoutes)
+app.use('/api/localidades', localidadesRoutes)
 
 app.listen(port, '0.0.0.0')
