@@ -38,6 +38,4 @@ app.use('/api/representantes', representanteRoutes)
 app.use('/api/pedidos', pedidoRoutes)
 app.use('/api/pedidos_itens', pedidoItensRoutes)
 
-app.listen(port, () => {
-    console.log(`Escutando no endereço localhost:${port}`)
-})
+app.listen(port, '0.0.0.0')
