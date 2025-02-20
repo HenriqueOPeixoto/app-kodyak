@@ -53,7 +53,7 @@ const TabelaEnderecos: React.FC<TabelaEnderecosProps> = ({ clienteId }) => {
 
 
     useEffect(() => {
-        axios.get<Enderecos[]>(`${backendBaseURL}/api/clientes_enderecos`, {
+        axios.get<Enderecos[]>(`${backendBaseURL}/api/clientes_enderecos/view`, {
             params: {
                 "cliente": clienteId,
                 "inativo": inativo
