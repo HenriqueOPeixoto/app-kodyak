@@ -9,6 +9,7 @@ import { CircularProgress } from '@mui/material';
 import Bancos from './components/Cadastros/Bancos';
 import Pedido from './components/Pedidos/Pedido';
 
+const Avisos = lazy(() => import('./components/Avisos/Avisos'));
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 const Clientes = lazy(() => import('./components/Cadastros/Clientes'));
@@ -18,6 +19,7 @@ const Usuarios = lazy(() => import('./components/Cadastros/Usuarios'));
 const FamiliaProdutos = lazy(() => import('./components/Cadastros/FamiliaProdutos'));
 const Produtos = lazy(() => import('./components/Cadastros/Produtos'));
 const Representantes = lazy(() => import('./components/Cadastros/Representantes'));
+const NaoImplementado = lazy(() => import('./components/Avisos/NaoImplementado'));
 
 const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
@@ -35,6 +37,8 @@ function App() {
         {/* O conteúdo da página atual será carregado aqui */}
         <Suspense fallback={<div><CircularProgress /></div>}>
           <Routes>
+            <Route path='/avisos' element={<Avisos />} />
+
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
@@ -58,6 +62,8 @@ function App() {
             <Route path='/pedidos' element={<MenuPedidos />} />
             <Route path='/pedidos/novo_pedido' element={<Pedido />} />
             <Route path='/pedidos/editar_pedido/:id' element={<Pedido />} />
+
+            <Route path='/nao_implementado' element={<NaoImplementado />} />
             {/* Novas rotas aqui */}
           </Routes>
         </Suspense>

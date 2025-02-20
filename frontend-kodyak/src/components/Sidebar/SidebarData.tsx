@@ -1,14 +1,21 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SettingsIcon from '@mui/icons-material/Settings';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 function SidebarData() {
   return (
     [
         {
+            title: "Avisos",
+            icon: <NewspaperIcon />,
+            link: "/avisos"
+        },
+        {
             title: "Dashboard",
             icon: <DashboardIcon />,
-            link: "/dashboard"
+            link: "/nao_implementado"
         },
         {
             title: "Cadastros",
@@ -19,6 +26,11 @@ function SidebarData() {
             title: "Pedidos",
             icon: <ShoppingCartIcon />,
             link: "/pedidos"
+        },
+        {
+            title: "Config.",
+            icon: <SettingsIcon />,
+            link: "/nao_implementado"
         }
     ]
   )
