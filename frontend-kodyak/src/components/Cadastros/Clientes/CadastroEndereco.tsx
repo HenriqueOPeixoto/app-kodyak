@@ -1,6 +1,6 @@
-import { Button, Divider, Snackbar, TextField } from "@mui/material"
+import { Autocomplete, Button, Divider, Snackbar, TextField } from "@mui/material"
 import axios from "axios"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { PatternFormat } from "react-number-format"
 import { Link, useParams } from "react-router-dom"
 import DialogInativar from "../Dialogs/DialogInativar"
@@ -12,6 +12,19 @@ import './styles/CadastroEndereco.css'
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
+interface Estado {
+    id: number,
+    nome: string,
+    sigla: string,
+    regiao: number
+}
+
+interface Cidade {
+    id: number,
+    nome: string,
+    uf: number
+}
+
 export default function CadastroEndereco() {
     const { enderecoId, clienteId } = useParams()
     const [inscricaoEstadual, setInscricaoEstadual] = useState('')
@@ -22,13 +35,15 @@ export default function CadastroEndereco() {
     const [logradouro, setLogradouro] = useState('')
     const [numero, setNumero] = useState('')
     const [bairro, setBairro] = useState('')
-    const [cidade, setCidade] = useState('')
-    const [estado, setEstado] = useState('')
+    const [cidade, setCidade] = useState<Cidade | null>(null)
+    const [estado, setEstado] = useState<Estado | null>(null)
     const [inativo, setInativo] = useState(false)
     const [descricao, setDescricao,] = useState('')
     const [complementoCnpj, setComplementoCnpj] = useState('')
     const [digitoCnpj, setDigitoCnpj] = useState('')
 
+    const [listaEstados, setListaEstados] = useState<Estado[]>([])
+    const [listaCidades, setListaCidades] = useState<Cidade[]>([])
 
     const [nomeCliente, setNomeCliente] = useState('')
     const [desabilitarCamposPJ, setDesabilitarCamposPJ] = useState(false)
@@ -39,6 +54,11 @@ export default function CadastroEndereco() {
     const [btnInativarText, setBtnInativarText] = useState('Inativar')
 
     useEffect(() => {
+        // Busca UFs
+        axios.get(`${backendBaseURL}/api/localidades/unidades_federativas`)
+            .then((response) => { setListaEstados(response.data) })
+            .catch((error) => { console.error('Não foi possível listar as UFs: ' + error)})
+
         axios.get(`${backendBaseURL}/api/clientes/${clienteId}`)
             .then(response => {
                 if (response.data.length > 0) {
@@ -82,12 +102,27 @@ export default function CadastroEndereco() {
                         setLogradouro(logradouro)
                         setNumero(numero)
                         setBairro(bairro)
-                        setCidade(cidade)
-                        setEstado(estado)
                         setInativo(inativo)
                         setDescricao(descricao)
                         setComplementoCnpj(complemento_cnpj)
                         setDigitoCnpj(digito_cnpj)
+
+                        if (estado)
+                        {
+                            axios.get(`${backendBaseURL}/api/localidades/unidades_federativas/${estado}`)
+                                .then((response) => { 
+                                    setEstado(response.data[0])
+                                })
+                                .catch((error) => { console.error('Não foi possível buscar a UF deste endereço: ' + error)})
+                        }
+                        
+                        if (cidade) {
+                            axios.get(`${backendBaseURL}/api/localidades/municipios/${cidade}`)
+                                .then((response) => { 
+                                    setCidade(response.data[0])
+                                })
+                                .catch((error) => { console.error('Não foi possível buscar a UF deste endereço: ' + error)})
+                        }
                     }
                 })
                 .catch(error => {
@@ -95,6 +130,15 @@ export default function CadastroEndereco() {
                 })
         }
     }, [enderecoId])
+
+    React.useEffect(() => {
+        if (estado)
+        {
+            axios.get(`${backendBaseURL}/api/localidades/unidades_federativas/${estado?.id}/municipios/`)
+                .then((response) => { setListaCidades(response.data) })
+                .catch((error) => { console.error('Não foi possível listar as cidades: ' + error)})
+        }
+    }, [estado])
 
     const handleSubmit = () => {
         const formData = {
@@ -106,8 +150,8 @@ export default function CadastroEndereco() {
             logradouro,
             numero,
             bairro,
-            cidade,
-            estado,
+            cidade: cidade?.id,
+            estado: estado?.id,
             cliente: clienteId,
             inativo,
             descricao,
@@ -136,8 +180,8 @@ export default function CadastroEndereco() {
                     setLogradouro('')
                     setNumero('')
                     setBairro('')
-                    setCidade('')
-                    setEstado('')
+                    setCidade(null)
+                    setEstado(null)
                     setInativo(false)
                     setDescricao('')
                     setComplementoCnpj('')
@@ -331,17 +375,34 @@ export default function CadastroEndereco() {
                     value={bairro}
                     onChange={event => setBairro(event.target.value)}
                 />
-                <TextField
-                    id="txtCidade"
-                    label="Cidade"
-                    value={cidade}
-                    onChange={event => setCidade(event.target.value)}
-                />
-                <TextField
-                    id="txtEstado"
-                    label="Estado"
+                <Autocomplete
+                    className='TxtUF'
+                    disablePortal
+                    options={listaEstados}
+                    sx={{ width: 100 }}
                     value={estado}
-                    onChange={event => setEstado(event.target.value)}
+                    getOptionLabel={(option) => option.sigla} // Como exibir cada opção
+                    onChange={(_event, novoEstado) => {
+                        if (estado?.id !== novoEstado?.id) {
+                            setEstado(novoEstado)
+                            setCidade(null)
+                        }
+                    }}
+                    renderInput={(params) => <TextField required {...params} label="UF" />}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                />
+                <Autocomplete
+                    className='TxtCidade'
+                    disablePortal
+                    options={listaCidades}
+                    sx={{ width: 300 }}
+                    value={cidade}
+                    getOptionLabel={(option) => option.nome} // Como exibir cada opção
+                    onChange={(_event, novaCidade) => {
+                        setCidade(novaCidade)
+                    }}
+                    renderInput={(params) => <TextField required {...params} label="Cidade" />}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
                 />
             </div>
             <div className='FormButtons'>
