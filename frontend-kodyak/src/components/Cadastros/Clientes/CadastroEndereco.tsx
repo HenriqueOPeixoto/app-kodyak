@@ -134,7 +134,11 @@ export default function CadastroEndereco() {
     React.useEffect(() => {
         if (estado)
         {
-            axios.get(`${backendBaseURL}/api/localidades/unidades_federativas/${estado?.id}/municipios/`)
+            axios.get(`${backendBaseURL}/api/localidades/municipios/`, {
+                params: {
+                    id_uf: estado.id
+                }
+            })
                 .then((response) => { setListaCidades(response.data) })
                 .catch((error) => { console.error('Não foi possível listar as cidades: ' + error)})
         }
