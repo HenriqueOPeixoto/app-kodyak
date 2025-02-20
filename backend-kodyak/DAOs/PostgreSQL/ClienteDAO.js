@@ -91,7 +91,8 @@ const updateCliente = (request, response) => {
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}
 
     query += updates.join(', ')
-    query += ' WHERE ID = ' + id
+    params.push(id)
+    query += ' WHERE ID = $' + params.length
 
     pool.query(query, params)
     .then(() => { response.status(200).send('Cliente atualizado.') })

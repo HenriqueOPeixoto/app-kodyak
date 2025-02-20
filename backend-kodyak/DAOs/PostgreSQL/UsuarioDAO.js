@@ -86,7 +86,8 @@ const updateUsuario = async (request, response) => {
 
     query += updates.join(', ')
 
-    query += ' WHERE ID = ' + (id)
+    params.push(id)
+    query += ' WHERE ID = $' + params.length
 
     pool.query(query, params,
         (error, results) => {
