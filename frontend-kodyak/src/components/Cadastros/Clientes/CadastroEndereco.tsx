@@ -16,13 +16,13 @@ interface Estado {
     id: number,
     nome: string,
     sigla: string,
-    regiao: number
+    regiao: string
 }
 
 interface Cidade {
-    id: number,
-    nome: string,
-    uf: number
+    id_municipio: number,
+    nome_municipio: string,
+    id_uf: number
 }
 
 export default function CadastroEndereco() {
@@ -87,7 +87,6 @@ export default function CadastroEndereco() {
                             numero,
                             bairro,
                             cidade,
-                            estado,
                             inativo,
                             descricao,
                             complemento_cnpj,
@@ -106,22 +105,28 @@ export default function CadastroEndereco() {
                         setDescricao(descricao)
                         setComplementoCnpj(complemento_cnpj)
                         setDigitoCnpj(digito_cnpj)
-
-                        if (estado)
-                        {
-                            axios.get(`${backendBaseURL}/api/localidades/unidades_federativas/${estado}`)
-                                .then((response) => { 
-                                    setEstado(response.data[0])
-                                })
-                                .catch((error) => { console.error('Não foi possível buscar a UF deste endereço: ' + error)})
-                        }
                         
                         if (cidade) {
-                            axios.get(`${backendBaseURL}/api/localidades/municipios/${cidade}`)
+                            axios.get(`${backendBaseURL}/api/localidades/municipios/${cidade}/view`)
                                 .then((response) => { 
-                                    setCidade(response.data[0])
+                                    const cidadeData: Cidade = {
+                                        id_municipio: response.data[0].id_municipio,
+                                        nome_municipio: response.data[0].nome_municipio,
+                                        id_uf: response.data[0].id_uf
+                                    }
+                                    setCidade(cidadeData)
+
+                                    const estadoData: Estado = {
+                                        id: response.data[0].id_uf,
+                                        nome: response.data[0].nome_uf,
+                                        sigla: response.data[0].sigla_uf,
+                                        regiao: response.data[0].regiao_uf
+                                    }
+
+                                    setEstado(estadoData)
+
                                 })
-                                .catch((error) => { console.error('Não foi possível buscar a UF deste endereço: ' + error)})
+                                .catch((error) => { console.error('Não foi possível buscar a cidade deste endereço: ' + error)})
                         }
                     }
                 })
@@ -154,8 +159,7 @@ export default function CadastroEndereco() {
             logradouro,
             numero,
             bairro,
-            cidade: cidade?.id,
-            estado: estado?.id,
+            cidade: cidade?.id_municipio,
             cliente: clienteId,
             inativo,
             descricao,
@@ -401,12 +405,12 @@ export default function CadastroEndereco() {
                     options={listaCidades}
                     sx={{ width: 300 }}
                     value={cidade}
-                    getOptionLabel={(option) => option.nome} // Como exibir cada opção
+                    getOptionLabel={(option) => option.nome_municipio} // Como exibir cada opção
                     onChange={(_event, novaCidade) => {
                         setCidade(novaCidade)
                     }}
                     renderInput={(params) => <TextField required {...params} label="Cidade" />}
-                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                    isOptionEqualToValue={(option, value) => option.id_municipio === value?.id_municipio}
                 />
             </div>
             <div className='FormButtons'>
