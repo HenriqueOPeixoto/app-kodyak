@@ -5,6 +5,6 @@ const LocalidadesController = require('../controllers/LocalidadesController');
 router.get('/unidades_federativas', LocalidadesController.getUnidadesFederativas);
 router.get('/unidades_federativas/:id', LocalidadesController.getUnidadeFederativaById);
 router.get('/municipios', LocalidadesController.getMunicipios);
-router.get('/municipios/:id', LocalidadesController.getMunicipioById);
+router.get('/municipios/:id/view', LocalidadesController.getMunicipioViewById);
 
 module.exports = router;

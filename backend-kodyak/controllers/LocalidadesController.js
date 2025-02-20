@@ -12,6 +12,6 @@ exports.getUnidadeFederativaById = (req, res) => {
     LocalidadesDAO.getUnidadeFederativaById(req, res);
 };
 
-exports.getMunicipioById = (req, res) => {
-    LocalidadesDAO.getMunicipioById(req, res);
+exports.getMunicipioViewById = (req, res) => {
+    LocalidadesDAO.getMunicipioViewById(req, res);
 };
