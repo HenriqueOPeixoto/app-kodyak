@@ -119,51 +119,52 @@ const updateEndereco = (request, response) => {
         params.push(inscricao_estadual)
         updates.push(' inscricao_estadual = $' + params.length)
     }*/
-    if (telefone_fixo) {
+
+    if (telefone_fixo !== undefined) {
         params.push(telefone_fixo)
         updates.push(' telefone_fixo = $' + params.length)
     }
-    if (telefone_celular) {
+    if (telefone_celular !== undefined) {
         params.push(telefone_celular)
         updates.push(' telefone_celular = $' + params.length)
     }
-    if (email) {
+    if (email !== undefined) {
         params.push(email)
         updates.push(' email = $' + params.length)
     }
-    if (cep) {
+    if (cep !== undefined) {
         params.push(cep)
         updates.push(' cep = $' + params.length)
     }
-    if (logradouro) {
+    if (logradouro !== undefined) {
         params.push(logradouro)
         updates.push(' logradouro = $' + params.length)
     }
-    if (numero) {
+    if (numero !== undefined) {
         params.push(numero)
         updates.push(' numero = $' + params.length)
     }
-    if (bairro) {
+    if (bairro !== undefined) {
         params.push(bairro)
         updates.push(' bairro = $' + params.length)
     }
-    if (estado) {
+    if (estado !== undefined) {
         params.push(estado)
         updates.push(' estado = $' + params.length)
     }
-    if (cidade) {
+    if (cidade !== undefined) {
         params.push(cidade)
         updates.push(' cidade = $' + params.length)
     }
-    if (descricao) {
+    if (descricao !== undefined) {
         params.push(descricao)
         updates.push(' descricao = $' + params.length)
     }
-    if (complemento_cnpj) {
+    if (complemento_cnpj !== undefined) {
         params.push(complemento_cnpj)
         updates.push(' complemento_cnpj = $' + params.length)
     }
-    if (digito_cnpj) {
+    if (digito_cnpj !== undefined) {
         params.push(digito_cnpj)
         updates.push(' digito_cnpj = $' + params.length)
     }
