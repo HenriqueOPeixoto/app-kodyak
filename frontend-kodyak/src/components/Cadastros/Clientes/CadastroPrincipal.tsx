@@ -60,6 +60,8 @@ export default function CadastroPrincipal() {
             setMsgTextoErro('Raíz do CNPJ precisa conter 8 dígitos')
             setInputErrado(true)
             return
+        } else if ((razaoSocial === '') || (nome === '')) {
+            handleAbrirSnack('Nome e Razão Social são campos obrigatórios!')
         } else {
             const formData = {
                 razao_social: razaoSocial,
@@ -162,7 +164,7 @@ export default function CadastroPrincipal() {
                 onChange={event => setRazaoSocial(event.target.value)}
             />
 
-            <FormControl sx={{marginLeft: '15px'}}>
+            <FormControl required sx={{marginLeft: '15px'}}>
                 <FormLabel id="tipo-pessoa-radio-label" required>Tipo</FormLabel>
                 <RadioGroup
                     aria-labelledby="tipo-pessoa-radio-buttons-group-label"

@@ -167,40 +167,46 @@ export default function CadastroEndereco() {
             digito_cnpj: digitoCnpj
         }
 
-        if (enderecoId) {
-            axios.put(`${backendBaseURL}/api/clientes_enderecos/${enderecoId}`, formData)
-                .then(() => {
-                    handleAbrirSnack('Endereço atualizado com sucesso!')
-                })
-                .catch(() => {
-                    handleAbrirSnack('Ocorreu um erro ao atualizar o endereço.')
-                })
-        } else {
-            axios.post(`${backendBaseURL}/api/clientes_enderecos/`, formData)
-                .then(() => {
-                    handleAbrirSnack('Cliente cadastrado com sucesso.')
+        const chavesVerificarNulo: (keyof typeof formData)[] = ['inscricao_estadual', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'descricao']
+        const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '')
 
-                    setInscricaoEstadual('')
-                    setTelefoneFixo('')
-                    setTelefoneCelular('')
-                    setEmail('')
-                    setCep('')
-                    setLogradouro('')
-                    setNumero('')
-                    setBairro('')
-                    setCidade(null)
-                    setEstado(null)
-                    setInativo(false)
-                    setDescricao('')
-                    setComplementoCnpj('')
-                    setDigitoCnpj('')
-                })
-                .catch(() => {
-                    handleAbrirSnack('Não foi possível cadastrar o endereço.')
-                })
-
-
+        if (obrigatoriosNulos.length > 0) handleAbrirSnack('Os seguintes campos obrigatórios não foram preenchidos: ' + obrigatoriosNulos.join(', ').toUpperCase())
+        else {
+            if (enderecoId) {
+                axios.put(`${backendBaseURL}/api/clientes_enderecos/${enderecoId}`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Endereço atualizado com sucesso!')
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Ocorreu um erro ao atualizar o endereço.')
+                    })
+            } else {
+                axios.post(`${backendBaseURL}/api/clientes_enderecos/`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Cliente cadastrado com sucesso.')
+    
+                        setInscricaoEstadual('')
+                        setTelefoneFixo('')
+                        setTelefoneCelular('')
+                        setEmail('')
+                        setCep('')
+                        setLogradouro('')
+                        setNumero('')
+                        setBairro('')
+                        setCidade(null)
+                        setEstado(null)
+                        setInativo(false)
+                        setDescricao('')
+                        setComplementoCnpj('')
+                        setDigitoCnpj('')
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Não foi possível cadastrar o endereço.')
+                    })
+            }
         }
+
+        
 
     }
 
@@ -352,6 +358,7 @@ export default function CadastroEndereco() {
                     customInput={TextField}
                     format="#####-###"
                     mask="_"
+                    required
                     onValueChange={(values) => {
                         const floatValue = values.floatValue;
                         setCep(floatValue !== undefined ? floatValue.toString() : '');
@@ -365,6 +372,7 @@ export default function CadastroEndereco() {
                     className="TxtLogradouro"
                     label="Logradouro"
                     value={logradouro}
+                    required
                     onChange={event => setLogradouro(event.target.value)}
                 />
                 <TextField
@@ -372,6 +380,7 @@ export default function CadastroEndereco() {
                     className="TxtNumero"
                     label="Número"
                     value={numero}
+                    required
                     onChange={event => setNumero(event.target.value)}
                 />
 
@@ -381,6 +390,7 @@ export default function CadastroEndereco() {
                     id="txtBairro"
                     label="Bairro"
                     value={bairro}
+                    required
                     onChange={event => setBairro(event.target.value)}
                 />
                 <Autocomplete
