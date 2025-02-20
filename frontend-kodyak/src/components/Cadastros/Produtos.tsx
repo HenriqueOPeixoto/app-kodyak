@@ -22,12 +22,12 @@ type FamiliaProdutos = {
 export default function Produtos() {
     const { id } = useParams()
     const [nome, setNome] = useState('')
-    const [valor, setValor] = useState(0.0)
+    const [valor, setValor] = useState<string>('')
     const [indicacoes, setIndicacoes] = useState('')
     const [modoUso, setModoUso] = useState('')
     const [restricoes, setRestricoes] = useState('')
-    const [peso, setPeso] = useState(0.0)
-    const [consumoDiario, setConsumoDiario] = useState(0.0)
+    const [peso, setPeso] = useState<string>('')
+    const [consumoDiario, setConsumoDiario] = useState<string>('')
     const [familiaProdutos, setFamiliaProdutos] = useState<string>('')
     const [inativo, setInativo] = useState(false)
 
@@ -79,34 +79,39 @@ export default function Produtos() {
             nome, valor, indicacoes, modo_uso: modoUso, restricoes, peso, consumo_diario: consumoDiario, familia_produtos: familiaProdutos, inativo
         }
 
-        if (id) {
-            axios.put(`${backendBaseURL}/api/produtos/${id}`, formData)
-                .then(() => {
-                    handleAbrirSnack('Produto atualizado com sucesso!')
-                })
-                .catch(() => {
-                    handleAbrirSnack('Ocorreu um erro ao atualizar o produto.')
-                })
-        } else {
-            axios.post(`${backendBaseURL}/api/produtos/`, formData)
-                .then(() => {
-                    handleAbrirSnack('Produto cadastrado com sucesso.')
+        const chavesVerificarNulo: (keyof typeof formData)[] = ['nome', 'valor', 'peso', 'consumo_diario', 'familia_produtos']
+        const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '')
 
-                    setNome('')
-                    setValor(0.0)
-                    setIndicacoes('')
-                    setModoUso('')
-                    setRestricoes('')
-                    setPeso(0.0)
-                    setConsumoDiario(0.0)
-                    setFamiliaProdutos('')
-                    setInativo(false)
-                })
-                .catch(() => {
-                    handleAbrirSnack('Não foi possível cadastrar o produto.')
-                })
+        if (obrigatoriosNulos.length > 0) handleAbrirSnack('Os seguintes campos obrigatórios não foram preenchidos: ' + obrigatoriosNulos.join(', ').toUpperCase())
+        else {
+            if (id) {
+                axios.put(`${backendBaseURL}/api/produtos/${id}`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Produto atualizado com sucesso!')
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Ocorreu um erro ao atualizar o produto.')
+                    })
+            } else {
+                axios.post(`${backendBaseURL}/api/produtos/`, formData)
+                    .then(() => {
+                        handleAbrirSnack('Produto cadastrado com sucesso.')
+    
+                        setNome('')
+                        setValor('')
+                        setIndicacoes('')
+                        setModoUso('')
+                        setRestricoes('')
+                        setPeso('')
+                        setConsumoDiario('')
+                        setFamiliaProdutos('')
+                        setInativo(false)
+                    })
+                    .catch(() => {
+                        handleAbrirSnack('Não foi possível cadastrar o produto.')
+                    })
+            }
         }
-
     }
 
     const handleAbrirDialogInativar = () => {
@@ -185,7 +190,7 @@ export default function Produtos() {
                         decimalSeparator=","
                         value={valor}
                         prefix="R$ "
-                        onValueChange={(values) => setValor(values.floatValue as number)}
+                        onValueChange={(values) => setValor(values.floatValue?.toString() || '')}
                     />
                     <NumericFormat 
                         label="Peso"
@@ -194,7 +199,7 @@ export default function Produtos() {
                         decimalSeparator=","
                         value={peso}
                         suffix=" kg"
-                        onValueChange={(values) => setPeso(values.floatValue as number)}
+                        onValueChange={(values) => setPeso(values.floatValue?.toString() || '')}
                     />
                     <NumericFormat 
                         label="Consumo Diário"
@@ -202,7 +207,7 @@ export default function Produtos() {
                         thousandSeparator=""
                         decimalSeparator=","
                         value={consumoDiario}
-                        onValueChange={(values) => setConsumoDiario(values.floatValue as number)}
+                        onValueChange={(values) => setConsumoDiario(values.floatValue?.toString() || '')}
                     />
                 </div>
                 <div className="ContainerTextos">
@@ -235,7 +240,7 @@ export default function Produtos() {
                         />
                 </div>
                 <div>
-                    <FormControl className="SeletorFamilia" fullWidth>
+                    <FormControl className="SeletorFamilia" sx={{marginBottom:'10px', marginLeft:'9px'}}>
                         <InputLabel id="lblFamiliaProdutos">Família de Produtos</InputLabel>
                         <Select
                             labelId="lblFamiliaProdutos"
