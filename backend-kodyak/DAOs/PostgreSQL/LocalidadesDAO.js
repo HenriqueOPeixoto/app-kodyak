@@ -14,10 +14,18 @@ const getUnidadeFederativaById = (request, response) => {
     .catch((error) => { response.status(501).send('Não foi possível buscar a UF. Erro: ' + error)})
 }
 
-const getMunicipiosByUnidadeFederativa = (request, response) => {
-    const id = request.params.id
+const getMunicipios = (request, response) => {
+    const { id_uf } = request.query
 
-    pool.query('SELECT * FROM MUNICIPIOS_POR_UF WHERE ID_UF = $1', [id])
+    let query = 'SELECT * FROM MUNICIPIOS_POR_UF WHERE 1=1'
+    const params = []
+
+    if (id_uf) {
+        params.push(id_uf)
+        query += ' AND ID_UF = $' + params.length
+    }
+
+    pool.query(query, params)
     .then((results) => { response.status(200).send(results.rows) })
     .catch((error) => { response.status(501).send('Não foi possível listar os municípios. Erro: ' + error)})
 }
@@ -33,6 +41,6 @@ const getMunicipioById = (request, response) => {
 module.exports = {
     getUnidadeFederativaById,
     getUnidadesFederativas,
-    getMunicipiosByUnidadeFederativa,
+    getMunicipios,
     getMunicipioById
 }

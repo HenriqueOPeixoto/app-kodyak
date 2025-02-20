@@ -4,8 +4,8 @@ exports.getUnidadesFederativas = (req, res) => {
     LocalidadesDAO.getUnidadesFederativas(req, res);
 };
 
-exports.getMunicipiosByUnidadeFederativa = (req, res) => {
-    LocalidadesDAO.getMunicipiosByUnidadeFederativa(req, res);
+exports.getMunicipios = (req, res) => {
+    LocalidadesDAO.getMunicipios(req, res);
 };
 
 exports.getUnidadeFederativaById = (req, res) => {

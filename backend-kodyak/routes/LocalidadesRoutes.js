@@ -4,7 +4,7 @@ const LocalidadesController = require('../controllers/LocalidadesController');
 
 router.get('/unidades_federativas', LocalidadesController.getUnidadesFederativas);
 router.get('/unidades_federativas/:id', LocalidadesController.getUnidadeFederativaById);
-router.get('/unidades_federativas/:id/municipios', LocalidadesController.getMunicipiosByUnidadeFederativa);
+router.get('/municipios', LocalidadesController.getMunicipios);
 router.get('/municipios/:id', LocalidadesController.getMunicipioById);
 
 module.exports = router;
