@@ -9,6 +9,10 @@ exports.getEnderecosByCliente = (req, res) => {
     ClientesEnderecosDAO.getEnderecosByCliente(req, res);
 }
 
+exports.getEnderecosViewByCliente = (req, res) => {
+    ClientesEnderecosDAO.getEnderecosViewByCliente(req, res);
+}
+
 exports.updateEndereco = (req, res) => {
     ClientesEnderecosDAO.updateEndereco(req, res);
 }

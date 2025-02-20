@@ -4,6 +4,7 @@ const ClientesEnderecosController = require('../controllers/ClientesEnderecosCon
 
 router.post('/', ClientesEnderecosController.createEndereco);
 router.get('/', ClientesEnderecosController.getEnderecosByCliente);
+router.get('/view', ClientesEnderecosController.getEnderecosViewByCliente);
 router.get('/:id', ClientesEnderecosController.getEnderecoById);
 router.put('/:id', ClientesEnderecosController.updateEndereco);
 router.patch('/:id/alterarStatus', ClientesEnderecosController.alterarStatusEndereco);

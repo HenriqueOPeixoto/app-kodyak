@@ -71,6 +71,27 @@ const getEnderecosByCliente = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível listar os endereços. Erro: ' + error)})
 }
 
+const getEnderecosViewByCliente = (request, response) => {
+    const { cliente, inativo } = request.query
+
+    if (!cliente) {
+        return response.status(400).send('Cliente não informado.')
+    }
+
+    let query = 'SELECT * FROM VW_CLIENTES_ENDERECOS WHERE CLIENTE = $1'
+    const params = [cliente]
+    
+    if (inativo) {
+        query += ' AND INATIVO = $2'
+        params.push(inativo)
+    }
+
+
+    pool.query(query, params)
+    .then((results) => { response.status(200).send(results.rows) })
+    .catch((error) => { response.status(500).send('Não foi possível listar os endereços. Erro: ' + error)})
+}
+
 const updateEndereco = (request, response) => {
     const id = parseInt(request.params.id)
 
@@ -186,6 +207,7 @@ const alterarStatusEndereco = (request, response) => {
 module.exports = {
     createEndereco,
     getEnderecosByCliente,
+    getEnderecosViewByCliente,
     updateEndereco,
     getEnderecoById,
     alterarStatusEndereco
