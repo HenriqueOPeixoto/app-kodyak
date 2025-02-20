@@ -31,7 +31,7 @@ const updatePedido = (request, response) => {
         params.push(status)
         updates.push(' status = $' + params.length)
     }
-    if (observacoes) {
+    if (observacoes !== undefined) {
         params.push(observacoes)
         updates.push(' observacoes = $' + params.length)
     }

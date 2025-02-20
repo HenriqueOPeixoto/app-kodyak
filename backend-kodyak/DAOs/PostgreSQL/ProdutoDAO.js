@@ -89,17 +89,17 @@ const updateProduto = (request, response) => {
         updates.push(' valor = $' + params.length)
     }
 
-    if (indicacoes) {
+    if (indicacoes !== undefined) {
         params.push(indicacoes)
         updates.push(' indicacoes = $' + params.length)
     }
 
-    if (modo_uso) {
+    if (modo_uso !== undefined) {
         params.push(modo_uso)
         updates.push(' modo_uso = $' + params.length)
     }
 
-    if (restricoes) {
+    if (restricoes !== undefined) {
         params.push(restricoes)
         updates.push(' restricoes = $' + params.length)
     }

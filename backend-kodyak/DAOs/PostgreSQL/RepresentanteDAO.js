@@ -116,15 +116,15 @@ const updateRepresentante = (request, response) => {
         params.push(estado)
         updates.push(' estado = $' + params.length)
     }
-    if (banco) {
+    if (banco !== undefined) {
         params.push(banco)
         updates.push(' banco = $' + params.length)
     }
-    if (conta) {
+    if (conta !== undefined) {
         params.push(conta)
         updates.push(' conta = $' + params.length)
     }
-    if (agencia) {
+    if (agencia !== undefined) {
         params.push(agencia)
         updates.push(' agencia = $' + params.length)
     }

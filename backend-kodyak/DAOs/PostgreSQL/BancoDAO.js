@@ -30,7 +30,7 @@ const updateBanco = (request, response) => {
         params.push(nome)
         updates.push(' nome = $' + params.length)
     }
-    if (sigla) {
+    if (sigla !== undefined) {
         params.push(sigla)
         updates.push(' sigla = $' + params.length)
     }
