@@ -28,7 +28,7 @@ export default function Produtos() {
     const [restricoes, setRestricoes] = useState('')
     const [peso, setPeso] = useState(0.0)
     const [consumoDiario, setConsumoDiario] = useState(0.0)
-    const [familiaProdutos, setFamiliaProdutos] = useState(id ? '' : '1')
+    const [familiaProdutos, setFamiliaProdutos] = useState<string>('')
     const [inativo, setInativo] = useState(false)
 
     // Usado para armazenar todas as famílias cadastradas
@@ -240,10 +240,11 @@ export default function Produtos() {
                         <Select
                             labelId="lblFamiliaProdutos"
                             id="selFamiliaProdutos"
-                            value={familiaProdutos}
+                            value={familiaProdutos||''}
                             label="Família de Produtos"
                             onChange={handleChangeFamiliaProdutos}
                         >
+                            <MenuItem disabled sx={{justifyContent: 'center'}} value=""></MenuItem>
                             {familiasProdutos.map((familia_produto: FamiliaProdutos) => (
                                 <MenuItem sx={{justifyContent: 'center'}} key={familia_produto.id} value={familia_produto.id}>{familia_produto.nome}</MenuItem>
                             ))}
