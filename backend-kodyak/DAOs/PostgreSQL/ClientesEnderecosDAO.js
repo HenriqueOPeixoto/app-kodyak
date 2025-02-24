@@ -11,7 +11,6 @@ const createEndereco = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         cliente,
         descricao,
         complemento_cnpj,
@@ -21,10 +20,10 @@ const createEndereco = (request, response) => {
     const query =
         `INSERT INTO CLIENTES_ENDERECOS (
             inscricao_estadual, telefone_fixo, telefone_celular,
-        email, cep, logradouro, numero, bairro, cidade, estado, cliente,
+        email, cep, logradouro, numero, bairro, cidade, cliente,
         descricao, complemento_cnpj, digito_cnpj
         ) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         RETURNING ID`
     
     const values = [
@@ -37,7 +36,6 @@ const createEndereco = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         cliente,
         descricao,
         complemento_cnpj,
@@ -105,7 +103,6 @@ const updateEndereco = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         descricao,
         complemento_cnpj,
         digito_cnpj
@@ -147,10 +144,6 @@ const updateEndereco = (request, response) => {
     if (bairro !== undefined) {
         params.push(bairro)
         updates.push(' bairro = $' + params.length)
-    }
-    if (estado !== undefined) {
-        params.push(estado)
-        updates.push(' estado = $' + params.length)
     }
     if (cidade !== undefined) {
         params.push(cidade)
