@@ -167,8 +167,8 @@ export default function CadastroEndereco() {
             digito_cnpj: digitoCnpj
         }
 
-        const chavesVerificarNulo: (keyof typeof formData)[] = ['inscricao_estadual', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'descricao']
-        const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '')
+        const chavesVerificarNulo: (keyof typeof formData)[] = ['inscricao_estadual', 'telefone_celular', 'cep', 'logradouro', 'numero', 'bairro', 'cidade', 'descricao']
+        const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '' || formData[chave] === null || formData[chave] === undefined)
 
         if (obrigatoriosNulos.length > 0) handleAbrirSnack('Os seguintes campos obrigatórios não foram preenchidos: ' + obrigatoriosNulos.join(', ').toUpperCase())
         else {
@@ -334,6 +334,7 @@ export default function CadastroEndereco() {
                     customInput={TextField}
                     format="(##) # ####-####"
                     mask="_"
+                    required
                     onValueChange={(values) => {
                         const floatValue = values.floatValue;
                         setTelefoneCelular(floatValue !== undefined ? floatValue.toString() : '');
