@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radi
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DialogInativar from "../Dialogs/DialogInativar";
 import { DoNotDisturb } from "@mui/icons-material";
 import SaveIcon from "@mui/icons-material/Save"
@@ -11,6 +11,8 @@ import EditIcon from '@mui/icons-material/Edit';
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function CadastroPrincipal() {
+    const navigate = useNavigate();
+
     const { id } = useParams()
     const [razaoSocial, setRazaoSocial] = useState('')
     const [nome, setNome] = useState('')
@@ -82,14 +84,9 @@ export default function CadastroPrincipal() {
                     })
             } else {
                 axios.put(`${backendBaseURL}/api/clientes/`, formData)
-                    .then(() => {
+                    .then((response) => {
                         handleAbrirSnack('Cliente cadastrado com sucesso.')
-    
-                        setRazaoSocial('')
-                        setNome('')
-                        setTipoPessoa('')
-                        setDocumento('')
-                        setInativo(false)
+                        navigate('/cadastros/editar_cliente/' + response.data.id)
                     })
                     .catch(() => {
                         handleAbrirSnack('Não foi possível cadastrar o cliente.')
