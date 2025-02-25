@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Snackbar, TextField } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Snackbar, TextField, Tooltip } from "@mui/material";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import DialogInativar from "../Dialogs/DialogInativar";
 import { DoNotDisturb } from "@mui/icons-material";
 import SaveIcon from "@mui/icons-material/Save"
+import EditIcon from '@mui/icons-material/Edit';
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
@@ -156,13 +157,21 @@ export default function CadastroPrincipal() {
                 required
                 onChange={event => setNome(event.target.value.toUpperCase())}
             />
-            <TextField
-                id="txtRazaoSocial"
-                label="Razão Social"
-                value={razaoSocial}
-                required
-                onChange={event => setRazaoSocial(event.target.value.toUpperCase())}
-            />
+            <div style={{display:'flex', alignItems: 'center'}}>
+                <TextField
+                    id="txtRazaoSocial"
+                    label="Razão Social"
+                    value={razaoSocial}
+                    required
+                    onChange={event => setRazaoSocial(event.target.value.toUpperCase())}
+                />
+                {/* Preenche campo Razão Social com o que foi informado no campo Nome. */}
+                <Tooltip title="Preencher Automaticamente">
+                    <IconButton color="primary" onClick={() => setRazaoSocial(nome)}>
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+            </div>
 
             <FormControl required sx={{marginLeft: '15px'}}>
                 <FormLabel id="tipo-pessoa-radio-label" required>Tipo</FormLabel>
