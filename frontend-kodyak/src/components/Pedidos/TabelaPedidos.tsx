@@ -4,6 +4,10 @@ import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import axios from "axios"
 import { PatternFormat } from "react-number-format"
+import dayjs from "dayjs"
+import customParseFormat from "dayjs/plugin/customParseFormat"
+
+dayjs.extend(customParseFormat)
 
 interface Pedido {
     id: number,
@@ -49,7 +53,7 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
         razao_social: razao_social,
         id: id,
         status: statusPedido,
-        data: data
+        data: dayjs(data, 'DD/MM/YYYY', true).isValid() ? data : ''
     }})
       .then(response => {
         setPedidos(response.data);
