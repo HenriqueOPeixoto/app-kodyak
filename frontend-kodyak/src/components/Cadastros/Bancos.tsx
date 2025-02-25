@@ -148,7 +148,7 @@ export default function Bancos() {
                     label="Nome"
                     value={nome}
                     defaultValue=""
-                    onChange={event => setNome(event.target.value)}
+                    onChange={event => setNome(event.target.value.toUpperCase())}
                 />
                 <TextField
                     required
@@ -156,7 +156,7 @@ export default function Bancos() {
                     label="Sigla"
                     value={sigla}
                     defaultValue=""
-                    onChange={event => setSigla(event.target.value)}
+                    onChange={event => setSigla(event.target.value.toUpperCase())}
                 />
             </div>
             <div className='FormButtons'>

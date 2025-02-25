@@ -152,7 +152,7 @@ export default function Motoristas() {
           label="Nome Completo"
           value={nome}
           defaultValue=""
-          onChange={event => setNome(event.target.value)}
+          onChange={event => setNome(event.target.value.toUpperCase())}
         />
         <TextField
           required
@@ -160,7 +160,7 @@ export default function Motoristas() {
           label="Placa"
           value={placa}
           defaultValue=""
-          onChange={event => setPlaca(event.target.value)}
+          onChange={event => setPlaca(event.target.value.toUpperCase())}
         />
         <TextField
           required
@@ -175,7 +175,7 @@ export default function Motoristas() {
             id='vinculo'
             value={vinculo}
             label='Vínculo com o tipo de caminhão'
-            onChange={event => setVinculo(event.target.value)}
+            onChange={event => setVinculo(event.target.value.toUpperCase())}
         />
         </div>
         <div className='ContainerTipoCaminhao'>

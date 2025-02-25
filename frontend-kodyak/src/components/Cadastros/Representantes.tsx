@@ -239,7 +239,7 @@ export default function Representantes() {
           label="Nome"
           value={nome}
           defaultValue=""
-          onChange={event => setNome(event.target.value)}
+          onChange={event => setNome(event.target.value.toUpperCase())}
         />
 
         <div className="FormDocumento">
@@ -313,7 +313,7 @@ export default function Representantes() {
           label="Logradouro"
           value={logradouro}
           defaultValue=""
-          onChange={event => setLogradouro(event.target.value)}
+          onChange={event => setLogradouro(event.target.value.toUpperCase())}
         />
         <TextField
           id="txtNumero"
@@ -327,13 +327,19 @@ export default function Representantes() {
           label="Bairro"
           value={bairro}
           defaultValue=""
-          onChange={event => setBairro(event.target.value)}
+          onChange={event => setBairro(event.target.value.toUpperCase())}
         />
+        {/* 
+          Os campos cidade e estado estão desabilitados pois estão em
+          desacordo com o que foi implementado no cadastro de clientes.
+          Precisa buscar a cidade da tabela MUNICIPIOS no banco de dados.
+        */}
         <TextField
           id="txtCidade"
           label="Cidade"
           value={cidade}
           defaultValue=""
+          disabled
           onChange={event => setCidade(event.target.value)}
         />
         <TextField
@@ -341,6 +347,7 @@ export default function Representantes() {
           label="Estado"
           value={estado}
           defaultValue=""
+          disabled
           onChange={event => setEstado(event.target.value)}
         />
         <div className="ContainerSeletor">
