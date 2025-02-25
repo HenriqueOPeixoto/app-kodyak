@@ -23,7 +23,10 @@ const createCliente = (request, response) => {
     ]
 
     pool.query(query, values)
-    .then((results) => { response.status(201).send(`Cliente cadastrado com ID ${results.rows[0].id}`) })
+    .then((results) => {
+        const newId = results.rows[0].id
+        response.status(201).send({ id: newId, message: `Cliente cadastrado com ID ${results.rows[0].id}`}) 
+    })
     .catch((error) => { response.status(500).send('Não foi possível cadastrar o cliente. Erro: ' + error) })
 
 }
