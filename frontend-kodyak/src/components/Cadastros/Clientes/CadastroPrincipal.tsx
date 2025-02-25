@@ -14,7 +14,7 @@ export default function CadastroPrincipal() {
     const { id } = useParams()
     const [razaoSocial, setRazaoSocial] = useState('')
     const [nome, setNome] = useState('')
-    const [tipoPessoa, setTipoPessoa] = useState('')
+    const [tipoPessoa, setTipoPessoa] = useState('F')
     const [documento, setDocumento] = useState('')
     const [inativo, setInativo] = useState(false)
 
