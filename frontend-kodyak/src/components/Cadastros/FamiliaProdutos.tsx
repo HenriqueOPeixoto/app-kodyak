@@ -137,7 +137,7 @@ export default function FamiliaProdutos() {
                     label="Nome"
                     value={nome}
                     defaultValue=""
-                    onChange={event => setNome(event.target.value)}
+                    onChange={event => setNome(event.target.value.toUpperCase())}
                 />
             </div>
             <div className='FormButtons'>

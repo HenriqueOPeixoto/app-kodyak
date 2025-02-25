@@ -272,7 +272,7 @@ export default function CadastroEndereco() {
                     className="TxtDescricao"
                     label="Descrição Endereço"
                     value={descricao}
-                    onChange={event => setDescricao(event.target.value)}
+                    onChange={event => setDescricao(event.target.value.toUpperCase())}
                 />
                 <TextField
                     id="txtIE"
@@ -373,7 +373,7 @@ export default function CadastroEndereco() {
                     label="Logradouro"
                     value={logradouro}
                     required
-                    onChange={event => setLogradouro(event.target.value)}
+                    onChange={event => setLogradouro(event.target.value.toUpperCase())}
                 />
                 <TextField
                     id="txtNumero"
@@ -391,7 +391,7 @@ export default function CadastroEndereco() {
                     label="Bairro"
                     value={bairro}
                     required
-                    onChange={event => setBairro(event.target.value)}
+                    onChange={event => setBairro(event.target.value.toUpperCase())}
                 />
                 <Autocomplete
                     className='TxtUF'

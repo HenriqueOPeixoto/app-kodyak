@@ -180,7 +180,7 @@ export default function Produtos() {
                     id="txtNome"
                     label="Nome"
                     value={nome}
-                    onChange={event => setNome(event.target.value)}
+                    onChange={event => setNome(event.target.value.toUpperCase())}
                     />
                 <div className="ContainerNumeros">
                     <NumericFormat 

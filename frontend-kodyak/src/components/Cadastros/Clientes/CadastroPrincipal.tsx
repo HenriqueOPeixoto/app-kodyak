@@ -154,14 +154,14 @@ export default function CadastroPrincipal() {
                 label="Nome"
                 value={nome}
                 required
-                onChange={event => setNome(event.target.value)}
+                onChange={event => setNome(event.target.value.toUpperCase())}
             />
             <TextField
                 id="txtRazaoSocial"
                 label="Razão Social"
                 value={razaoSocial}
                 required
-                onChange={event => setRazaoSocial(event.target.value)}
+                onChange={event => setRazaoSocial(event.target.value.toUpperCase())}
             />
 
             <FormControl required sx={{marginLeft: '15px'}}>
