@@ -4,13 +4,30 @@ function Avisos() {
     return (
         <div>
             <Typography variant="h5">Vendas Kodyak</Typography>
-            <Typography variant="h6">Versão: 0.1</Typography>
+            <Typography variant="h6">Versão: 0.1.1</Typography>
             <hr />
 
             <Typography>Seja bem-vindo!</Typography>
             <Typography>Abaixo está disponível o histórico de modificações por versão:</Typography>
             <br />
             <Typography variant="h6">Changelog:</Typography>
+            <Typography variant="h6">0.1.1</Typography>
+            <Typography color={'red'}>
+                Aviso: Está é uma build de teste da aplicação, podendo apresentar instabilidades.
+            </Typography>
+            <List>
+                <ListItem>Alguns campos de texto não permitem mais valores com letras minúsculas;</ListItem>
+                <ListItem>Os campos da tela de cadastro de clientes não são mais limpos ao clicar em Gravar;</ListItem>
+                <ListItem>O seletor de Tipo Pessoa vem marcado como Pessoa Física por padrão, na tela de cadastro de clientes;</ListItem>
+                <ListItem>Adicionada função para copiar nome do cliente no campo razão social;</ListItem>
+                <ListItem>Telefone celular agora é obrigatório no cadastro de endereços;</ListItem>
+                <ListItem>O sistema agora exibe qual submenu está selecionado;</ListItem>
+                <ListItem>Ao clicar no botão Voltar, em qualquer tela de cadastro, o sistema agora lembra qual o último menu aberto;</ListItem>
+                <ListItem>Corrigida falha interna que disparava erros em massa ao informar uma data nos filtros do pedido;</ListItem>
+                <ListItem>Removida opção de informar quantidade de item em sacas;</ListItem>
+                <ListItem></ListItem>
+            </List>
+            <hr />
             <Typography variant="h6">0.1 - Versão inicial do projeto</Typography>
             <Typography color={'red'}>
                 Aviso: Está é uma build de teste da aplicação, podendo apresentar instabilidades.
