@@ -8,7 +8,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import './styles/Cadastros.css'
 import TabelaClientes from './Tabelas/TabelaClientes';
 import TabelaBancos from './Tabelas/TabelaBancos';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
