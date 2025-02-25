@@ -8,17 +8,24 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import './styles/Cadastros.css'
 import TabelaClientes from './Tabelas/TabelaClientes';
 import TabelaBancos from './Tabelas/TabelaBancos';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
 import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
 import TabelaProdutos from './Tabelas/TabelaProdutos';
 import TabelaRepresentantes from './Tabelas/TabelaRepresentantes';
+import { useLocation } from 'react-router-dom';
 
 function Cadastros() {
-
+  const location = useLocation()
   const [activeButton, setActiveButton] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (location.state) {
+      setActiveButton(location.state.paginaAtual)
+    }
+  }, [])
 
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName);

@@ -130,7 +130,7 @@ export default function Bancos() {
                 Bancos
                 <hr />
             </div>
-            <Link to='/cadastros'>
+            <Link to='/cadastros' state={{ paginaAtual: 'bancos' }}>
                 <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
             </Link>
             <div>

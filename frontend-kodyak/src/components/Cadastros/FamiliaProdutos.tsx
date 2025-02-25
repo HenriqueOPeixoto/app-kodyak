@@ -127,7 +127,7 @@ export default function FamiliaProdutos() {
                 Família de Produtos
                 <hr />
             </div>
-            <Link to='/cadastros'>
+            <Link to='/cadastros' state={{ paginaAtual: 'familia_produtos' }}>
                 <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
             </Link>
             <div>

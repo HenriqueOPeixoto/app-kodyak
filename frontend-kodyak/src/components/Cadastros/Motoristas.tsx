@@ -142,7 +142,7 @@ export default function Motoristas() {
         Motoristas
         <hr />
       </div>
-      <Link to='/cadastros'>
+      <Link to='/cadastros' state={{ paginaAtual: 'motoristas' }}>
         <Button startIcon={<ArrowBackIcon />}  color='error'>Voltar</Button>
       </Link>
       <div>

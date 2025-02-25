@@ -229,7 +229,7 @@ export default function Representantes() {
         Representante
         <hr />
       </div>
-      <Link to='/cadastros'>
+      <Link to='/cadastros' state={{ paginaAtual: 'representantes' }}>
         <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
       </Link>
       <div>

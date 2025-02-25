@@ -152,7 +152,7 @@ export default function Usuarios() {
         Usuário
         <hr />
       </div>
-      <Link to='/cadastros'>
+      <Link to='/cadastros' state={{ paginaAtual: 'usuarios' }}>
         <Button startIcon={<ArrowBackIcon />}  color='error'>Voltar</Button>
       </Link>
       <div>

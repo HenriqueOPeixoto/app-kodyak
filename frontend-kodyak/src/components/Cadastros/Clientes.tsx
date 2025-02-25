@@ -30,7 +30,7 @@ export default function Clientes() {
         Cadastro de Clientes
         <hr />
       </div>
-      <Link to='/cadastros'>
+      <Link to='/cadastros' state={{ paginaAtual: 'clientes' }}>
         <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
       </Link>
       <div>

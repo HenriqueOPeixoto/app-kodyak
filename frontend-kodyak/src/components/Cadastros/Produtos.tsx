@@ -171,7 +171,7 @@ export default function Produtos() {
                 Cadastro de Produtos
                 <hr />
             </div>
-            <Link to='/cadastros'>
+            <Link to='/cadastros' state={{ paginaAtual: 'produtos' }}>
                 <Button startIcon={<ArrowBackIcon />} color='error'>Voltar</Button>
             </Link>
             <div>
