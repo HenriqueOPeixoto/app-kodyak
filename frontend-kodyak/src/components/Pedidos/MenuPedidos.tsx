@@ -30,7 +30,7 @@ function MenuPedidos() {
           {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
           <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('criado')} onClick={() => {handleButtonClick('criado')}}>Criado</Button>
           <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('pendente')} onClick={() => {handleButtonClick('pendente')}}>Pendente</Button>
-          <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('análise_financeira')} onClick={() => {handleButtonClick('análise_financeira')}}>Análise Financeira</Button>
+          <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('analise_financeira')} onClick={() => {handleButtonClick('analise_financeira')}}>Análise Financeira</Button>
           <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('aprovado')} onClick={() => {handleButtonClick('aprovado')}}>Aprovado</Button>
           <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('faturado')} onClick={() => {handleButtonClick('faturado')}}>Faturado</Button>
           <Button startIcon={<AddCircleIcon />} variant={getButtonVariant('em_rota')} onClick={() => {handleButtonClick('em_rota')}}>Em Rota</Button>
@@ -44,7 +44,7 @@ function MenuPedidos() {
           {/*activeButton === 'criado' && <Link to={'/pedidos/novo_pedido'}>Novo Pedido</Link>*/}
           {activeButton === 'criado' && <TabelaPedidos statusPedido='0' />}
           {activeButton === 'pendente' && <TabelaPedidos statusPedido='1' />}
-          {activeButton === 'análise_financeira' && <TabelaPedidos statusPedido='2' />}
+          {activeButton === 'analise_financeira' && <TabelaPedidos statusPedido='2' />}
           {activeButton === 'aprovado' && <TabelaPedidos statusPedido='3' />}
           {activeButton === 'faturado' && <TabelaPedidos statusPedido='4' />}
           {activeButton === 'em_rota' && <TabelaPedidos statusPedido='5' />}
