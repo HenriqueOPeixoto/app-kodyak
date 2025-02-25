@@ -8,7 +8,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import './styles/Cadastros.css'
 import TabelaClientes from './Tabelas/TabelaClientes';
 import TabelaBancos from './Tabelas/TabelaBancos';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TabelaMotoristas from './Tabelas/TabelaMotoristas';
 import { Person } from '@mui/icons-material';
 import TabelaUsuarios from './Tabelas/TabelaUsuarios';
@@ -23,6 +23,10 @@ function Cadastros() {
   const handleButtonClick = (buttonName: string) => {
     setActiveButton(buttonName);
   };
+
+  const getButtonVariant = (buttonName: string) => {
+    return activeButton === buttonName ? 'contained' : 'text'
+  }
   
   return (
     <>
@@ -33,13 +37,13 @@ function Cadastros() {
       <div className='Cadastros'>
         <div className='BotoesCadastro'>
           {/* Ao clicar em um botão, muda o estado de activeButton, fazendo com que outra tabela seja renderizada */}
-          <Button startIcon={<AccountBalanceIcon />} onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
-          <Button startIcon={<PeopleIcon />} onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
-          <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
-          <Button startIcon={<ShoppingBagIcon />} onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
-          <Button startIcon={<LocalShippingIcon />} onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
-          <Button startIcon={<PersonAddAlt1Icon />} onClick={() => {handleButtonClick('representantes')}}>Representantes</Button>
-          <Button startIcon={<Person />} onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
+          <Button startIcon={<AccountBalanceIcon />}  variant={getButtonVariant('bancos')}           onClick={() => {handleButtonClick('bancos')}}>Bancos</Button>
+          <Button startIcon={<PeopleIcon />}          variant={getButtonVariant('clientes')}         onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
+          <Button startIcon={<ShoppingBagIcon />}     variant={getButtonVariant('familia_produtos')} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
+          <Button startIcon={<ShoppingBagIcon />}     variant={getButtonVariant('produtos')}         onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
+          <Button startIcon={<LocalShippingIcon />}   variant={getButtonVariant('motoristas')}       onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
+          <Button startIcon={<PersonAddAlt1Icon />}   variant={getButtonVariant('representantes')}   onClick={() => {handleButtonClick('representantes')}}>Representantes</Button>
+          <Button startIcon={<Person />}              variant={getButtonVariant('usuarios')}         onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
         </div>
         <div className='ListaCadastros'>
           {/* As linhas abaixo controlam qual tabela de cadastro deve ser exibida 
