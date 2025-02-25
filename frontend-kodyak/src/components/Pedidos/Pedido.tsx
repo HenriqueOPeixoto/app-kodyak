@@ -284,6 +284,23 @@ export default function Pedido() {
         })
     }
 
+    const alterarQtdeItemPedido = (itemId: number, novaQuantidade: number) => {
+        axios.put(`${backendBaseURL}/api/pedidos_itens/${itemId}`, {
+            quantidade: novaQuantidade
+        })
+            .then(() => {
+                setItensPedido((prevItens) => 
+                    prevItens.map((item) => 
+                        item.id === itemId ? { ...item, quantidade: novaQuantidade } : item
+                    )
+                )
+            })
+            .catch((error) => {
+                handleAbrirSnack('Não foi possível alterar a quantidade do item.')
+                console.error('Não foi possível alterar a quantidade do item: ' + error)
+            })
+    }
+
     const handleAbrirSnack = (message: string) => {
         setSnackMessage(message)
         setSnackOpen(true)
@@ -418,7 +435,7 @@ export default function Pedido() {
 
                     {currentTabIndex === 0 && (
                         <Box className='ContainerItensPedido'>
-                            <ItensPedido listaItens={itensPedido} onDeleteItem={removerItemDoPedido} />
+                            <ItensPedido listaItens={itensPedido} onDeleteItem={removerItemDoPedido} onAlterarItem={alterarQtdeItemPedido} />
                         </Box>
                     )
                     }
