@@ -288,8 +288,9 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     suffix={isSaca ? ' sc' : ' kg'}
                                     onValueChange={(values) => { setQuantidade(values.floatValue as number) }}
                                 />
+                                
+                                {/* Opção removida por solicitação do cliente. Será mantido o código caso mudem de ideia.
                                 <FormControl>
-                                    {/*<FormLabel id="tipo-unidade-form-label"></FormLabel>*/}
                                     <RadioGroup
                                         aria-labelledby="tipo-unidade-group-label"
                                         defaultValue="kg"
@@ -299,7 +300,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                         <FormControlLabel value='kg' control={<Radio />} label='kg' />
                                         <FormControlLabel value='saca' control={<Radio />} label='saca' />
                                     </RadioGroup>
-                                </FormControl>
+                                </FormControl> */}
                             </Box>
                             <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center', flexGrow: '1' }}>
                                 <FormControl sx={{ flexGrow: '1' }} className='ContainerSelecaoTabRef'>
