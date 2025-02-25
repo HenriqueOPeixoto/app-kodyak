@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import { Box, FormControl, FormControlLabel, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { debounce } from 'lodash'
 import { NumericFormat } from 'react-number-format';
@@ -196,9 +196,10 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
         handleNext()
     }
 
+    /* Código removido por solicitação do cliente.
     const handleUnidadeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSaca(event.target.value === 'kg' ? false : true)
-    }
+    }*/
 
     return (
         <React.Fragment>
