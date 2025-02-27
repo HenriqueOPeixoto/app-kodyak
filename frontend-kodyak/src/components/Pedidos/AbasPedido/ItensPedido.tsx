@@ -148,6 +148,8 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
     const handleConfirmAlterar = () => {
         if (itemAlterar && novaQuantidade && novoValorTotal) {
             onAlterarItem(itemAlterar, novaQuantidade, novoValorTotal)
+        } else {
+            alert('Não foi possível continuar. Há campos vazios na tela de alteração.')
         }
         handleCloseDialogAlterar()
     }
