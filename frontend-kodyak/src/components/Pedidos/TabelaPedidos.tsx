@@ -6,6 +6,7 @@ import axios from "axios"
 import { PatternFormat } from "react-number-format"
 import dayjs from "dayjs"
 import customParseFormat from "dayjs/plugin/customParseFormat"
+import { debounce } from 'lodash'
 
 dayjs.extend(customParseFormat)
 
@@ -48,7 +49,7 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
   const [dataInicio, setDataInicio] = useState<string>('')
   const [dataFim, setDataFim] = useState<string>('')
 
-  useEffect(() => {
+  const fetchPedidos = debounce(() => {
     axios.get<Pedido[]>(`${backendBaseURL}/api/pedidos/view`, {
       params: {
         razao_social: razao_social,
@@ -63,6 +64,14 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
       .catch(error => {
         console.error(error);
       });
+  }, 500);
+
+  useEffect(() => {
+    fetchPedidos();
+
+    return () => {
+      fetchPedidos.cancel()
+    }
   }, [id, razao_social, dataInicio, dataFim]);
 
   const handleTxtPesquisarIDChange = (event: React.ChangeEvent<HTMLInputElement>) => {
