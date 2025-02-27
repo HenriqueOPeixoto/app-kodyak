@@ -287,6 +287,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     value={quantidade}
                                     prefix=""
                                     suffix={isSaca ? ' sc' : ' kg'}
+                                    decimalScale={2}
                                     onValueChange={(values) => { setQuantidade(values.floatValue as number) }}
                                 />
                                 
@@ -329,7 +330,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     decimalSeparator=","
                                     value={valor}
                                     prefix="R$ "
-                                    decimalScale={2}
+                                    decimalScale={3}
                                     fixedDecimalScale
                                     allowNegative={false}
                                     onValueChange={(values) => { setValor(values.floatValue as number) }}
