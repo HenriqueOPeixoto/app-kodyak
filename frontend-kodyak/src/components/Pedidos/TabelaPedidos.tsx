@@ -45,7 +45,6 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
   const [pedidos, setPedidos] = useState<Pedido[]>([])
   const [razao_social, setRazaoSocial] = useState<string>('')
   const [id, setId] = useState<string>('')
-  const [data, setData] = useState<string>('')
   const [dataInicio, setDataInicio] = useState<string>('')
   const [dataFim, setDataFim] = useState<string>('')
 
@@ -72,9 +71,7 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
   const handleTxtPesquisarClienteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRazaoSocial(event.target.value)
   }
-  const handleTxtPesquisarDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData(event.target.value)
-  }
+
   const handleTxtPesquisarDataInicioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDataInicio(event.target.value)
   }
