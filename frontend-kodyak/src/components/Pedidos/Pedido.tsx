@@ -284,14 +284,15 @@ export default function Pedido() {
         })
     }
 
-    const alterarQtdeItemPedido = (itemId: number, novaQuantidade: number) => {
+    const alterarItemPedido = (itemId: number, novaQuantidade: number, novoValor: number) => {
         axios.put(`${backendBaseURL}/api/pedidos_itens/${itemId}`, {
+            valor: novoValor,
             quantidade: novaQuantidade
         })
             .then(() => {
                 setItensPedido((prevItens) => 
                     prevItens.map((item) => 
-                        item.id === itemId ? { ...item, quantidade: novaQuantidade } : item
+                        item.id === itemId ? { ...item, quantidade: novaQuantidade, valor: novoValor } : item
                     )
                 )
             })
@@ -435,7 +436,7 @@ export default function Pedido() {
 
                     {currentTabIndex === 0 && (
                         <Box className='ContainerItensPedido'>
-                            <ItensPedido listaItens={itensPedido} onDeleteItem={removerItemDoPedido} onAlterarItem={alterarQtdeItemPedido} />
+                            <ItensPedido listaItens={itensPedido} onDeleteItem={removerItemDoPedido} onAlterarItem={alterarItemPedido} />
                         </Box>
                     )
                     }

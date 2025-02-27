@@ -1,5 +1,5 @@
 import { Delete, Edit, MoreVert } from "@mui/icons-material"
-import { Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, TextField, Typography } from "@mui/material"
 import React from "react"
 import { NumericFormat } from "react-number-format"
 
@@ -19,7 +19,7 @@ interface Item {
 interface ItensPedidoProps {
     listaItens: Item[]
     onDeleteItem: (itemId: number) => void // callback chamado quando deleta, vai permitir que a tela de pedido faça a exclusão
-    onAlterarItem: (itemId: number, novaQuantidade: number) => void // callback chamado quando altera a quantidade, vai permitir que a tela de pedido também processe a alteração
+    onAlterarItem: (itemId: number, novaQuantidade: number, novoValor: number) => void // callback chamado quando altera a quantidade, vai permitir que a tela de pedido também processe a alteração
 }
 
 const CardItem: React.FC<{ item: Item, onOpenDialogExcluir: (itemId: number) => void, onOpenDialogAlterar: (itemId: number) => void}> = ({ item, onOpenDialogExcluir, onOpenDialogAlterar }) => {
@@ -106,6 +106,8 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
     
     const [itemAlterar, setItemAlterar] = React.useState<number | null>(null)
     const [novaQuantidade, setNovaQuantidade] = React.useState<number | null>(null)
+    const [novoValorUnitario, setNovoValorUnitario] = React.useState<number | null>(null)
+    const [novoValorTotal, setNovoValorTotal] = React.useState<number>(0.0)
 
     const handleOpenDialogExcluir = (itemId: number) => {
         setItemAExcluir(itemId)
@@ -125,8 +127,17 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
     }
 
     const handleOpenDialogAlterar = (itemId: number) => {
-        setItemAlterar(itemId)
-        setOpenDialogAlterar(true)
+        const item: Item | undefined = listaItens.find((item) => itemId === item.id)
+        if (item) {
+            setItemAlterar(itemId)
+            setNovaQuantidade(item.quantidade)
+            setNovoValorTotal(item.valor)
+            setNovoValorUnitario(item.valor/item.quantidade)
+            setOpenDialogAlterar(true)
+        } else {
+            console.error('Item não encontrado')
+            alert('Item não encontrado')
+        }
     }
 
     const handleCloseDialogAlterar = () => {
@@ -135,8 +146,8 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
     }
 
     const handleConfirmAlterar = () => {
-        if (itemAlterar && novaQuantidade) {
-            onAlterarItem(itemAlterar, novaQuantidade)
+        if (itemAlterar && novaQuantidade && novoValorTotal) {
+            onAlterarItem(itemAlterar, novaQuantidade, novoValorTotal)
         }
         handleCloseDialogAlterar()
     }
@@ -160,9 +171,9 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
             </Dialog>
             <Dialog open={openDialogAlterar} onClose={handleCloseDialogAlterar}>
                 <DialogTitle>Alterar item</DialogTitle>
-                <DialogContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px'}}>
+                <DialogContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '20px'}}>
                     <DialogContentText>
-                        Insira a nova quantidade do item:
+                        Insira nova quantidade ou valor do item:
                     </DialogContentText>
                     <NumericFormat
                         label="Quantidade"
@@ -172,8 +183,56 @@ const ItensPedido: React.FC<ItensPedidoProps> = ({ listaItens, onDeleteItem, onA
                         value={novaQuantidade}
                         prefix=""
                         suffix=" kg"
-                        onValueChange={(values) => { setNovaQuantidade(values.floatValue as number) }}
+                        allowNegative={false}
+                        decimalScale={2}
+                        onValueChange={(values) => {
+                            const qtde = values.floatValue as number
+                            setNovaQuantidade(qtde)
+
+                            if (novoValorUnitario) {
+                                setNovoValorTotal(qtde * novoValorUnitario)
+                            } else {
+                                setNovoValorTotal(0)
+                            }
+                        }}
                     />
+                    <Box sx={{ display: 'flex', gap: '10px'}}>
+                        <NumericFormat
+                            label="Valor Unitário"
+                            customInput={TextField}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            value={novoValorUnitario}
+                            prefix="R$ "
+                            suffix=""
+                            decimalScale={3}
+                            fixedDecimalScale
+                            onValueChange={(values) => { 
+                                const vlr_un = values.floatValue as number
+                                setNovoValorUnitario(vlr_un)
+                                
+                                if (novaQuantidade) {
+                                    setNovoValorTotal(vlr_un * novaQuantidade)
+                                } else {
+                                    setNovoValorTotal(0)
+                                }
+                            }}
+
+                            />
+                        <NumericFormat
+                            label="Valor Total"
+                            customInput={TextField}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            value={novoValorTotal}
+                            prefix="R$ "
+                            suffix=""
+                            disabled
+                            decimalScale={2}
+                            fixedDecimalScale
+
+                            />
+                    </Box>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialogAlterar}>Cancelar</Button>
