@@ -90,9 +90,19 @@ const deletePedido = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível deletar o pedido.' + error) })
 }
 
+/**
+ * Fornece uma view que pode ser filtrada com base em parâmetros.
+ * Retorna um erro ao fornecer dois ou mais dos parâmetros data, data_inicio e data_fim na mesma requisição.
+ * @param {*} request { id, data, razao_social, status, data_inicio, data_fim }
+ * @param {*} response 
+ */
 const getViewPedidos = (request, response) => {
-    const { id, data, razao_social, status } = request.query
+    const { id, data, razao_social, status, data_inicio, data_fim } = request.query
     
+    if (data && (data_inicio || data_fim)) {
+        return response.status(400).send('Você pode fornecer uma única data ou um intervalo de datas, mas não ambos.')
+    }
+
     let query = 'SELECT * FROM VW_PEDIDOS WHERE 1=1 '
     const params = []
     
@@ -114,6 +124,16 @@ const getViewPedidos = (request, response) => {
     if (razao_social) {
         params.push('%' + razao_social + '%')
         query += ' AND UPPER(RAZAO_SOCIAL) LIKE UPPER($' + params.length + ')'
+    }
+
+    if (data_inicio) {
+        params.push(data_inicio)
+        query += ' AND DATA >= $' + params.length
+    }
+
+    if (data_fim) {
+        params.push(data_fim)
+        query += ' AND DATA <= $' + params.length
     }
 
     query += ' ORDER BY ID DESC'

@@ -46,6 +46,8 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
   const [razao_social, setRazaoSocial] = useState<string>('')
   const [id, setId] = useState<string>('')
   const [data, setData] = useState<string>('')
+  const [dataInicio, setDataInicio] = useState<string>('')
+  const [dataFim, setDataFim] = useState<string>('')
 
   useEffect(() => {
     axios.get<Pedido[]>(`${backendBaseURL}/api/pedidos/view`, {
@@ -53,7 +55,8 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
         razao_social: razao_social,
         id: id,
         status: statusPedido,
-        data: dayjs(data, 'DD/MM/YYYY', true).isValid() ? data : ''
+        data_inicio: dayjs(dataInicio, 'DD/MM/YYYY', true).isValid() ? dataInicio : '',
+        data_fim: dayjs(dataFim, 'DD/MM/YYYY', true).isValid() ? dataFim : ''
     }})
       .then(response => {
         setPedidos(response.data);
@@ -61,7 +64,7 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
       .catch(error => {
         console.error(error);
       });
-  }, [id, razao_social, data]);
+  }, [id, razao_social, dataInicio, dataFim]);
 
   const handleTxtPesquisarIDChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setId(event.target.value)
@@ -72,6 +75,12 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
   const handleTxtPesquisarDataChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setData(event.target.value)
   }
+  const handleTxtPesquisarDataInicioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDataInicio(event.target.value)
+  }
+  const handleTxtPesquisarDataFimChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDataFim(event.target.value)
+  }
 
     return (
       <div className="TabelaPedidos">
@@ -81,9 +90,18 @@ const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
           <PatternFormat 
             id="pesquisar-pedidos-por-data"
             customInput={TextField}
-            label="Data" 
+            label="Data Inicío" 
             variant="outlined" 
-            onChange={handleTxtPesquisarDataChange} 
+            onChange={handleTxtPesquisarDataInicioChange} 
+            format="##/##/####" 
+            mask="_"
+          />
+          <PatternFormat 
+            id="pesquisar-pedidos-por-data"
+            customInput={TextField}
+            label="Data Fim" 
+            variant="outlined" 
+            onChange={handleTxtPesquisarDataFimChange} 
             format="##/##/####" 
             mask="_"
           />
