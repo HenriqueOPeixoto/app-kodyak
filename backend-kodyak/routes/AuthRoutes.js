@@ -34,4 +34,33 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.get('/refresh_token', (req, res) => {
+    try {
+        const refreshToken = req.cookies.refresh_token
+
+        if (refreshToken === null) { return res.status(401).json({ error: 'Refresh Token Nulo' }) }
+
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
+            if (error) { return res.status(403).send(error) }
+
+            let tokens = jwtTokens(user)
+            res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true})
+
+            res.json(tokens)
+        })
+    } catch (error) {
+        res.status(401).send(error)
+    }
+})
+
+// Chamado quando o usuário faz logout
+router.delete('/refresh_token', (req, res) => {
+    try {
+        res.clearCookie('refresh_token')
+        return res.status(200).send('O RefreshToken foi apagado.')
+    } catch (error) {
+        res.status(401).send(error)
+    }
+})
+
 module.exports = router
