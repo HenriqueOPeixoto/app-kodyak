@@ -8,6 +8,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import Bancos from './components/Cadastros/Bancos';
 import Pedido from './components/Pedidos/Pedido';
+import Login from './components/Login/Login';
 
 const Avisos = lazy(() => import('./components/Avisos/Avisos'));
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
@@ -26,11 +27,12 @@ const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 function App() {
   const location = useLocation()
   const isPedidoRoute = location.pathname.startsWith('/pedidos/')
-  const showSidebar = isPedidoRoute
+  const isLoginRoute = location.pathname.startsWith('/login')
+  const showSidebar = isPedidoRoute || isLoginRoute
 
   return (
     <div className='App'>
-      {!isPedidoRoute &&
+      {!isPedidoRoute && !isLoginRoute &&
         <div className='Sidebar'><Sidebar /></div>
       }
       <div className={`Main ${showSidebar ? 'sem-sidebar' : ''}`}>
@@ -39,6 +41,7 @@ function App() {
           <Routes>
             <Route path='/avisos' element={<Avisos />} />
 
+            <Route path='/login' element={<Login />} />
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
