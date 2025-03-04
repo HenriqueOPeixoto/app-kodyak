@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv')
+const cookieParser = require('cookie-parser')
 
 const bancoRoutes = require('./routes/BancoRoutes')
 const motoristaRoutes = require('./routes/MotoristaRoutes');
@@ -29,6 +30,8 @@ const port = process.env.PORT || 5174;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser())
 
 app.use('/api/bancos', bancoRoutes)
 app.use('/api/clientes', clienteRoutes)
