@@ -25,6 +25,8 @@ function Avisos() {
                 <ListItem>Ao clicar no botão Voltar, em qualquer tela de cadastro, o sistema agora lembra qual o último menu aberto;</ListItem>
                 <ListItem>Corrigida falha interna que disparava erros em massa ao informar uma data nos filtros do pedido;</ListItem>
                 <ListItem>Removida opção de informar quantidade de item em sacas;</ListItem>
+                <ListItem>Adicionada função para alterar quantidade e valor do item do pedido;</ListItem>
+                <ListItem>Adicionada a opção para pesquisar pedidos em um intervalo de datas;</ListItem>
                 <ListItem></ListItem>
             </List>
             <hr />
