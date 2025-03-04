@@ -4,7 +4,7 @@ function jwtTokens({id, nome, email}) {
     const usuario = { id, nome, email }
 
     const accessToken = jwt.sign(usuario, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
-    const refreshToken = jwt.sign(usuario, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '14d'})
+    const refreshToken = jwt.sign(usuario, process.env.REFRESH_TOKEN_SECRET, {expiresIn: '1d'})
 
     return ({ accessToken, refreshToken })
 }
