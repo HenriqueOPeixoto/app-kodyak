@@ -14,8 +14,8 @@ const CodigoStatus = {
 }
 
 const createUsuario = async (request, response) => {
-    const { nome, email, senha, confirmacao_senha, representante, nivel_acesso } = request.body
-    let pw_hash = await bcrypt.hash(senha, 8)
+    const { nome, email, senha, representante, nivel_acesso } = request.body
+    let pw_hash = await bcrypt.hash(senha, 10)
 
     //Validar credenciais antes de registrar.
     validaCadastro(request)
@@ -25,7 +25,7 @@ const createUsuario = async (request, response) => {
                 [nome, email, pw_hash, representante, nivel_acesso],
                 (error, results) => {
                     if (error) {
-                        throw error
+                        return response.status(500).send({ Erro: error.message })
                     }
 
                     response.status(201).send(`USUARIO adicionado com sucesso! ${results.rows[0].id}`)
@@ -34,7 +34,7 @@ const createUsuario = async (request, response) => {
 
         })
         .catch((error) => {
-            console.log('Ocorreu um erro', error)
+            console.log('Ocorreu um erro:', error.message)
             const codErro = CodigoStatus[error.message] || 500
             response.status(codErro).send(error.message)
         })
@@ -101,6 +101,7 @@ const updateUsuario = async (request, response) => {
 }
 
 // Verifica se e-mail informado no request já está cadastrado no BD
+// --> REDUNDANTE?? A coluna e-mail já é UNIQUE no banco de dados.
 const validaEmail = (email) => {
     return new Promise((resolve, reject) => {
         pool.query(
@@ -137,11 +138,11 @@ const validaCadastro = (request) => {
                 reject(new Error(MensagensErro.EMAIL_EM_USO))
             }
 
-            if (!validaSenha(senha, confirmacao_senha)) {
+            /*if (!validaSenha(senha, confirmacao_senha)) {
                 //return response.status(400).send('As senhas não coincidem')
                 console.log(MensagensErro.SENHAS_NAO_COINCIDEM)
                 reject(new Error(MensagensErro.SENHAS_NAO_COINCIDEM))
-            }
+            }*/
 
             resolve('Validação bem-sucedida')
         })

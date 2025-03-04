@@ -15,12 +15,15 @@ const representanteRoutes = require('./routes/RepresentanteRoutes')
 const pedidoRoutes = require('./routes/PedidoRoutes')
 const pedidoItensRoutes = require('./routes/PedidoItensRoutes')
 const localidadesRoutes = require('./routes/LocalidadesRoutes')
+const authRoutes = require('./routes/AuthRoutes')
 
 const app = express();
 
 dotenv.config({ path: './.env'})
 
-app.use(cors());
+// IMPORTANTE: '*' permite que qualquer host forneça autenticação, revisar depois
+const corsOptions = { credentials: true, origin: process.env.URL || '*'};
+app.use(cors(corsOptions));
 
 const port = process.env.PORT || 5174;
 
@@ -35,6 +38,7 @@ app.use('/api/familia_produtos', familiaProdutosRoutes)
 app.use('/api/nivel_acesso', nivelAcessoRoutes)
 app.use('/api/motoristas', motoristaRoutes);
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/auth', authRoutes)
 app.use('/api/representantes', representanteRoutes)
 app.use('/api/pedidos', pedidoRoutes)
 app.use('/api/pedidos_itens', pedidoItensRoutes)
