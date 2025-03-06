@@ -1,8 +1,33 @@
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function Login() {
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState<string>('')
+    const [senha, setSenha] = useState<string>('')
+
     const handleSubmit = () => {
-        console.log('login')
+        // Se usuário e senha são válidos, o backend devolve um token de autenticação
+
+        axios.post(`${backendBaseURL}/api/auth/login`, 
+            { email: email, senha: senha },
+            { 
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            })
+            .then(() => {
+                navigate('/avisos')
+            })
+            .catch((error) => {
+                console.error(error.response.data)
+            })
+
+
     }
 
     return (
@@ -20,9 +45,30 @@ export default function Login() {
                     onSubmit={handleSubmit}
                     sx={{ mt: 1 }}
                 >
-                    <TextField label="E-mail" fullWidth required autoFocus sx={{mb: 2}} />
-                    <TextField label="Senha" fullWidth required sx={{mb: 2}} />
-                    <Button type='submit' variant='contained' fullWidth sx={{mt:1}}>Entrar</Button>
+                    <TextField 
+                        label="E-mail"
+                        fullWidth
+                        required
+                        autoFocus
+                        value={email}
+                        sx={{mb: 2}}
+                        onChange={(event) => {
+                            setEmail(event.target.value)
+                        }}
+                    />
+                    <TextField
+                        label="Senha"
+                        fullWidth
+                        required
+                        type="password"
+                        autoComplete="current-password"
+                        value={senha}
+                        sx={{mb: 2}}
+                        onChange={(event) => {
+                            setSenha(event.target.value)
+                        }}
+                    />
+                    <Button variant='contained' fullWidth onClick={handleSubmit} sx={{mt:1}}>Entrar</Button>
                 </Box>
             </Paper>
             
