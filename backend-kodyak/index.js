@@ -22,8 +22,7 @@ const app = express();
 
 dotenv.config({ path: './.env'})
 
-// IMPORTANTE: '*' permite que qualquer host forneça autenticação, revisar depois
-const corsOptions = { credentials: true, origin: process.env.URL || '*'};
+const corsOptions = { credentials: true, origin: process.env.URL };
 app.use(cors(corsOptions));
 
 const port = process.env.PORT || 5174;
