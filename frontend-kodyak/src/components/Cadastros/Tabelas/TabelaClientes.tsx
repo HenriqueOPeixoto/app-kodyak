@@ -4,7 +4,7 @@ import '../styles/Cadastros.css'
 import './styles/TabelaClientes.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Cliente {
   id: number
@@ -37,7 +37,8 @@ const CardCliente: React.FC<{ cliente: Cliente }> = ({ cliente }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaClientes: React.FC = () => {
-
+  const axios = useAxiosInstance()
+  
   const [clientes, setClientes] = useState<Cliente[]>([])
   const [nome, setNome] = useState<string>('')
   const [documento, setDocumento] = useState<string>('')

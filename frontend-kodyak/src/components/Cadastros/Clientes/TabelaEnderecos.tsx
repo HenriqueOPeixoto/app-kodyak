@@ -3,31 +3,31 @@ import { Box, Button, Card, CardActionArea, CardContent, FormControl, FormContro
 import '../styles/Cadastros.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface TabelaEnderecosProps {
     clienteId: string;
   }
-
-interface Enderecos {
-    id: number
-    descricao: string
-    inscricao_estadual: string
-    telefone_fixo: string
-    telefone_celular: string
-    email: string
-    cep: string
-    logradouro: string
-    numero: string
-    bairro: string
-    cidade: string
-    estado: string
-    cliente: string
-}
-
-const CardEnderecos: React.FC<{ enderecos: Enderecos }> = ({ enderecos }) => {
-    return (
-        <Card className="CardEndereco" variant="outlined">
+  
+  interface Enderecos {
+      id: number
+      descricao: string
+      inscricao_estadual: string
+      telefone_fixo: string
+      telefone_celular: string
+      email: string
+      cep: string
+      logradouro: string
+      numero: string
+      bairro: string
+      cidade: string
+      estado: string
+      cliente: string
+    }
+    
+    const CardEnderecos: React.FC<{ enderecos: Enderecos }> = ({ enderecos }) => {
+        return (
+            <Card className="CardEndereco" variant="outlined">
             <Link to={`/cadastros/editar_cliente/${enderecos.cliente}/editar_endereco/${enderecos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <CardActionArea>
                     <CardContent>
@@ -46,6 +46,7 @@ const CardEnderecos: React.FC<{ enderecos: Enderecos }> = ({ enderecos }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaEnderecos: React.FC<TabelaEnderecosProps> = ({ clienteId }) => {
+    const axios = useAxiosInstance()
 
     const [enderecos, setEnderecos] = useState<Enderecos[]>([])
     const [inscricaoEstadual] = useState<string>('')

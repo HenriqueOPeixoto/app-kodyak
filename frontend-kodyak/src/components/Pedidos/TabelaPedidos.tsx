@@ -2,7 +2,7 @@ import { Button, Card, CardActionArea, CardContent, Grid, TextField, Typography 
 
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../service/AxiosInstance";
 import { PatternFormat } from "react-number-format"
 import dayjs from "dayjs"
 import customParseFormat from "dayjs/plugin/customParseFormat"
@@ -16,15 +16,15 @@ interface Pedido {
     status: string,
     razao_social: number,
     documento: string
-}
-
-interface TabelaPedidosProps {
-  statusPedido: string
-}
-
-const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
-  return (
-    <Card className="CardPedido" variant="outlined">
+  }
+  
+  interface TabelaPedidosProps {
+    statusPedido: string
+  }
+  
+  const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
+    return (
+      <Card className="CardPedido" variant="outlined">
       <Link to={`/pedidos/editar_pedido/${pedidos.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <CardActionArea>
           <CardContent>
@@ -42,7 +42,8 @@ const CardPedidos: React.FC<{ pedidos: Pedido }> = ({ pedidos }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaPedidos: React.FC<TabelaPedidosProps> = ({ statusPedido }) => {
-
+  const axios = useAxiosInstance()
+  
   const [pedidos, setPedidos] = useState<Pedido[]>([])
   const [razao_social, setRazaoSocial] = useState<string>('')
   const [id, setId] = useState<string>('')

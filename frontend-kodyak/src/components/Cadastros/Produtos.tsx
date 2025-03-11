@@ -6,7 +6,7 @@ import { NumericFormat } from "react-number-format"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
 import { DoNotDisturb } from '@mui/icons-material';
-import axios from "axios";
+import useAxiosInstance from "../../service/AxiosInstance";
 
 import DialogInativar from "./Dialogs/DialogInativar";
 
@@ -20,6 +20,8 @@ type FamiliaProdutos = {
 }
 
 export default function Produtos() {
+    const axios = useAxiosInstance()
+    
     const { id } = useParams()
     const [nome, setNome] = useState('')
     const [valor, setValor] = useState<string>('')

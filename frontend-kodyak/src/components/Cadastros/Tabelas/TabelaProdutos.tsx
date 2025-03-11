@@ -4,7 +4,7 @@ import '../styles/Cadastros.css'
 import './styles/TabelaProdutos.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Produto {
   id: number
@@ -42,7 +42,8 @@ const CardProduto: React.FC<{ produto: Produto }> = ({ produto }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaProdutos: React.FC = () => {
-
+  const axios = useAxiosInstance()
+  
   const [produto, setProdutos] = useState<Produto[]>([])
   const [nome, setNome] = useState<string>('')
   const [familiaProdutos, setFamiliaProdutos] = useState<FamiliaProdutos | null>(null)

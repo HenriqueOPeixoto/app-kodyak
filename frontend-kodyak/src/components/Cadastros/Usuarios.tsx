@@ -7,7 +7,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './styles/Cadastros.css'
 import './styles/Usuarios.css'
-import axios from 'axios';
+import useAxiosInstance from "../../service/AxiosInstance";
 import { useParams, Link } from 'react-router-dom';
 import { DoNotDisturb } from '@mui/icons-material';
 
@@ -21,6 +21,7 @@ type NivelAcesso = {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function Usuarios() {
+  const axios = useAxiosInstance()
   const { id } = useParams() // Trazer id do usuário para atualizar, se houver
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')

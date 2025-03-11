@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Snackbar, TextField, Tooltip } from "@mui/material";
-import axios from "axios";
+import useAxiosInstance from "../../../service/AxiosInstance";
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,8 +11,9 @@ import EditIcon from '@mui/icons-material/Edit';
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function CadastroPrincipal() {
+    const axios = useAxiosInstance()
     const navigate = useNavigate();
-
+    
     const { id } = useParams()
     const [razaoSocial, setRazaoSocial] = useState('')
     const [nome, setNome] = useState('')

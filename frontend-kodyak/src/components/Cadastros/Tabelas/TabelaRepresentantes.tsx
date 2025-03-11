@@ -4,7 +4,7 @@ import '../styles/Cadastros.css'
 import './styles/TabelaRepresentantes.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Representante {
   id: number
@@ -29,7 +29,8 @@ const CardRepresentante: React.FC<{ representante: Representante }> = ({ represe
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaRepresentantes: React.FC = () => {
-
+  const axios = useAxiosInstance()
+  
   const [representante, setRepresentante] = useState<Representante[]>([])
   const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)

@@ -8,7 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import { Box, FormControl, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Step, StepLabel, Stepper, TextField, Typography } from '@mui/material';
-import axios from 'axios';
+import useAxiosInstance from "../../../service/AxiosInstance";
 import { debounce } from 'lodash'
 import { NumericFormat } from 'react-number-format';
 
@@ -42,7 +42,7 @@ interface ItemPedido {
     produto: Produto
     quantidade: number
     valor: number
-
+    
 }
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
@@ -50,6 +50,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 const steps = ['Selecionar Produto', 'Ajustar Quantidade e Valor'];
 
 const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAdicionarItemAoCarrinho}) => {
+    const axios = useAxiosInstance()
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));

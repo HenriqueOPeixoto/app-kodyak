@@ -13,7 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import './styles/Pedido.css'
 import ItensPedido from './AbasPedido/ItensPedido';
-import axios from 'axios';
+import useAxiosInstance from "../../service/AxiosInstance";
 import NovoItemPedido from './AbasPedido/NovoItemPedido';
 
 interface Cliente {
@@ -59,6 +59,7 @@ const actions = [
 ];
 
 export default function Pedido() {
+    const axios = useAxiosInstance()
     const navigate = useNavigate();
 
     // ID do pedido atual

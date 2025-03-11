@@ -4,7 +4,7 @@ import '../styles/Cadastros.css'
 import './styles/TabelaBancos.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Bancos {
   id: number
@@ -30,7 +30,8 @@ const CardBancos: React.FC<{ bancos: Bancos }> = ({ bancos }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaBancos: React.FC = () => {
-
+  const axios = useAxiosInstance()
+  
   const [bancos, setBancos] = useState<Bancos[]>([])
   const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)

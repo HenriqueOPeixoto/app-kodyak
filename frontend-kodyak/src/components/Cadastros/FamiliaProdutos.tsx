@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SaveIcon from '@mui/icons-material/Save';
 import { DoNotDisturb } from '@mui/icons-material';
-import axios from "axios";
+import useAxiosInstance from "../../service/AxiosInstance";
 
 import DialogInativar from "./Dialogs/DialogInativar";
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function FamiliaProdutos() {
+    const axios = useAxiosInstance()
+    
     const { id } = useParams()
     const [nome, setNome] = useState('')
     const [inativo, setInativo] = useState(false)

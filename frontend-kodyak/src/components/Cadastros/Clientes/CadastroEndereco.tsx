@@ -1,5 +1,5 @@
 import { Autocomplete, Button, Divider, Snackbar, TextField } from "@mui/material"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 import React, { useEffect, useState } from "react"
 import { PatternFormat } from "react-number-format"
 import { Link, useParams } from "react-router-dom"
@@ -26,6 +26,8 @@ interface Cidade {
 }
 
 export default function CadastroEndereco() {
+    const axios = useAxiosInstance()
+    
     const { enderecoId, clienteId } = useParams()
     const [inscricaoEstadual, setInscricaoEstadual] = useState('')
     const [telefoneFixo, setTelefoneFixo] = useState('')

@@ -3,7 +3,7 @@ import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabe
 import '../styles/Cadastros.css'
 import { Link } from "react-router-dom"
 import React, { useEffect, useState } from "react"
-import axios from "axios"
+import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Usuario {
   id: number
@@ -34,7 +34,8 @@ const CardUsuario: React.FC<{ usuario: Usuario }> = ({ usuario }) => {
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const TabelaUsuarios: React.FC = () => {
-
+  const axios = useAxiosInstance()
+  
   const [usuario, setUsuarios] = useState<Usuario[]>([])
   const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)
