@@ -3,8 +3,8 @@ import './components/Sidebar/Sidebar.css'
 import Sidebar from './components/Sidebar/Sidebar';
 import '@fontsource/roboto/400.css';
 
-import { lazy, Suspense } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import Bancos from './components/Cadastros/Bancos';
 import Pedido from './components/Pedidos/Pedido';
@@ -26,9 +26,19 @@ const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
 function App() {
   const location = useLocation()
+  const navigate = useNavigate()
+
   const isPedidoRoute = location.pathname.startsWith('/pedidos/')
   const isLoginRoute = location.pathname.startsWith('/login')
+  const isRootRoute = location.pathname.startsWith('/') && location.pathname.length === 1
   const showSidebar = isPedidoRoute || isLoginRoute
+
+  useEffect(() => {
+    if (isRootRoute) {
+      console.log('root')
+      navigate('/login')
+    } 
+  }, [isRootRoute, navigate])
 
   return (
     <div className='App'>
@@ -42,6 +52,7 @@ function App() {
             <Route path='/avisos' element={<Avisos />} />
 
             <Route path='/login' element={<Login />} />
+            <Route path='/' element={<Login />}/>
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
