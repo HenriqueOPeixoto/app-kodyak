@@ -58,6 +58,7 @@ router.get('/refresh_token', (req, res) => {
 router.delete('/refresh_token', (req, res) => {
     try {
         res.clearCookie('refresh_token')
+        res.clearCookie('access_token')
         return res.status(200).send('O RefreshToken foi apagado.')
     } catch (error) {
         res.status(401).send(error)
