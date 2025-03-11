@@ -129,6 +129,10 @@ const validaCadastro = (request) => {
     const { email, senha, confirmacao_senha } = request.body
     
     return new Promise((resolve, reject) => {
+        if (!senha || senha.trim() === '') {
+            return reject(new Error('A senha não pode estar vazia.'));
+        }
+
         validaEmail(email)
         .then((emailExiste) => {
             
@@ -147,7 +151,6 @@ const validaCadastro = (request) => {
             resolve('Validação bem-sucedida')
         })
         .catch((error) => {
-            console.error(error)
             //response.status(500).send('Erro no servidor')
             reject(new Error(MensagensErro.ERRO_SERVIDOR))
         })
