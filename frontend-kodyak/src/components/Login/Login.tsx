@@ -1,16 +1,17 @@
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function Login() {
     const navigate = useNavigate()
+    const location = useLocation()
 
     const [email, setEmail] = useState<string>('')
     const [senha, setSenha] = useState<string>('')
-    const [msgErro, setMsgErro] = useState<string>('')
+    const [msgErro, setMsgErro] = useState<string>(location.state ? location.state.message : '')
 
     const handleSubmit = () => {
         // Se usuário e senha são válidos, o backend devolve um token de autenticação
