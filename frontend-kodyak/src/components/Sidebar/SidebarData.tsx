@@ -3,6 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function SidebarData() {
   return (
@@ -31,6 +32,11 @@ function SidebarData() {
             title: "Config.",
             icon: <SettingsIcon />,
             link: "/nao_implementado"
+        },
+        {
+            title: "Sair",
+            icon: <LogoutIcon />,
+            link: "/logout"
         }
     ]
   )

@@ -9,6 +9,7 @@ import { CircularProgress } from '@mui/material';
 import Bancos from './components/Cadastros/Bancos';
 import Pedido from './components/Pedidos/Pedido';
 import Login from './components/Login/Login';
+import Logout from './components/Login/Logout';
 
 const Avisos = lazy(() => import('./components/Avisos/Avisos'));
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
@@ -53,6 +54,7 @@ function App() {
 
             <Route path='/login' element={<Login />} />
             <Route path='/' element={<Login />}/>
+            <Route path='/logout' element={<Logout />}/>
             <Route path='/cadastros' element={<Cadastro />} />
             <Route path='/cadastros/novo_cliente' element={<Clientes />} />
             <Route path='/cadastros/editar_cliente/:id' element={<Clientes />} />
