@@ -25,6 +25,7 @@ export default function Usuarios() {
   const { id } = useParams() // Trazer id do usuário para atualizar, se houver
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
+  const [senha, setSenha] = useState('')
   const [representante, setRepresentante] = useState('')
   const [nivel_acesso, setNivelAcesso] = useState('')
   const [inativo, setInativo] = useState(false)
@@ -73,6 +74,7 @@ export default function Usuarios() {
     const formData = {
       nome,
       email,
+      senha,
       representante,
       nivel_acesso
     }
@@ -172,6 +174,18 @@ export default function Usuarios() {
           value={email}
           defaultValue=""
           onChange={event => setEmail(event.target.value)}
+        />
+        <TextField
+          label="Senha"
+          fullWidth
+          required
+          type="password"
+          autoComplete="current-password"
+          value={senha}
+          sx={{mb: 2}}
+          onChange={(event) => {
+              setSenha(event.target.value)
+          }}
         />
         <TextField
           required
