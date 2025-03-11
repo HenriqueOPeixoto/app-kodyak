@@ -16,7 +16,8 @@ const representanteRoutes = require('./routes/RepresentanteRoutes')
 const pedidoRoutes = require('./routes/PedidoRoutes')
 const pedidoItensRoutes = require('./routes/PedidoItensRoutes')
 const localidadesRoutes = require('./routes/LocalidadesRoutes')
-const authRoutes = require('./routes/AuthRoutes')
+const authRoutes = require('./routes/AuthRoutes');
+const authenticateToken = require('./middleware/Authorization');
 
 const app = express();
 
@@ -32,18 +33,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser())
 
-app.use('/api/bancos', bancoRoutes)
-app.use('/api/clientes', clienteRoutes)
-app.use('/api/clientes_enderecos', clientesEnderecosRoutes)
-app.use('/api/produtos', produtoRoutes)
-app.use('/api/familia_produtos', familiaProdutosRoutes)
-app.use('/api/nivel_acesso', nivelAcessoRoutes)
-app.use('/api/motoristas', motoristaRoutes);
-app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/bancos', authenticateToken, bancoRoutes)
+app.use('/api/clientes', authenticateToken, clienteRoutes)
+app.use('/api/clientes_enderecos', authenticateToken, clientesEnderecosRoutes)
+app.use('/api/produtos', authenticateToken, produtoRoutes)
+app.use('/api/familia_produtos', authenticateToken, familiaProdutosRoutes)
+app.use('/api/nivel_acesso', authenticateToken, nivelAcessoRoutes)
+app.use('/api/motoristas', authenticateToken, motoristaRoutes);
+app.use('/api/usuarios', authenticateToken, usuarioRoutes);
 app.use('/api/auth', authRoutes)
-app.use('/api/representantes', representanteRoutes)
-app.use('/api/pedidos', pedidoRoutes)
-app.use('/api/pedidos_itens', pedidoItensRoutes)
-app.use('/api/localidades', localidadesRoutes)
+app.use('/api/representantes', authenticateToken, representanteRoutes)
+app.use('/api/pedidos', authenticateToken, pedidoRoutes)
+app.use('/api/pedidos_itens', authenticateToken, pedidoItensRoutes)
+app.use('/api/localidades', authenticateToken, localidadesRoutes)
 
 app.listen(port, '0.0.0.0')
