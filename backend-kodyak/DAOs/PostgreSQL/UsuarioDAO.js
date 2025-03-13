@@ -79,6 +79,9 @@ const updateUsuario = async (request, response) => {
     }
 
     if (senha) {
+        if (senha.length < 8) {
+            return response.status(400).send('Senha muito fraca.')
+        }
         let pw_hash = await bcrypt.hash(senha, 10)
         params.push(pw_hash)
         updates.push(' SENHA = $' + (params.length))
