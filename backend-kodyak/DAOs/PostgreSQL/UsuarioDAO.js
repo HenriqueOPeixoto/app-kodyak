@@ -54,7 +54,16 @@ const updateUsuario = async (request, response) => {
         updates.push(' NOME = $' + (params.length))
     }
     
-    if (email) {
+    let emailAtual = ''
+    try {
+        const results = await pool.query('SELECT EMAIL FROM USUARIOS WHERE ID = $1', [id])
+        emailAtual = results.rows[0].email
+    }
+    catch (error) {
+        return response.status(500).send('Não foi possível consultar e-mail anteriormente cadastrado. ' + error)
+    }
+        
+    if (email && email !== emailAtual) {
         try {
             const emailExiste = await validaEmail(email)
             if (emailExiste) {
