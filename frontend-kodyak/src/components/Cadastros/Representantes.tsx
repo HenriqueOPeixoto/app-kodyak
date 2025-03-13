@@ -49,6 +49,7 @@ export default function Representantes() {
   const [snackMessage, setSnackMessage] = useState('')
 
   const [btnInativarText, setBtnInativarText] = useState('Inativar')
+  const [formatTelefone, setFormatTelefone] = useState<string>('(##) ####-#####')
 
   const handleTipoPessoaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTipoPessoa(event.target.value)
@@ -56,12 +57,6 @@ export default function Representantes() {
   }
 
   const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
-  const formatTelefone = !telefone || telefone.length === 0
-    ? ''
-    : telefone.length <= 10
-      ? '(##) ####-####' // Format for 10-digit phone numbers
-      : '(##) # ####-####'; // Format for 11-digit phone numbers
-
 
   useEffect(() => {
     axios.get(`${backendBaseURL}/api/bancos`)
@@ -280,10 +275,16 @@ export default function Representantes() {
           value={telefone}
           customInput={TextField}
           format={formatTelefone}
-          placeholder="(65) 1234-5678"
           onValueChange={(values) => {
-            const floatValue = values.floatValue;
-            setTelefone(floatValue !== undefined ? floatValue.toString() : '');
+            const tamanhoTelefone = values.formattedValue.replace(/\s/g, '').length
+
+            if (tamanhoTelefone > 13) {
+              setFormatTelefone('(##) #####-####')
+            } else if (tamanhoTelefone === 13) {
+              setFormatTelefone('(##) ####-#####')
+            }
+
+            setTelefone(values.value);
           }}
 
         />
