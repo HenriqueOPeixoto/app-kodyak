@@ -15,6 +15,9 @@ const CodigoStatus = {
 
 const createUsuario = async (request, response) => {
     const { nome, email, senha, representante, nivel_acesso } = request.body
+    if (senha.length < 8) {
+        return response.status(400).send('Senha muito fraca.')
+    }
     let pw_hash = await bcrypt.hash(senha, 10)
 
     //Validar credenciais antes de registrar.
