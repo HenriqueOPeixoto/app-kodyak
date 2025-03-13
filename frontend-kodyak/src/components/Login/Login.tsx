@@ -37,7 +37,12 @@ export default function Login() {
                 navigate('/avisos')
             })
             .catch((error) => {
-                setMsgErro(error.response.data)
+                if (error.response) {
+                    setMsgErro(error.response.data)
+                } else {
+                    setMsgErro('Falha de comunicação. Entre em contato com o administrador.')
+                    console.log('Erro: Uma tentativa de contatar o backend não foi bem sucedida. Verifique o servidor.')
+                }
                 setLoading(false)
             })
 
