@@ -50,7 +50,7 @@ export default function CadastroPrincipal() {
                     }
                 })
                 .catch(error => {
-                    console.log('Não foi possível carregar dados do cliente: ', error)
+                    console.error('Não foi possível carregar dados do cliente: ', error)
                 })
         }
     }, [id])

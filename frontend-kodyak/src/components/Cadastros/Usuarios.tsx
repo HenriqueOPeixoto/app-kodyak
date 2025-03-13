@@ -61,7 +61,7 @@ export default function Usuarios() {
         }
       })
       .catch(error => {
-        console.log('Não foi possível carregar dados do usuário: ', error)
+        console.error('Não foi possível carregar dados do usuário: ', error)
       })
     }
   }, [id])
@@ -79,7 +79,6 @@ export default function Usuarios() {
       nivel_acesso
     }
 
-    console.log(id)
    
     if (id) {
       axios.put(`${backendBaseURL}/api/usuarios/${id}`, formData)
@@ -87,7 +86,7 @@ export default function Usuarios() {
         handleAbrirSnack('Usuário atualizado com sucesso!')
       })
       .catch(error => {
-        console.log('Ocorreu um erro ao atualizar o usuário: ', error)
+        console.error('Ocorreu um erro ao atualizar o usuário: ', error)
         handleAbrirSnack('Ocorreu um erro ao atualizar o usuário: ' + error.response.data)
       })
     } else {
@@ -129,7 +128,7 @@ export default function Usuarios() {
         setDialogOpen(false);
       })
       .catch(error => {
-        console.log('Ocorreu um erro ao inativar o usuário: ', error);
+        console.error('Ocorreu um erro ao inativar o usuário: ', error);
         handleAbrirSnack('Ocorreu um erro ao inativar o usuário.');
       });
   };

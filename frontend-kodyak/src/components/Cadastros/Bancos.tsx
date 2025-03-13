@@ -40,7 +40,7 @@ export default function Bancos() {
                     }
                 })
                 .catch(error => {
-                    console.log('Não foi possível carregar dados da família de produtos: ', error)
+                    console.error('Não foi possível carregar dados da família de produtos: ', error)
                 })
         }
     }, [id])
@@ -58,7 +58,7 @@ export default function Bancos() {
                     handleAbrirSnack('Banco atualizado com sucesso!')
                 })
                 .catch(error => {
-                    console.log(error)
+                    console.error(error)
                     handleAbrirSnack('Ocorreu um erro ao atualizar o cadastro do banco.')
                 })
         } else {
@@ -68,7 +68,7 @@ export default function Bancos() {
 
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.error(error)
                     handleAbrirSnack('Não foi possível cadastrar o banco.')
                 })
 

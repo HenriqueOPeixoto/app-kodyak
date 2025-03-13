@@ -67,7 +67,6 @@ export default function Representantes() {
       // Buscar dados da família de produtos
       axios.get(`${backendBaseURL}/api/representantes/${id}`)
         .then(response => {
-          console.log(response.data)
           if (response.data.length > 0) { // Checar se response não é vazio
             // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
             // retorna um registro.
@@ -107,7 +106,7 @@ export default function Representantes() {
           }
         })
         .catch(error => {
-          console.log('Não foi possível carregar dados do representante: ', error)
+          console.error('Não foi possível carregar dados do representante: ', error)
         })
     }
   }, [id])

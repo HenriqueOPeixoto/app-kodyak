@@ -36,7 +36,6 @@ function App() {
 
   useEffect(() => {
     if (isRootRoute) {
-      console.log('root')
       navigate('/login')
     } 
   }, [isRootRoute, navigate])

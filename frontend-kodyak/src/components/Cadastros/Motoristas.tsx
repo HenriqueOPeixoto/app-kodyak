@@ -51,7 +51,7 @@ export default function Motoristas() {
         }
       })
       .catch(error => {
-        console.log('Não foi possível carregar dados do motorista: ', error)
+        console.error('Não foi possível carregar dados do motorista: ', error)
       })
     }
   }, [id])
@@ -75,7 +75,7 @@ export default function Motoristas() {
         handleAbrirSnack('Motorista atualizado com sucesso!')
       })
       .catch(error => {
-        console.log('Ocorreu um erro ao atualizar o motorista: ', error)
+        console.error('Ocorreu um erro ao atualizar o motorista: ', error)
         handleAbrirSnack('Ocorreu um erro ao atualizar o motorista.')
       })
     } else {
@@ -118,7 +118,7 @@ export default function Motoristas() {
         setDialogOpen(false);
       })
       .catch(error => {
-        console.log('Ocorreu um erro ao inativar o motorista: ', error);
+        console.error('Ocorreu um erro ao inativar o motorista: ', error);
         handleAbrirSnack('Ocorreu um erro ao inativar o motorista.');
       });
   };
