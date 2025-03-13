@@ -67,7 +67,6 @@ export default function Login() {
                     <TextField 
                         label="E-mail"
                         fullWidth
-                        required
                         autoFocus
                         value={email}
                         sx={{mb: 2}}
@@ -78,7 +77,6 @@ export default function Login() {
                     <TextField
                         label="Senha"
                         fullWidth
-                        required
                         type="password"
                         autoComplete="current-password"
                         value={senha}
