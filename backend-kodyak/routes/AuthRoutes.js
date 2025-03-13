@@ -14,7 +14,7 @@ router.post('/login', async (req, res) => {
         const usuarios = await pool.query('SELECT * FROM USUARIOS WHERE email = $1', [email])
 
         if (usuarios.rows.length === 0) {
-            return res.status(401).send('E-mail incorreto')
+            return res.status(401).send('E-mail não encontrado')
         }
 
         // validação de senha
