@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, Container, Paper, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -12,8 +12,13 @@ export default function Login() {
     const [email, setEmail] = useState<string>('')
     const [senha, setSenha] = useState<string>('')
     const [msgErro, setMsgErro] = useState<string>(location.state ? location.state.message : '')
+    const [loading, setLoading] = useState<boolean>(false)
 
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault() // Evitar que a página recarregue
+
+        setLoading(true)
+
         // Se usuário e senha são válidos, o backend devolve um token de autenticação
 
         axios.post(`${backendBaseURL}/api/auth/login`, 
@@ -28,10 +33,12 @@ export default function Login() {
                 // no request disparado via axios.
                 
                 // Uma vez que o login foi bem sucedido, navegar para /avisos
+                setLoading(false)
                 navigate('/avisos')
             })
             .catch((error) => {
                 setMsgErro(error.response.data)
+                setLoading(false)
             })
 
 
@@ -76,7 +83,15 @@ export default function Login() {
                         }}
                     />
                     <Typography color='red' sx={{textAlign: 'center', wordWrap: 'break-word'}}>{msgErro}</Typography>
-                    <Button variant='contained' fullWidth onClick={handleSubmit} sx={{mt:1}}>Entrar</Button>
+                    <Button 
+                        disabled={loading ? true : false}
+                        variant='contained'
+                        fullWidth
+                        type="submit"
+                        sx={{mt:1}}
+                        >
+                            {loading ? <CircularProgress size={24} color="inherit" /> : "Entrar"}
+                        </Button>
                 </Box>
             </Paper>
             
