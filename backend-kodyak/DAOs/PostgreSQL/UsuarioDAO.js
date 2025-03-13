@@ -79,7 +79,8 @@ const updateUsuario = async (request, response) => {
     }
 
     if (senha) {
-        params.push(senha)
+        let pw_hash = await bcrypt.hash(senha, 10)
+        params.push(pw_hash)
         updates.push(' SENHA = $' + (params.length))
     }
     
