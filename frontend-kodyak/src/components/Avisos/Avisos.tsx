@@ -4,13 +4,28 @@ function Avisos() {
     return (
         <div>
             <Typography variant="h5">Vendas Kodyak</Typography>
-            <Typography variant="h6">Versão: 0.1.1</Typography>
+            <Typography variant="h6">Versão: 0.2</Typography>
             <hr />
 
             <Typography>Seja bem-vindo!</Typography>
             <Typography>Abaixo está disponível o histórico de modificações por versão:</Typography>
             <br />
             <Typography variant="h6">Changelog:</Typography>
+            <Typography variant="h6">0.2</Typography>
+            <Typography color={'red'}>
+                Aviso: Está é uma build de teste da aplicação, podendo apresentar instabilidades.
+            </Typography>
+            <List>
+                <ListItem>Implementada tela de login;</ListItem>
+                <ListItem>O sistema agora verifica se o usuário está autenticado ao carregar rotas;</ListItem>
+                <ListItem>Adicionado controle de sessão;</ListItem>
+                <ListItem>Corrigido bug de verificação de formato de texto, no campo telefone na tela de Representantes, que impedia o usuário de inserir caracteres;</ListItem>
+                <ListItem>Implementado Autocomplete para informar representante na tela de cadastro de usuários;</ListItem>
+                <ListItem>Corrigido bug que não permitia atualizar dados de usuário, caso o e-mail também não fosse alterado;</ListItem>
+                <ListItem>Corrigida falha que armazenava senhas descriptografadas no banco ao atualizar o cadastro de usuário;</ListItem>
+                <ListItem>O sistema agora exige que senhas tenham no mínimo 8 caracteres;</ListItem>
+            </List>
+            <hr />
             <Typography variant="h6">0.1.1</Typography>
             <Typography color={'red'}>
                 Aviso: Está é uma build de teste da aplicação, podendo apresentar instabilidades.
