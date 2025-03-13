@@ -4,6 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Feedback } from '@mui/icons-material';
 
 function SidebarData() {
   return (
@@ -27,6 +28,11 @@ function SidebarData() {
             title: "Pedidos",
             icon: <ShoppingCartIcon />,
             link: "/pedidos"
+        },
+        {
+            title: "Feedback",
+            icon: <Feedback />,
+            link: "/nao_implementado"
         },
         {
             title: "Config.",
