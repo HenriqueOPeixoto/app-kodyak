@@ -25,6 +25,12 @@ router.post('/login', async (req, res) => {
 
         // Retorna o token para quem requisitou o login.
         // return res.status(200).send('Sucesso')
+        let usuario = {
+            id: usuarios.rows[0].id,
+            email: usuarios.rows[0].email,
+            nivel_acesso: usuarios.rows[0].nivel_acesso
+        }
+        console.log(usuario)
         let tokens = jwtTokens(usuarios.rows[0])
         res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true})
         res.cookie('access_token', tokens.accessToken, {httpOnly: true})
