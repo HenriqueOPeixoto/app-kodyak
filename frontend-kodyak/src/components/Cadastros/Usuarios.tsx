@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material';
+import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar } from '@mui/material';
 
 import SaveIcon from '@mui/icons-material/Save';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -18,6 +18,12 @@ type NivelAcesso = {
   descricao: string
 }
 
+interface Representante {
+  label: string,
+  id: number,
+  nome: string
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 export default function Usuarios() {
@@ -26,11 +32,13 @@ export default function Usuarios() {
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const [representante, setRepresentante] = useState('')
+  const [representante, setRepresentante] = useState<Representante|null>(null)
   const [nivel_acesso, setNivelAcesso] = useState('')
   const [inativo, setInativo] = useState(false)
 
   const [niveis_acesso, setNiveisAcesso] = useState([])
+  const [representantes, setRepresentantes] = useState<Representante[]>([])
+  const [listaRepresentantes, setListaRepresentantes] = useState<Representante[]>([])
   
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
@@ -44,27 +52,55 @@ export default function Usuarios() {
     .then((response) => {
       setNiveisAcesso(response.data)
     })
+    .catch((error) => {
+      console.error('Não foi possível consultar os níveis de acesso: ' + error)
+      handleAbrirSnack('Ocorreu um erro ao consultar nível de acesso. Verifique o console para mais detalhes.')
+    })
+    
+    axios.get(`${backendBaseURL}/api/representantes`)
+    .then((response) => {
+      setRepresentantes(response.data)
+    })
+    .catch((error) => {
+      console.error('Não foi possível consultar os representantes: ' + error)
+      handleAbrirSnack('Ocorreu um erro ao consultar representantes. Verifique o console para mais detalhes.')
+    })
 
     if (id) {
       // Buscar os dados do usuário para atualizar
       axios.get(`${backendBaseURL}/api/usuarios/${id}`)
       .then(response => {
-        if (response.data.length > 0) { // Checar se response não é vazio
-            // response.data retorna um array, mas somente preciso do primeiro valor, pois getById só
-            // retorna um registro.
-            const { nome, email, representante, nivel_acesso, inativo } = response.data[0]
-            setNome(nome)
-            setEmail(email)
-            setRepresentante(representante)
-            setNivelAcesso(nivel_acesso)
-            setInativo(inativo)
-        }
-      })
+          const { nome, email, representante, nivel_acesso, inativo } = response.data[0]
+          setNome(nome)
+          setEmail(email)
+          //setRepresentante(representante)
+          setNivelAcesso(nivel_acesso)
+          setInativo(inativo)
+
+          return axios.get(`${backendBaseURL}/api/representantes/${representante}`)
+        })
+        .then((representanteResponse) => {
+          const representanteData = representanteResponse.data[0]
+          representanteData.label = `${representanteData.nome}`
+          setRepresentante(representanteData)
+          
+        })
       .catch(error => {
         console.error('Não foi possível carregar dados do usuário: ', error)
+        handleAbrirSnack('Ocorreu um erro ao consultar dados do usuário. Consulte o console para mais detalhes.')
       })
     }
   }, [id])
+
+  useEffect(() => {
+    setListaRepresentantes(representantes.map((representante) => {
+      return {
+        label: representante.nome,
+        id: representante.id,
+        nome: representante.nome
+      }
+    }))
+  }, [representantes])
 
   const handleChangeNivel = (event: SelectChangeEvent) => {
     setNivelAcesso(event.target.value as string)
@@ -75,7 +111,7 @@ export default function Usuarios() {
       nome,
       email,
       senha,
-      representante,
+      representante: representante?.id,
       nivel_acesso
     }
 
@@ -94,6 +130,11 @@ export default function Usuarios() {
       .then(() => {
         handleAbrirSnack('Usuário cadastrado com sucesso.')
         
+        setNome('')
+        setEmail('')
+        setSenha('')
+        setRepresentante(null)
+        setNivelAcesso('')
       })
       .catch(error => {
         console.error('Não foi possível cadastrar o usuário: ', error)
@@ -186,13 +227,16 @@ export default function Usuarios() {
               setSenha(event.target.value)
           }}
         />
-        <TextField
-          required
-          id="standard-required"
-          label="Representante"
+        <Autocomplete 
+          disablePortal
+          options={listaRepresentantes}
           value={representante}
-          defaultValue=""
-          onChange={event => setRepresentante(event.target.value)}
+          getOptionLabel = {(option) => option.label}
+          onChange={(_event, novoRepresentante) => {
+            setRepresentante(novoRepresentante)
+          }}
+          renderInput={(params) => <TextField {...params} label="Representante" />}
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
         />
         <div className='ContainerNivelAcesso'>
           <FormControl fullWidth>
