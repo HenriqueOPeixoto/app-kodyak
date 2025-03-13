@@ -26,7 +26,7 @@ export default function Representantes() {
   
   const { id } = useParams()
   const [nome, setNome] = useState('')
-  const [tipoPessoa, setTipoPessoa] = useState('')
+  const [tipoPessoa, setTipoPessoa] = useState('F')
   const [documento, setDocumento] = useState('')
   const [telefone, setTelefone] = useState('')
   const [email, setEmail] = useState('')
@@ -245,7 +245,6 @@ export default function Representantes() {
             <FormLabel id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
             <RadioGroup
               aria-labelledby="tipo-pessoa-radio-buttons-group-label"
-              defaultValue="F"
               name="tipo-pessoa-radio-buttons-group"
               onChange={handleTipoPessoaChange}
               value={tipoPessoa}
