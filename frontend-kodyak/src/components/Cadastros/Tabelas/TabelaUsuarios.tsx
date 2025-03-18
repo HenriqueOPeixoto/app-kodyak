@@ -9,8 +9,8 @@ interface Usuario {
   id: number
   nome: string
   email: string
-  representante: number
-  nivel_acesso: number
+  representante: string
+  nivel_acesso: string
 }
 
 const CardUsuario: React.FC<{ usuario: Usuario }> = ({ usuario }) => {
@@ -41,7 +41,7 @@ const TabelaUsuarios: React.FC = () => {
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Usuario[]>(`${backendBaseURL}/api/usuarios`, {
+    axios.get<Usuario[]>(`${backendBaseURL}/api/usuarios/view`, {
         params: {
           "nome": nome,
           "inativo": inativo
