@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
         let tokens = jwtTokens(usuarios.rows[0])
         res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true})
         res.cookie('access_token', tokens.accessToken, {httpOnly: true})
-        res.json(tokens)
+        res.status(200).send('Autenticado.')
 
     } catch (error) {
         res.status(401).send(error)
@@ -51,8 +51,12 @@ router.get('/refresh_token', (req, res) => {
 
             let tokens = jwtTokens(user)
             res.cookie('refresh_token', tokens.refreshToken, {httpOnly: true})
+            res.cookie('access_token', tokens.accessToken, {httpOnly: true})
 
-            res.json(tokens)
+            // Linha abaixo comentada pois não vejo necessidade em retornar os tokens como json,
+            // tendo em vista que já estão salvas como cookies
+            // res.json(tokens)
+            res.status(200).send('Novos tokens gerados com sucesso.')
         })
     } catch (error) {
         res.status(401).send(error)
