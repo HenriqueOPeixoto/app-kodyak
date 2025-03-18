@@ -109,7 +109,7 @@ export default function Usuarios() {
   const handleSubmit = () => {
     const formData = {
       nome,
-      email,
+      email: email.trim(),
       senha,
       representante: representante?.id,
       nivel_acesso

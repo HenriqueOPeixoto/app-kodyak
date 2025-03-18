@@ -22,7 +22,7 @@ export default function Login() {
         // Se usuário e senha são válidos, o backend devolve um token de autenticação
 
         axios.post(`${backendBaseURL}/api/auth/login`, 
-            { email: email, senha: senha },
+            { email: email.trim(), senha: senha },
             { 
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
