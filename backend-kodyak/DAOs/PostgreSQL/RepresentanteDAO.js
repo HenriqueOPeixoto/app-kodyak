@@ -12,7 +12,6 @@ const createRepresentante = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         banco,
         conta,
         agencia
@@ -21,9 +20,9 @@ const createRepresentante = (request, response) => {
     const query = 
     `INSERT INTO REPRESENTANTES (
         nome, tipo_pessoa, documento, telefone, email, cep, logradouro, numero,
-        bairro, cidade, estado, banco, conta, agencia
+        bairro, cidade, banco, conta, agencia
         )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
     RETURNING ID`
 
     const values = [
@@ -37,7 +36,6 @@ const createRepresentante = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         banco,
         conta,
         agencia
@@ -62,7 +60,6 @@ const updateRepresentante = (request, response) => {
         numero,
         bairro,
         cidade,
-        estado,
         banco,
         conta,
         agencia
@@ -111,10 +108,6 @@ const updateRepresentante = (request, response) => {
     if (cidade) {
         params.push(cidade)
         updates.push(' cidade = $' + params.length)
-    }
-    if (estado) {
-        params.push(estado)
-        updates.push(' estado = $' + params.length)
     }
     if (banco !== undefined) {
         params.push(banco)
