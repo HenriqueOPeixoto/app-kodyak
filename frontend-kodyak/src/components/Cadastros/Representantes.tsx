@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
+import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Snackbar, TextField } from "@mui/material"
 import { Link, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 
@@ -21,6 +21,19 @@ type Banco = {
   sigla: string
 }
 
+interface Estado {
+  id: number,
+  nome: string,
+  sigla: string,
+  regiao: string
+}
+
+interface Cidade {
+  id_municipio: number,
+  nome_municipio: string,
+  id_uf: number
+}
+
 export default function Representantes() {
   const axios = useAxiosInstance()
   
@@ -34,14 +47,17 @@ export default function Representantes() {
   const [logradouro, setLogradouro] = useState('')
   const [numero, setNumero] = useState('')
   const [bairro, setBairro] = useState('')
-  const [cidade, setCidade] = useState('')
-  const [estado, setEstado] = useState('')
+  const [cidade, setCidade] = useState<Cidade | null>(null)
+  const [estado, setEstado] = useState<Estado | null>(null)
   const [banco, setBanco] = useState('')
   const [conta, setConta] = useState('')
   const [agencia, setAgencia] = useState('')
   const [inativo, setInativo] = useState(false)
 
   const [bancos, setBancos] = useState<Banco[]>([])
+
+  const [listaEstados, setListaEstados] = useState<Estado[]>([])
+  const [listaCidades, setListaCidades] = useState<Cidade[]>([])
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
@@ -59,12 +75,16 @@ export default function Representantes() {
   const formatTipoPessoa = tipoPessoa === 'J' ? '##.###.###/####-##' : '###.###.###-##'
 
   useEffect(() => {
+    // Busca UFs
+    axios.get(`${backendBaseURL}/api/localidades/unidades_federativas`)
+      .then((response) => { setListaEstados(response.data) })
+      .catch((error) => { console.error('Não foi possível listar as UFs: ' + error)})
+
     axios.get(`${backendBaseURL}/api/bancos`)
       .then((response) => { setBancos(response.data) })
       .catch((error) => { console.error('Ocorreu um erro ao listar os bancos: ' + error) })
 
     if (id) {
-      // Buscar dados da família de produtos
       axios.get(`${backendBaseURL}/api/representantes/${id}`)
         .then(response => {
           if (response.data.length > 0) { // Checar se response não é vazio
@@ -81,7 +101,6 @@ export default function Representantes() {
               numero,
               bairro,
               cidade,
-              estado,
               banco,
               conta,
               agencia,
@@ -97,12 +116,34 @@ export default function Representantes() {
             setLogradouro(logradouro)
             setNumero(numero)
             setBairro(bairro)
-            setCidade(cidade)
-            setEstado(estado)
             setBanco(banco || '') // Como é inteiro no banco, pode vir nulo
             setConta(conta)
             setAgencia(agencia)
             setInativo(inativo)
+
+            if (cidade) {
+              axios.get(`${backendBaseURL}/api/localidades/municipios/${cidade}/view`)
+                  .then((response) => { 
+                      const cidadeData: Cidade = {
+                          id_municipio: response.data[0].id_municipio,
+                          nome_municipio: response.data[0].nome_municipio,
+                          id_uf: response.data[0].id_uf
+                      }
+                      setCidade(cidadeData)
+
+                      const estadoData: Estado = {
+                          id: response.data[0].id_uf,
+                          nome: response.data[0].nome_uf,
+                          sigla: response.data[0].sigla_uf,
+                          regiao: response.data[0].regiao_uf
+                      }
+
+                      setEstado(estadoData)
+
+                  })
+                  .catch((error) => { console.error('Não foi possível buscar a cidade representante: ' + error)})
+          }
+
           }
         })
         .catch(error => {
@@ -110,6 +151,19 @@ export default function Representantes() {
         })
     }
   }, [id])
+
+  useEffect(() => {
+    if (estado)
+    {
+      axios.get(`${backendBaseURL}/api/localidades/municipios/`, {
+          params: {
+              id_uf: estado.id
+          }
+        })
+        .then((response) => { setListaCidades(response.data) })
+        .catch((error) => { console.error('Não foi possível listar as cidades: ' + error)})
+    }
+  }, [estado])
 
   const handleSubmit = () => {
     const formData = {
@@ -122,8 +176,7 @@ export default function Representantes() {
       logradouro,
       numero,
       bairro,
-      cidade,
-      estado,
+      cidade: cidade?.id_municipio,
       banco: banco ? banco : null, // Para permitir prosseguir sem informar banco
       conta,
       agencia,
@@ -154,8 +207,8 @@ export default function Representantes() {
           setLogradouro('')
           setNumero('')
           setBairro('')
-          setCidade('')
-          setEstado('')
+          setCidade(null)
+          setEstado(null)
           setBanco('')
           setConta('')
           setAgencia('')
@@ -326,25 +379,35 @@ export default function Representantes() {
           value={bairro}
           onChange={event => setBairro(event.target.value.toUpperCase())}
         />
-        {/* 
-          Os campos cidade e estado estão desabilitados pois estão em
-          desacordo com o que foi implementado no cadastro de clientes.
-          Precisa buscar a cidade da tabela MUNICIPIOS no banco de dados.
-        */}
-        <TextField
-          id="txtCidade"
-          label="Cidade"
-          value={cidade}
-          disabled
-          onChange={event => setCidade(event.target.value)}
-        />
-        <TextField
-          id="txtEstado"
-          label="Estado"
+        <Autocomplete
+          className='TxtUF'
+          disablePortal
+          options={listaEstados}
+          //sx={{ width: 100 }}
           value={estado}
-          disabled
-          onChange={event => setEstado(event.target.value)}
-        />
+          getOptionLabel={(option) => option.sigla} // Como exibir cada opção
+          onChange={(_event, novoEstado) => {
+              if (estado?.id !== novoEstado?.id) {
+                  setEstado(novoEstado)
+                  setCidade(null)
+              }
+          }}
+          renderInput={(params) => <TextField required {...params} label="UF" />}
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
+      />
+      <Autocomplete
+          className='TxtCidade'
+          disablePortal
+          options={listaCidades}
+          //sx={{ width: 300 }}
+          value={cidade}
+          getOptionLabel={(option) => option.nome_municipio} // Como exibir cada opção
+          onChange={(_event, novaCidade) => {
+              setCidade(novaCidade)
+          }}
+          renderInput={(params) => <TextField required {...params} label="Cidade" />}
+          isOptionEqualToValue={(option, value) => option.id_municipio === value?.id_municipio}
+      />
         <div className="ContainerSeletor">
           <FormControl className="SeletorBanco" >
             <InputLabel id="lblBanco">Banco</InputLabel>
