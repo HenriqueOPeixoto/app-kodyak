@@ -135,8 +135,9 @@ export default function Representantes() {
         .then(() => {
           handleAbrirSnack('Representante atualizado com sucesso!')
         })
-        .catch(() => {
-          handleAbrirSnack('Ocorreu um erro ao atualizar o representante.')
+        .catch((error) => {
+          handleAbrirSnack('Ocorreu um erro ao atualizar o representante. Verifique o console para mais detalhes.')
+          console.error(error)
         })
     } else {
       axios.post(`${backendBaseURL}/api/representantes/`, formData)
@@ -160,8 +161,9 @@ export default function Representantes() {
           setAgencia('')
           setInativo(false)
         })
-        .catch(() => {
-          handleAbrirSnack('Não foi possível cadastrar o representante.')
+        .catch((error) => {
+          handleAbrirSnack('Não foi possível cadastrar o representante. Verifique o console para mais detalhes.')
+          console.error(error)
         })
 
     }
