@@ -175,11 +175,16 @@ const validaCadastro = (request) => {
 
 }
 
-const getUsuarios = (request, response) => {
+// Em vez de criar uma função nova, getViewUsuarios, como fiz com as outras entidades,
+// optei por colocar tudo em uma função só. Fica mais simples, pois só o que mudaria entre
+// getUsuarios e getViewUsuarios seria a consulta SQL.
+// Se parâmetro view for fornecido, sistema irá buscar a view no banco.
+const getUsuarios = (request, response, isView = false) => {
     const { nome, inativo } = request.query;
+    const nomeTabela  = isView ? 'vw_usuarios' : 'usuarios'
 
     // 1=1 é uma condição neutra, é só para não ter que lidar com o where nos filtros adicionais
-    let query = 'SELECT * FROM USUARIOS WHERE 1=1 '
+    let query = `SELECT * FROM ${nomeTabela} WHERE 1=1 `
     const params = []
 
     if (nome) {

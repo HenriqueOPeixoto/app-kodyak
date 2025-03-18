@@ -9,7 +9,16 @@ const authenticateToken = require('../middleware/Authorization');
 
 router.post('/', UsuarioController.createUsuario);
 router.put('/:id', UsuarioController.updateUsuario);
-router.get('/', UsuarioController.getUsuarios);
+
+
+// O terceiro argumento de getUsuarios é isView, que é false por padrão.
+// Se for 'view', o sistema irá buscar a view no banco.
+// Se for qualquer outra coisa, o sistema irá buscar a tabela no banco.
+router.get('/:type?', (req, res) => {
+    const isView = req.params.type === 'view'
+    UsuarioController.getUsuarios(req, res, isView)
+});
+
 router.get('/:id', UsuarioController.getUsuarioById);
 router.patch('/:id/alterarStatus', UsuarioController.alterarStatusUsuario);
 

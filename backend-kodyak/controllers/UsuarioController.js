@@ -8,8 +8,8 @@ exports.updateUsuario = (req, res) => {
     UsuarioDAO.updateUsuario(req, res);
 };
 
-exports.getUsuarios = (req, res) => {
-    UsuarioDAO.getUsuarios(req, res);
+exports.getUsuarios = (req, res, isView) => {
+    UsuarioDAO.getUsuarios(req, res, isView);
 };
 
 exports.getUsuarioById = (req, res) => {
