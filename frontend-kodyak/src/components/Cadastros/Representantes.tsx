@@ -15,7 +15,7 @@ import './styles/Representantes.css'
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 type Banco = {
-  id: number,
+  id: string,
   cod_banco: string,
   nome: string,
   sigla: string
@@ -99,7 +99,7 @@ export default function Representantes() {
             setBairro(bairro)
             setCidade(cidade)
             setEstado(estado)
-            setBanco(banco)
+            setBanco(banco || '') // Como é inteiro no banco, pode vir nulo
             setConta(conta)
             setAgencia(agencia)
             setInativo(inativo)
@@ -236,7 +236,6 @@ export default function Representantes() {
           id="txtNome"
           label="Nome"
           value={nome}
-          defaultValue=""
           onChange={event => setNome(event.target.value.toUpperCase())}
         />
 
@@ -293,7 +292,6 @@ export default function Representantes() {
           id="txtEmail"
           label="Email"
           value={email}
-          defaultValue=""
           onChange={event => setEmail(event.target.value)}
         />
 
@@ -305,8 +303,7 @@ export default function Representantes() {
           format="#####-###"
           mask="_"
           onValueChange={(values) => {
-            const floatValue = values.floatValue;
-            setCep(floatValue !== undefined ? floatValue.toString() : '');
+            setCep(values.value);
           }}
 
         />
@@ -315,21 +312,18 @@ export default function Representantes() {
           id="txtLogradouro"
           label="Logradouro"
           value={logradouro}
-          defaultValue=""
           onChange={event => setLogradouro(event.target.value.toUpperCase())}
         />
         <TextField
           id="txtNumero"
           label="Número"
           value={numero}
-          defaultValue=""
           onChange={event => setNumero(event.target.value)}
         />
         <TextField
           id="txtBairro"
           label="Bairro"
           value={bairro}
-          defaultValue=""
           onChange={event => setBairro(event.target.value.toUpperCase())}
         />
         {/* 
@@ -341,7 +335,6 @@ export default function Representantes() {
           id="txtCidade"
           label="Cidade"
           value={cidade}
-          defaultValue=""
           disabled
           onChange={event => setCidade(event.target.value)}
         />
@@ -349,7 +342,6 @@ export default function Representantes() {
           id="txtEstado"
           label="Estado"
           value={estado}
-          defaultValue=""
           disabled
           onChange={event => setEstado(event.target.value)}
         />
@@ -374,14 +366,12 @@ export default function Representantes() {
           id="txtConta"
           label="Conta"
           value={conta}
-          defaultValue=""
           onChange={event => setConta(event.target.value)}
         />
         <TextField
           id="txtAgencia"
           label="Agência"
           value={agencia}
-          defaultValue=""
           onChange={event => setAgencia(event.target.value)}
         />
 
