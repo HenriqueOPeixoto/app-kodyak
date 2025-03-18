@@ -14,7 +14,7 @@ import './styles/Representantes.css'
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
-type Bancos = {
+type Banco = {
   id: number,
   cod_banco: string,
   nome: string,
@@ -41,7 +41,7 @@ export default function Representantes() {
   const [agencia, setAgencia] = useState('')
   const [inativo, setInativo] = useState(false)
 
-  const [bancos, setBancos] = useState<Bancos[]>([])
+  const [bancos, setBancos] = useState<Banco[]>([])
 
   const [dialogOpen, setDialogOpen] = useState(false)
   const [snackOpen, setSnackOpen] = useState(false)
@@ -124,7 +124,7 @@ export default function Representantes() {
       bairro,
       cidade,
       estado,
-      banco,
+      banco: banco ? banco : null, // Para permitir prosseguir sem informar banco
       conta,
       agencia,
       inativo
@@ -363,7 +363,7 @@ export default function Representantes() {
               label="Banco"
               onChange={handleChangeBanco}
             >
-              {bancos.map((banco: Bancos) => (
+              {bancos.map((banco: Banco) => (
                 <MenuItem key={banco.id} value={banco.id}>{banco.cod_banco}: {banco.nome}</MenuItem>
               ))}
             </Select>
