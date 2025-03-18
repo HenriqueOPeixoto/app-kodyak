@@ -183,42 +183,48 @@ export default function Representantes() {
       inativo
     }
 
-    if (id) {
-      axios.put(`${backendBaseURL}/api/representantes/${id}`, formData)
-        .then(() => {
-          handleAbrirSnack('Representante atualizado com sucesso!')
-        })
-        .catch((error) => {
-          handleAbrirSnack('Ocorreu um erro ao atualizar o representante. Verifique o console para mais detalhes.')
-          console.error(error)
-        })
-    } else {
-      axios.post(`${backendBaseURL}/api/representantes/`, formData)
-        .then(() => {
-          handleAbrirSnack('Representante cadastrado com sucesso.')
+    const chavesVerificarNulo: (keyof typeof formData)[] = ['nome', 'tipo_pessoa', 'documento', 'telefone', 'cep', 'logradouro', 'numero', 'bairro', 'cidade']
+    const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '' || formData[chave] === null || formData[chave] === undefined)
 
-          setNome('')
-          setNome('')
-          setTipoPessoa('')
-          setDocumento('')
-          setTelefone('')
-          setEmail('')
-          setCep('')
-          setLogradouro('')
-          setNumero('')
-          setBairro('')
-          setCidade(null)
-          setEstado(null)
-          setBanco('')
-          setConta('')
-          setAgencia('')
-          setInativo(false)
-        })
-        .catch((error) => {
-          handleAbrirSnack('Não foi possível cadastrar o representante. Verifique o console para mais detalhes.')
-          console.error(error)
-        })
+    if (obrigatoriosNulos.length > 0) handleAbrirSnack('Os seguintes campos obrigatórios não foram preenchidos: ' + obrigatoriosNulos.join(', ').toUpperCase())
+     else {
+      if (id) {
+        axios.put(`${backendBaseURL}/api/representantes/${id}`, formData)
+          .then(() => {
+            handleAbrirSnack('Representante atualizado com sucesso!')
+          })
+          .catch((error) => {
+            handleAbrirSnack('Ocorreu um erro ao atualizar o representante. Verifique o console para mais detalhes.')
+            console.error(error)
+          })
+      } else {
+        axios.post(`${backendBaseURL}/api/representantes/`, formData)
+          .then(() => {
+            handleAbrirSnack('Representante cadastrado com sucesso.')
 
+            setNome('')
+            setNome('')
+            setTipoPessoa('')
+            setDocumento('')
+            setTelefone('')
+            setEmail('')
+            setCep('')
+            setLogradouro('')
+            setNumero('')
+            setBairro('')
+            setCidade(null)
+            setEstado(null)
+            setBanco('')
+            setConta('')
+            setAgencia('')
+            setInativo(false)
+          })
+          .catch((error) => {
+            handleAbrirSnack('Não foi possível cadastrar o representante. Verifique o console para mais detalhes.')
+            console.error(error)
+          })
+
+      }
     }
 
   }
@@ -295,7 +301,7 @@ export default function Representantes() {
         <div className="FormDocumento">
 
           <FormControl>
-            <FormLabel id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
+            <FormLabel required id="tipo-pessoa-radio-label">Tipo Pessoa</FormLabel>
             <RadioGroup
               aria-labelledby="tipo-pessoa-radio-buttons-group-label"
               name="tipo-pessoa-radio-buttons-group"
@@ -311,6 +317,7 @@ export default function Representantes() {
             id="txtDocumento"
             label="Documento"
             value={documento}
+            required
             customInput={TextField}
             format={formatTipoPessoa}
             mask="_"
@@ -325,6 +332,7 @@ export default function Representantes() {
           id="txtTelefone"
           label="Telefone"
           value={telefone}
+          required
           customInput={TextField}
           format={formatTelefone}
           onValueChange={(values) => {
@@ -352,6 +360,7 @@ export default function Representantes() {
           id="txtCep"
           label="CEP"
           value={cep}
+          required
           customInput={TextField}
           format="#####-###"
           mask="_"
@@ -365,18 +374,21 @@ export default function Representantes() {
           id="txtLogradouro"
           label="Logradouro"
           value={logradouro}
+          required
           onChange={event => setLogradouro(event.target.value.toUpperCase())}
         />
         <TextField
           id="txtNumero"
           label="Número"
           value={numero}
+          required
           onChange={event => setNumero(event.target.value)}
         />
         <TextField
           id="txtBairro"
           label="Bairro"
           value={bairro}
+          required
           onChange={event => setBairro(event.target.value.toUpperCase())}
         />
         <Autocomplete
