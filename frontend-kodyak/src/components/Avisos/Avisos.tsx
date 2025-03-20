@@ -4,7 +4,7 @@ function Avisos() {
     return (
         <div>
             <Typography variant="h5">Vendas Kodyak</Typography>
-            <Typography variant="h6">Versão: 0.2</Typography>
+            <Typography variant="h6">Versão: 0.2.1</Typography>
             <hr />
 
             <Typography>Seja bem-vindo!</Typography>
