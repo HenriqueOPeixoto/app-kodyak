@@ -12,9 +12,6 @@ function Avisos() {
             <br />
             <Typography variant="h6">Changelog:</Typography>
             <Typography variant="h6">0.2.1</Typography>
-            <Typography color={'red'}>
-                Aviso: Está é uma build de teste da aplicação, podendo apresentar instabilidades.
-            </Typography>
             <List>
                 <ListItem>Na listagem de usuários, o sistema exibe nome do representante e nível de acesso, em vez de seus respectivos IDs;</ListItem>
                 <ListItem>Caracteres de espaço são ignorados no campo e-mail, quando inseridos no início e no final - Login e Cadastro de Usuários;</ListItem>
