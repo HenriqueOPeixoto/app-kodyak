@@ -7,14 +7,14 @@ const useAxiosInstance = () => {
     const navigate = useNavigate()
 
     let isRefreshing = false;
-    let refreshSubscribers: ((token: string) => void)[] = [];
+    let refreshSubscribers: (() => void)[] = [];
 
-    const subscribeTokenRefresh = (cb: (token: string) => void) => {
+    const subscribeTokenRefresh = (cb: () => void) => {
         refreshSubscribers.push(cb);
     };
 
-    const onRefreshed = (token: string) => {
-        refreshSubscribers.forEach((cb) => cb(token));
+    const onRefreshed = () => {
+        refreshSubscribers.forEach((cb) => cb());
         refreshSubscribers = [];
     };
 
@@ -26,11 +26,10 @@ const useAxiosInstance = () => {
             if (isRefreshing) {
                 // Se já está atualizando o token, aguarda a atualização antes de refazer a requisição
                 return new Promise((resolve) => {
-                    subscribeTokenRefresh((token) => {
-                        originalRequest.headers = {
-                            ...originalRequest.headers,
-                            Authorization: `Bearer ${token}`,
-                        };
+                    subscribeTokenRefresh(() => {
+                        //originalRequest.headers = {
+                        //    ...originalRequest.headers,
+                        //};
                         resolve(axios(originalRequest));
                     });
                 });
@@ -40,19 +39,19 @@ const useAxiosInstance = () => {
 
             try {
                 // Atualiza o token
-                const refreshResponse = await axios.get(`${backendBaseURL}/api/auth/refresh_token`, {
+                //const refreshResponse = await axios.get(`${backendBaseURL}/api/auth/refresh_token`, {
+                await axios.get(`${backendBaseURL}/api/auth/refresh_token`, {
                     withCredentials: true,
                 });
 
-                const newAccessToken = refreshResponse.data.accessToken;
+                //const newAccessToken = refreshResponse.data.accessToken;
                 isRefreshing = false;
-                onRefreshed(newAccessToken);
+                onRefreshed();
 
                 // Atualiza o header e refaz a requisição original
-                originalRequest.headers = {
-                    ...originalRequest.headers,
-                    Authorization: `Bearer ${newAccessToken}`,
-                };
+                //originalRequest.headers = {
+                //    ...originalRequest.headers
+                //};
                 return axios(originalRequest);
             } catch (error) {
                 isRefreshing = false;
