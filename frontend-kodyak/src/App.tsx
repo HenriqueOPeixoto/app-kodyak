@@ -22,6 +22,7 @@ const FamiliaProdutos = lazy(() => import('./components/Cadastros/FamiliaProduto
 const Produtos = lazy(() => import('./components/Cadastros/Produtos'));
 const Representantes = lazy(() => import('./components/Cadastros/Representantes'));
 const NaoImplementado = lazy(() => import('./components/Avisos/NaoImplementado'));
+const Fretes = lazy(() => import('./components/Cadastros/Fretes'));
 
 const MenuPedidos = lazy(() => import('./components/Pedidos/MenuPedidos'));
 
@@ -71,6 +72,8 @@ function App() {
             <Route path='/cadastros/editar_produto/:id' element={<Produtos />} />
             <Route path='/cadastros/novo_representante' element={<Representantes />} />
             <Route path='/cadastros/editar_representante/:id' element={<Representantes />} />
+            <Route path='/cadastros/novo_frete' element={<Fretes />} />
+            <Route path='/cadastros/editar_frete/:id' element={<Fretes />} />
             
             <Route path='/dashboard' element={<Dashboard />} />
             
