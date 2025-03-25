@@ -84,7 +84,7 @@ const useAxiosInstance = () => {
         },
         (error) => {
             // Se erro, navegar para a tela de login
-            if (error.response) {
+            if (error.response.status === 401 || error.response.status === 403) {
                 // error.config contém o request original
                 return handleUnauthorizedOrForbidden(error.response, error.config)
 
