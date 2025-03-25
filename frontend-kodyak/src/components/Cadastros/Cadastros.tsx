@@ -16,6 +16,7 @@ import TabelaFamiliaProdutos from './Tabelas/TabelaFamiliaProdutos';
 import TabelaProdutos from './Tabelas/TabelaProdutos';
 import TabelaRepresentantes from './Tabelas/TabelaRepresentantes';
 import { useLocation } from 'react-router-dom';
+import TabelaFretes from './Tabelas/TabelaFretes';
 
 function Cadastros() {
   const location = useLocation()
@@ -48,6 +49,7 @@ function Cadastros() {
           <Button startIcon={<PeopleIcon />}          variant={getButtonVariant('clientes')}         onClick={() => {handleButtonClick('clientes')}}>Clientes</Button>
           <Button startIcon={<ShoppingBagIcon />}     variant={getButtonVariant('familia_produtos')} onClick={() => {handleButtonClick('familia_produtos')}}>Família de Produtos</Button>
           <Button startIcon={<ShoppingBagIcon />}     variant={getButtonVariant('produtos')}         onClick={() => {handleButtonClick('produtos')}}>Produtos</Button>
+          <Button startIcon={<LocalShippingIcon />}   variant={getButtonVariant('fretes')}           onClick={() => {handleButtonClick('fretes')}}>Fretes</Button>
           <Button startIcon={<LocalShippingIcon />}   variant={getButtonVariant('motoristas')}       onClick={() => {handleButtonClick('motoristas')}}>Motoristas</Button>
           <Button startIcon={<PersonAddAlt1Icon />}   variant={getButtonVariant('representantes')}   onClick={() => {handleButtonClick('representantes')}}>Representantes</Button>
           <Button startIcon={<Person />}              variant={getButtonVariant('usuarios')}         onClick={() => {handleButtonClick('usuarios')}}>Usuários</Button>
@@ -57,6 +59,7 @@ function Cadastros() {
             baseando-se no estado dos botões, ou seja, o botão atual ativo pelo useState. */}
           {activeButton === 'bancos' && <TabelaBancos />}
           {activeButton === 'clientes' && <TabelaClientes />}
+          {activeButton === 'fretes' && <TabelaFretes />}
           {activeButton === 'motoristas' && <TabelaMotoristas />}
           {activeButton === 'usuarios' && <TabelaUsuarios/>}
           {activeButton === 'familia_produtos' && <TabelaFamiliaProdutos/>}
