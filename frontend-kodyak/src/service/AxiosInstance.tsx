@@ -74,6 +74,7 @@ const useAxiosInstance = () => {
     };
 
     const axiosInstance = axios.create({
+        timeout: 10000,
         withCredentials: true
     })
 
