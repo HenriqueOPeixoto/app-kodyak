@@ -167,8 +167,8 @@ export default function Fretes() {
                     setIcmsVenda('')
                 })
                 .catch((error) => {
-                    handleAbrirSnack('Não foi possível cadastrar o frete.')
-                    console.error('Não foi possível cadastrar o frete: ', error)
+                    handleAbrirSnack('Não foi possível cadastrar o frete: ' + error.response.data)
+                    console.error('Não foi possível cadastrar o frete: ', error.response.data + '(' + error.response.status + ')')
                 })
 
             
