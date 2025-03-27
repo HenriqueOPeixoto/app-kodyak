@@ -1,4 +1,4 @@
-import { Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
+import { Box, Button, Card, CardActionArea, CardContent, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material"
 
 import '../styles/Cadastros.css'
 import { Link } from "react-router-dom"
@@ -7,11 +7,21 @@ import useAxiosInstance from "../../../service/AxiosInstance";
 
 interface Frete {
   id: number,
-  cidade: number,
+  id_uf: number,
+  nome_uf: string,
+  id_municipio: number,
+  nome_municipio: string,
   valor_frete: number,
   icms_frete: number,
   icms_venda: number
 }
+
+const formatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+})
 
 const CardFrete: React.FC<{ frete: Frete }> = ({ frete: frete }) => {
   return (
@@ -20,7 +30,13 @@ const CardFrete: React.FC<{ frete: Frete }> = ({ frete: frete }) => {
         <CardActionArea>
           <CardContent>
             <Typography variant="subtitle2">#{frete.id}</Typography>
-            <Typography variant="h6">{frete.cidade}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{frete.nome_uf} - {frete.nome_municipio}</Typography>
+            <Typography>
+              <Box>Valor frete: {formatter.format(frete.valor_frete)}</Box>
+              <Box>ICMS Frete: {frete.icms_frete}%</Box>
+              <Box>ICMS Venda: {frete.icms_venda}%</Box>
+            </Typography>
+            
           </CardContent>
         </CardActionArea>
       </Link>
@@ -34,13 +50,11 @@ const TabelaFretes: React.FC = () => {
   const axios = useAxiosInstance()
   
   const [fretes, setFretes] = useState<Frete[]>([])
-  const [nome, setNome] = useState<string>('')
   const [inativo, setInativo] = useState<boolean>(false)
 
   useEffect(() => {
-    axios.get<Frete[]>(`${backendBaseURL}/api/fretes`, {
+    axios.get<Frete[]>(`${backendBaseURL}/api/fretes/view`, {
         params: {
-          "nome": nome,
           "inativo": inativo
         }
       }
@@ -51,11 +65,8 @@ const TabelaFretes: React.FC = () => {
       .catch(error => {
         console.error("Erro ao listar os fretes: ", error);
       });
-  }, [nome, inativo]);
+  }, [inativo]);
 
-  const handleTxtPesquisarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNome(event.target.value)
-  }
 
   const handleInativoRadioButtonChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInativo(event.target.value === 'true')
@@ -64,7 +75,6 @@ const TabelaFretes: React.FC = () => {
     return (
       <div className="TabelaFretes">
         <div className="ContainerFiltros">
-          <TextField className="TxtPesquisarFretes" id="pesquisar-fretes" label="Nome" variant="standard" onChange={handleTxtPesquisarChange} />
           <FormControl>
             <FormLabel id="ativo-radio-button">Filtros</FormLabel>
             <RadioGroup defaultValue="false" row onChange={handleInativoRadioButtonChange}>
