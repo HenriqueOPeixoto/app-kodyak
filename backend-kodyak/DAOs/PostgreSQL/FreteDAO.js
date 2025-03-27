@@ -3,27 +3,37 @@ const pool = require('../../postgres').pool
 const createFrete = (request, response) => {
     const { cidade, valor_frete, icms_frete, icms_venda } = request.body
 
-    const query = 
-        `INSERT INTO fretes (
-            cidade,
-            valor_frete,
-            icms_frete,
-            icms_venda
-        ) VALUES ($1, $2, $3, $4) RETURNING id`
-
-    const values = [
-        cidade,
-        valor_frete,
-        icms_frete,
-        icms_venda
-    ]
-
-    pool.query(query, values)
+    pool.query('SELECT * FROM FRETES WHERE CIDADE = $1', [cidade])
         .then((results) => {
-            const newId = results.rows[0].id
-            response.status(201).send({ id: newId, message: `Frete cadastrado com ID ${results.rows[0].id}`})
+            if (results.rows.length > 0) {
+                return response.status(400).send('Já existe um frete cadastrado para essa cidade.')
+            } else {
+                const query = 
+                    `INSERT INTO fretes (
+                        cidade,
+                        valor_frete,
+                        icms_frete,
+                        icms_venda
+                    ) VALUES ($1, $2, $3, $4) RETURNING id`
+            
+                const values = [
+                    cidade,
+                    valor_frete,
+                    icms_frete,
+                    icms_venda
+                ]
+            
+                pool.query(query, values)
+                    .then((results) => {
+                        const newId = results.rows[0].id
+                        response.status(201).send({ id: newId, message: `Frete cadastrado com ID ${results.rows[0].id}`})
+                    })
+                    .catch((error) => { response.status(500).send('Não foi possível cadastrar o frete. Erro: ' + error) })            
+            }
         })
-        .catch((error) => { response.status(500).send('Não foi possível cadastrar o frete. Erro: ' + error) })
+        .catch((error) => { return response.status(500).send('Não foi possível verificar a existência de um frete para essa cidade. Erro: ' + error) })
+
+    
 }
 
 const updateFrete = (request, response) => {
