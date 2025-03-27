@@ -134,8 +134,16 @@ export default function Fretes() {
         const formData = {
             cidade: cidade?.id_municipio,
             valor_frete: valorFrete,
-            icms_frete: icmsFrete,
-            icms_venda: icmsVenda
+            icms_frete: icmsFrete || 0,
+            icms_venda: icmsVenda || 0
+        }
+
+        const chavesVerificarNulo: (keyof typeof formData)[] = ['cidade', 'valor_frete']
+        const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '' || formData[chave] === null || formData[chave] === undefined)
+
+        if (obrigatoriosNulos.length > 0) {
+            handleAbrirSnack('Preencha todos os campos obrigatórios.')
+            return
         }
 
         if (id) {
@@ -149,7 +157,7 @@ export default function Fretes() {
                 })
         } else {
             axios.post(`${backendBaseURL}/api/fretes/`, formData)
-                .then((results) => {
+                .then(() => {
                     handleAbrirSnack('Frete cadastrado com sucesso!')
                     
                     setEstado(null)
@@ -163,11 +171,7 @@ export default function Fretes() {
                     console.error('Não foi possível cadastrar o frete: ', error)
                 })
 
-            setEstado(null)
-            setCidade(null)
-            setValorFrete('')
-            setIcmsFrete('')
-            setIcmsVenda('')
+            
 
         }
     }
@@ -219,7 +223,7 @@ export default function Fretes() {
                             setCidade(null)
                         }
                     }}
-                    renderInput={(params) => <TextField {...params} label="UF" />}
+                    renderInput={(params) => <TextField required {...params} label="UF" />}
                     isOptionEqualToValue={(option, value) => option.id === value.id}
                 />
                 <Autocomplete 
@@ -232,7 +236,7 @@ export default function Fretes() {
                     onChange={(_event, novaCidade) => {
                         setCidade(novaCidade)
                     }}
-                    renderInput={(params) => <TextField {...params} label="Município" />}
+                    renderInput={(params) => <TextField required {...params} label="Município" />}
                     isOptionEqualToValue={(option, value) => option.id_municipio === value.id_municipio}
                 />
                 <NumericFormat
@@ -241,6 +245,7 @@ export default function Fretes() {
                     thousandSeparator="."
                     decimalSeparator=","
                     value={valorFrete}
+                    required
                     prefix='R$ '
                     onValueChange={(values) => {
                         setValorFrete(values.value)
