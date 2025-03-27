@@ -305,7 +305,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                     </RadioGroup>
                                 </FormControl> */}
                             </Box>
-                            <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center', flexGrow: '1' }}>
+                            {/* <Box sx={{ display: 'flex', gap: '15px', alignItems: 'center', flexGrow: '1' }}>
                                 <FormControl sx={{ flexGrow: '1' }} className='ContainerSelecaoTabRef'>
                                     <InputLabel className='LblSelecaoTabRef'
                                         id="selecao-tab-ref-label">Tabela de Referência</InputLabel>
@@ -322,7 +322,7 @@ const NovoItemPedido: React.FC<NovoItemPedidoProps> = ({ open, handleClose, onAd
                                         <MenuItem key={undefined} value={undefined}>Nenhum</MenuItem>
                                     </Select>
                                 </FormControl>
-                            </Box>
+                            </Box> */}
                             <div>
                                 <NumericFormat
                                     label='Valor/kg'
