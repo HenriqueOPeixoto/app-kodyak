@@ -151,7 +151,12 @@ export default function Fretes() {
             axios.post(`${backendBaseURL}/api/fretes/`, formData)
                 .then((results) => {
                     handleAbrirSnack('Frete cadastrado com sucesso!')
-                    console.log(results)
+                    
+                    setEstado(null)
+                    setCidade(null)
+                    setValorFrete('')
+                    setIcmsFrete('')
+                    setIcmsVenda('')
                 })
                 .catch((error) => {
                     handleAbrirSnack('Não foi possível cadastrar o frete.')
