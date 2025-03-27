@@ -12,6 +12,10 @@ exports.getFrete = (req, res) => {
     FreteDAO.getFrete(req, res)
 }
 
+exports.getFretesView = (req, res) => {
+    FreteDAO.getFretesView(req, res)
+}
+
 exports.getFreteById = (req, res) => {
     FreteDAO.getFreteById(req, res)
 }

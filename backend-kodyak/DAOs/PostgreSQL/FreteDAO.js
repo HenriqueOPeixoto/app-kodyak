@@ -80,6 +80,27 @@ const getFrete = (request, response) => {
         .catch((error) => { response.status(500).send('Não foi possível listar os fretes. Erro: ' + error) })
 }
 
+const getFretesView = (request, response) => {
+    const { id_uf, id_municipio } = request.query
+
+    let query = 'SELECT * FROM vw_fretes WHERE 1=1 '
+    const params = []
+
+    if (id_uf) {
+        params.push(id_uf)
+        query += ' AND id_uf = $' + params.length
+    }
+
+    if (id_municipio) {
+        params.push(id_municipio)
+        query += ' AND id_municipio = $' + params.length
+    }
+
+    pool.query(query, params)
+        .then((results) => { response.status(200).send(results.rows) })
+        .catch((error) => { response.status(500).send('Não foi possível listar os fretes. Erro: ' + error) })
+}
+
 const getFreteById = (request, response) => {
     const id = parseInt(request.params.id)
 
@@ -103,6 +124,7 @@ module.exports = {
     createFrete,
     updateFrete,
     getFrete,
+    getFretesView,
     getFreteById,
     alterarStatusFrete
 }
