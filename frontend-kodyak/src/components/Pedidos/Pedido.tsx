@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField } from '@mui/material';
+import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Snackbar, SpeedDial, SpeedDialAction, SpeedDialIcon, Tab, Tabs, TextField, Tooltip } from '@mui/material';
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -15,6 +15,7 @@ import './styles/Pedido.css'
 import ItensPedido from './AbasPedido/ItensPedido';
 import useAxiosInstance from "../../service/AxiosInstance";
 import NovoItemPedido from './AbasPedido/NovoItemPedido';
+import FretePedido from './AbasPedido/FretePedido'
 
 interface Cliente {
     label: string,
@@ -77,6 +78,7 @@ export default function Pedido() {
     const [status, setStatus] = React.useState<string>('0')
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
+    const [openFretePedidoDialog, setOpenFretePedidoDialog] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState(false) 
     const [snackMessage, setSnackMessage] = React.useState('')
 
@@ -242,6 +244,15 @@ export default function Pedido() {
 
     const handleCloseNovoItemDialog = () => {
         setOpenNovoItemDialog(false)
+    }
+
+    const handleOpenFretePedidoDialog = () => {
+        setOpenFretePedidoDialog(true)
+    }
+    
+    const handleCloseFretePedidoDialog = () => {
+        setOpenFretePedidoDialog(false)
+
     }
 
     const handleAcaoSpeedDial = (actionname: string) => {
@@ -475,12 +486,14 @@ export default function Pedido() {
                         ))}
                     </SpeedDial>
                     <div /> {/* Apenas para empurrar as divs abaixo para o meio e para a esquerda*/}
-                    <div className='InfoFrete' > {/* Info frete */}
-                        <Typography color={'black'}>
-                            Valor Chapa:<br />
-                            Valor Frete:
-                        </Typography>
-                    </div>
+                    <Tooltip title='Clique aqui para definir informações de frete.' placement='top'>
+                        <div className='InfoFrete' onClick={handleOpenFretePedidoDialog} > {/* Info frete */}
+                            <Typography color={'black'}>
+                                Valor Chapa:<br />
+                                Valor Frete:
+                            </Typography>
+                        </div>
+                    </Tooltip>
                     <div className='ContainerValorTotal'> {/* Valor total */}
                         <Typography>Valor Total:</Typography>
                         <Typography className='LblValor' variant='h5'>{
@@ -494,6 +507,7 @@ export default function Pedido() {
                 </Toolbar>
             </AppBar>
             <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
+            <FretePedido open={openFretePedidoDialog} handleClose={handleCloseFretePedidoDialog} />
             <Snackbar
                 open={snackOpen}
                 autoHideDuration={6000}
