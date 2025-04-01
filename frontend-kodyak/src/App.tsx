@@ -11,6 +11,10 @@ import Pedido from './components/Pedidos/Pedido';
 import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
 
+import 'dayjs/locale/pt-br';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 const Avisos = lazy(() => import('./components/Avisos/Avisos'));
 const Cadastro = lazy(() => import('./components/Cadastros/Cadastros'));
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
@@ -42,6 +46,7 @@ function App() {
   }, [isRootRoute, navigate])
 
   return (
+  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
     <div className='App'>
       {!isPedidoRoute && !isLoginRoute &&
         <div className='Sidebar'><Sidebar /></div>
@@ -87,6 +92,7 @@ function App() {
         </Suspense>
       </div>
     </div>
+  </LocalizationProvider>
   );
 }
 
