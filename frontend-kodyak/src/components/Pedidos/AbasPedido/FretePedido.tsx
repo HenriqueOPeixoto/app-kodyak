@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers';
+import { Dayjs } from 'dayjs';
+
 
 interface FretePedidoProps {
     open: boolean,
@@ -9,10 +12,29 @@ interface FretePedidoProps {
 /**
  * Componente para lidar com o caso no qual o cliente prefere retirar o pedido por conta própria.
  */
-const AgendadorRetirada = () => {
+const AgendadorRetirada = ({ handleClose }: { handleClose: () => void }) => {
+    const [data, setData] = useState<Dayjs | null>(null)
+
+    const handleSubmit = () => {
+        // Aqui você pode adicionar a lógica para enviar os dados do agendamento
+        console.log('Data agendada:', data);
+        // Fechar o modal após o envio
+        handleClose();
+    }
+
     return (
         <>
-            <Button>Agendar Pedido</Button>
+            <Typography sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Agendar Pedido</Typography>
+            <DatePicker value={data} onChange={setData}/>
+            <Button 
+                variant='contained'
+                sx={{ mt: '20px', mb: '20px', width: '100%' }}
+                color='success'
+                onClick={handleSubmit}
+            >
+                Confirmar
+            </Button>
+            
         </>
     )
 }
@@ -62,7 +84,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose }) => {
                         </RadioGroup>
                     </FormControl>
 
-                    {tipoFrete === '0' && <AgendadorRetirada />}
+                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose}/>}
                     {tipoFrete === '1' && <CadastroEnvio />}
                 </DialogContent>
             </Dialog>
