@@ -75,13 +75,13 @@ const updateFrete = (request, response) => {
 }
 
 const getFrete = (request, response) => {
-    const { cidade } = request.query
+    const { id_municipio } = request.query
 
     let query = 'SELECT * FROM fretes WHERE 1=1 '
     const params = []
 
-    if (cidade) {
-        params.push(cidade)
+    if (id_municipio) {
+        params.push(id_municipio)
         query += ' AND cidade = $' + params.length
     }
 
