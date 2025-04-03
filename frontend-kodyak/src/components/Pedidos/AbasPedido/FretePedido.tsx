@@ -3,22 +3,49 @@ import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLab
 import { DatePicker } from '@mui/x-date-pickers';
 import { Dayjs } from 'dayjs';
 
+import useAxiosInstance from '../../../service/AxiosInstance'
+
 
 interface FretePedidoProps {
     open: boolean,
-    handleClose: () => void
+    handleClose: () => void,
+    idPedido: string
 }
+
+const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 /**
  * Componente para lidar com o caso no qual o cliente prefere retirar o pedido por conta própria.
  */
-const AgendadorRetirada = ({ handleClose }: { handleClose: () => void }) => {
+const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void, idPedido: string }) => {
+
+    const axios = useAxiosInstance()
     const [data, setData] = useState<Dayjs | null>(null)
 
     const handleSubmit = () => {
-        // Aqui você pode adicionar a lógica para enviar os dados do agendamento
-        console.log('Data agendada:', data);
-        // Fechar o modal após o envio
+
+        if (!data) {
+            console.error('Data não selecionada');
+            return;
+        }
+
+        // Se houver dados de endereço de entrega, o banco irá
+        // apagá-los, pois retirada_loja === true executa a procedura
+        // SET_RETIRADA_LOJA() 
+        const formData = {
+            retirada_loja: true,
+            data_retirada: data.format('DD-MM-YYYY')
+        }
+
+        axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
+            .then((response) => {
+                console.log('Dados enviados com sucesso:', response.data);
+            })
+            .catch((error) => {
+                console.error('Erro ao enviar os dados:', error);
+            })
+
+        setData(null);
         handleClose();
     }
 
@@ -50,7 +77,7 @@ const CadastroEnvio = () => {
     )
 }
 
-const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose }) => {
+const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido }) => {
     const [tipoFrete, setTipoFrete] = useState('')
     
     const handleTipoFreteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +111,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose }) => {
                         </RadioGroup>
                     </FormControl>
 
-                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose}/>}
+                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido}/>}
                     {tipoFrete === '1' && <CadastroEnvio />}
                 </DialogContent>
             </Dialog>
