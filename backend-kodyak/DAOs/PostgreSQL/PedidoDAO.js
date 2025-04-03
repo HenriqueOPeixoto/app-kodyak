@@ -171,7 +171,7 @@ const salvarInformacoesFrete = (request, response) => {
     }
 
     if (retirada_loja === true) {
-        pool.query('SELECT * FROM SET_RETIRADA_LOJA($1)', [id])
+        pool.query('SELECT * FROM SET_RETIRADA_LOJA($1, $2)', [id, data_agendamento])
         .then(() => {
             response.status(200).send('Endereço do pedido removido, pedido será retirado na loja.')
         })
