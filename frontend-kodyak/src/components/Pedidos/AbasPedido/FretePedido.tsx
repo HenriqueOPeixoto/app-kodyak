@@ -34,7 +34,7 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
         // SET_RETIRADA_LOJA() 
         const formData = {
             retirada_loja: true,
-            data_retirada: data.format('DD-MM-YYYY')
+            data_agendamento: data.format('DD-MM-YYYY')
         }
 
         axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
