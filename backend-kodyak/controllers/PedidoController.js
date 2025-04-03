@@ -24,3 +24,7 @@ exports.getViewPedidos = (req, res) => {
 exports.getPedidoById = (req, res) => {
     PedidoDAO.getPedidoById(req, res)
 }
+
+exports.salvarInformacoesFrete = (req, res) => {
+    PedidoDAO.salvarInformacoesFrete(req, res)
+}

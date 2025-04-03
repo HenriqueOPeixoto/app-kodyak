@@ -151,11 +151,86 @@ const getPedidoById = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível encontrar o pedido.' + error) })
 }
 
+const salvarInformacoesFrete = (request, response) => {
+    const id = parseInt(request.params.id)
+
+    const {
+        retirada_loja,
+        valor_frete,
+        municipio_entrega,
+        cep_entrega,
+        logradouro_entrega,
+        numero_entrega,
+        valor_transbordo,
+        valor_chapa,
+        data_agendamento
+    } = request.body
+
+    if (!id) {
+        return response.status(400).send('ID do pedido não informado.')
+    }
+
+    if (retirada_loja === true) {
+        pool.query('SELECT * FROM SET_RETIRADA_LOJA($1)', [id])
+        .then(() => {
+            response.status(200).send('Endereço do pedido removido, pedido será retirado na loja.')
+        })
+        .catch((error) => {
+            response.status(500).send('Erro ao definir retirada na loja: ' + error)
+        })
+    } else {
+
+        if (!valor_frete || !municipio_entrega || !cep_entrega || !logradouro_entrega || !numero_entrega) {
+            return response.status(400).send('Valores obrigatórios não informados.')
+        } else if (valor_frete < 0) {
+            return response.status(400).send('Valor do frete não pode ser negativo.')
+        } else {
+            const query = `
+                UPDATE PEDIDOS
+                SET 
+                    RETIRADA_LOJA = $1,
+                    VALOR_FRETE = $2,
+                    MUNICIPIO_ENTREGA = $3,
+                    CEP_ENTREGA = $4,
+                    LOGRADOURO_ENTREGA = $5,
+                    NUMERO_ENTREGA = $6,
+                    VALOR_TRANSBORDO = $7,
+                    VALOR_CHAPA = $8,
+                    DATA_AGENDAMENTO = $9
+                WHERE ID = $10
+            `
+    
+            const params = [
+                retirada_loja,
+                valor_frete,
+                municipio_entrega,
+                cep_entrega,
+                logradouro_entrega,
+                numero_entrega,
+                valor_transbordo,
+                valor_chapa,
+                data_agendamento,
+                id
+            ]
+            pool.query(query, params)
+            .then(() => {
+                response.status(200).send('Informações de frete atualizadas com sucesso.')
+            })
+            .catch((error) => {
+                response.status(500).send('Erro ao atualizar informações de frete: ' + error)
+            })
+        }
+
+    }
+
+}
+
 module.exports = {
     createPedido,
     updatePedido,
     getPedidos,
     deletePedido,
     getViewPedidos,
-    getPedidoById
+    getPedidoById,
+    salvarInformacoesFrete
 }
