@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc'
@@ -14,6 +14,19 @@ interface FretePedidoProps {
     handleClose: () => void,
     idPedido: string,
     enderecoPedido: number
+}
+
+interface Estado {
+    id: number,
+    nome: string,
+    sigla: string,
+    regiao: string
+}
+
+interface Cidade {
+    id_municipio: number,
+    nome_municipio: string,
+    id_uf: number
 }
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
@@ -86,6 +99,11 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const axios = useAxiosInstance()
     
+    const [listaEstados, setListaEstados] = useState<Estado[]>([])
+    const [listaCidades, setListaCidades] = useState<Cidade[]>([])
+
+    const [estado, setEstado] = useState<Estado | null>(null)
+    const [cidade, setCidade] = useState<Cidade | null>(null)
     const [logradouro, setLogradouro] = useState<string>('')
     const [numero, setNumero] = useState<string>('')
     const [cep, setCep] = useState<string>('')
@@ -93,7 +111,21 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const [valorChapa, setValorChapa] = useState<number>(0)
 
 
+
     useEffect(() => {
+        axios.get(`${backendBaseURL}/api/localidades/unidades_federativas`)
+            .then((response) => {
+                const estados = response.data.map((estado: Estado) => ({
+                    id: estado.id,
+                    nome: estado.nome,
+                    sigla: estado.sigla,
+                    regiao: estado.regiao
+                }))
+                setListaEstados(estados)
+            })
+            .catch((error) => {
+                console.error('Ocorreu um erro ao buscar os estados' + error)
+            })
 
         axios.get(`${backendBaseURL}/api/clientes_enderecos/${enderecoPedido}`)
             .then((response) => {
@@ -102,17 +134,91 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                 setLogradouro(enderecoData.logradouro)
                 setNumero(enderecoData.numero)
                 setCep(enderecoData.cep)
+
+                return axios.get(`${backendBaseURL}/api/localidades/municipios/${enderecoData.cidade}/view`)
+            })
+            .then((response) => {
+                const cidadeData: Cidade = {
+                    id_municipio: response.data[0].id_municipio,
+                    nome_municipio: response.data[0].nome_municipio,
+                    id_uf: response.data[0].id_uf
+                }
+                setCidade(cidadeData)
+
+                const estadoData: Estado = {
+                    id: response.data[0].id_uf,
+                    nome: response.data[0].nome_uf,
+                    sigla: response.data[0].sigla_uf,
+                    regiao: response.data[0].regiao_uf
+                }
+
+                setEstado(estadoData)
+
             })
             .catch((error) => {
-                console.log('Ocorreu um erro ao buscar o endereço do pedido' + error)
+                console.error('Ocorreu um erro ao buscar o endereço do pedido' + error)
             })
-            
-            
     }, [])
+
+    useEffect(() => {
+        if (estado) {
+            axios.get(`${backendBaseURL}/api/localidades/municipios/`,
+                {
+                    params: {
+                        id_uf: estado.id
+                    }
+                }
+            )
+                .then((response) => {
+                    const cidades = response.data.map((cidade: Cidade) => ({
+                        id_municipio: cidade.id_municipio,
+                        nome_municipio: cidade.nome_municipio,
+                        id_uf: cidade.id_uf
+                    }))
+                    setListaCidades(cidades)
+                })
+                .catch((error) => {
+                    console.error('Ocorreu um erro ao buscar as cidades' + error)
+                })
+        }
+    }, [estado])
+
     
     return (
         <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column', mt: '20px'}}>
+            <Box sx={{display: 'flex', gap: '10px', flexDirection: 'row'}}>
+                <Autocomplete
+                    className='TxtUF'
+                    disablePortal
+                    options={listaEstados}
+                    sx={{ width: 100 }}
+                    value={estado}
+                    getOptionLabel={(option) => option.sigla} // Como exibir cada opção
+                    onChange={(_event, novoEstado) => {
+                        if (estado?.id !== novoEstado?.id) {
+                            setEstado(novoEstado)
+                            setCidade(null)
+                        }
+                    }}
+                    renderInput={(params) => <TextField required {...params} label="UF" />}
+                    isOptionEqualToValue={(option, value) => option.id === value?.id}
+                />
+                <Autocomplete
+                    className='TxtCidade'
+                    disablePortal
+                    options={listaCidades}
+                    sx={{ width: 300 }}
+                    value={cidade}
+                    getOptionLabel={(option) => option.nome_municipio} // Como exibir cada opção
+                    onChange={(_event, novaCidade) => {
+                        setCidade(novaCidade)
+                    }}
+                    renderInput={(params) => <TextField required {...params} label="Cidade" />}
+                    isOptionEqualToValue={(option, value) => option.id_municipio === value?.id_municipio}
+                />
+            </Box>
             <Box>
+
                 <PatternFormat
                     id="txtCep"
                     label="CEP"
@@ -124,10 +230,10 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                     onValueChange={(values) => {
                         setCep(values.value);
                     }}
-
-                />
+                    
+                    />
             </Box>
-            <Box>
+            <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}>
                 <TextField 
                     label="Logradouro"
                     value={logradouro}
