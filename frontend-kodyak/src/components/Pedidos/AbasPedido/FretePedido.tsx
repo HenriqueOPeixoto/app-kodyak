@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import utc from 'dayjs/plugin/utc'
 
 import useAxiosInstance from '../../../service/AxiosInstance'
 
+dayjs.extend(utc)
 
 interface FretePedidoProps {
     open: boolean,
@@ -22,6 +24,16 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
     const axios = useAxiosInstance()
     const [data, setData] = useState<Dayjs | null>(null)
 
+    useEffect(() => {
+        axios.get(`${backendBaseURL}/api/pedidos/${idPedido}`)
+            .then((response) => {
+                setData(response.data[0].data_agendamento ? dayjs.utc(response.data[0].data_agendamento) : null)
+            })
+            .catch((error) => {
+                console.error('Erro ao buscar dados do pedido:', error);
+            })
+    }, [])
+
     const handleSubmit = () => {
 
         if (!data) {
@@ -30,11 +42,11 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
         }
 
         // Se houver dados de endereço de entrega, o banco irá
-        // apagá-los, pois retirada_loja === true executa a procedura
+        // apagá-los, pois retirada_loja === true executa a procedure
         // SET_RETIRADA_LOJA() 
         const formData = {
             retirada_loja: true,
-            data_agendamento: data.format('DD-MM-YYYY')
+            data_agendamento: data.format('YYYY-MM-DD')
         }
 
         axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
