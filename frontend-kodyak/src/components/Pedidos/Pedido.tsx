@@ -508,7 +508,7 @@ export default function Pedido() {
             </AppBar>
             <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
             {/* Só renderiza a tela FretePedido se tiver id */}
-            { id && <FretePedido open={openFretePedidoDialog} handleClose={handleCloseFretePedidoDialog} idPedido={id}/> }
+            { id && endereco && <FretePedido open={openFretePedidoDialog} handleClose={handleCloseFretePedidoDialog} idPedido={id} enderecoPedido={endereco.id}/> }
             <Snackbar
                 open={snackOpen}
                 autoHideDuration={6000}

@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc'
 
 import useAxiosInstance from '../../../service/AxiosInstance'
+import { NumericFormat, PatternFormat } from 'react-number-format';
 
 dayjs.extend(utc)
 
 interface FretePedidoProps {
     open: boolean,
     handleClose: () => void,
-    idPedido: string
+    idPedido: string,
+    enderecoPedido: number
 }
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
@@ -81,15 +83,103 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 /**
  * Componente usado quando o cliente opta pelo envio do pedido
  */
-const CadastroEnvio = () => {
+const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
+    const axios = useAxiosInstance()
+    
+    const [logradouro, setLogradouro] = useState<string>('')
+    const [numero, setNumero] = useState<string>('')
+    const [cep, setCep] = useState<string>('')
+    const [valorTransbordo, setValorTransbordo] = useState<number>(0)
+    const [valorChapa, setValorChapa] = useState<number>(0)
+
+
+    useEffect(() => {
+
+        axios.get(`${backendBaseURL}/api/clientes_enderecos/${enderecoPedido}`)
+            .then((response) => {
+                const enderecoData = response.data[0]
+
+                setLogradouro(enderecoData.logradouro)
+                setNumero(enderecoData.numero)
+                setCep(enderecoData.cep)
+            })
+            .catch((error) => {
+                console.log('Ocorreu um erro ao buscar o endereço do pedido' + error)
+            })
+            
+            
+    }, [])
+    
     return (
-        <>
-            Enviar ao cliente
-        </>
+        <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column', mt: '20px'}}>
+            <Box>
+                <PatternFormat
+                    id="txtCep"
+                    label="CEP"
+                    value={cep}
+                    customInput={TextField}
+                    format="#####-###"
+                    mask="_"
+                    required
+                    onValueChange={(values) => {
+                        setCep(values.value);
+                    }}
+
+                />
+            </Box>
+            <Box>
+                <TextField 
+                    label="Logradouro"
+                    value={logradouro}
+                    required
+                    sx={{minWidth: '400px', mb: '10px'}}
+                    onChange={event => setLogradouro(event.target.value.toUpperCase())}
+                />
+                <TextField 
+                    label="Número"
+                    value={numero}
+                    required
+                    sx={{maxWidth: '100px'}}
+                    onChange={event => setNumero(event.target.value.toUpperCase())}
+                />
+            </Box>
+            <NumericFormat
+                label='Valor Transbordo'
+                customInput={TextField}
+                thousandSeparator="."
+                decimalSeparator=","
+                value={valorTransbordo}
+                prefix="R$ "
+                decimalScale={2}
+                fixedDecimalScale
+                allowNegative={false}
+                onValueChange={(values) => { setValorTransbordo(values.floatValue as number) }}
+            />
+            <NumericFormat
+                label='Valor Chapa'
+                customInput={TextField}
+                thousandSeparator="."
+                decimalSeparator=","
+                value={valorChapa}
+                prefix="R$ "
+                decimalScale={2}
+                fixedDecimalScale
+                allowNegative={false}
+                onValueChange={(values) => { setValorChapa(values.floatValue as number) }}
+            />
+            <Button
+                variant='contained'
+                color='success'
+                onClick={() => console.log('Clicou no botão')}
+            >
+                Calcular Frete
+            </Button>
+        </Box>
     )
 }
 
-const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido }) => {
+const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido }) => {
+
     const [tipoFrete, setTipoFrete] = useState('')
     
     const handleTipoFreteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,12 +193,13 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido }
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
+                fullWidth
             >
                 <DialogTitle>
                     {"Frete"}
                 </DialogTitle>
                 <DialogContent sx={{display: 'flex', flexDirection: 'column'}}>
-                    <FormControl required sx={{marginLeft: '15px'}}>
+                    <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
                         <FormLabel id="frete-select-label" required>Selecione a forma de entrega:</FormLabel>
                         <RadioGroup
                             aria-labelledby="tipo-frete-radio-buttons-group-label"
@@ -123,8 +214,8 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido }
                         </RadioGroup>
                     </FormControl>
 
-                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido}/>}
-                    {tipoFrete === '1' && <CadastroEnvio />}
+                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido} />}
+                    {tipoFrete === '1' && <CadastroEnvio enderecoPedido={enderecoPedido} />}
                 </DialogContent>
             </Dialog>
         </React.Fragment>
