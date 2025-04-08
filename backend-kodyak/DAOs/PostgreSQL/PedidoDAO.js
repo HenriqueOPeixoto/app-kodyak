@@ -151,6 +151,14 @@ const getPedidoById = (request, response) => {
     .catch((error) => { response.status(500).send('Não foi possível encontrar o pedido.' + error) })
 }
 
+/**
+ * Esta função salva as informações de frete de um pedido.
+ * Se o pedido for retirado na loja, remove o endereço de entrega.
+ * Caso contrário, atualiza as informações de frete.
+ * 
+ * @param {*} request 
+ * @param {*} response  
+ */
 const salvarInformacoesFrete = (request, response) => {
     const id = parseInt(request.params.id)
 
