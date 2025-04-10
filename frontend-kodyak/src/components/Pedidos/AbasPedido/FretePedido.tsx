@@ -106,7 +106,6 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: string, enderecoPedido: number, handleClose: () => void}) => {
     const axios = useAxiosInstance()
     
-    const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
     const [valorFreteExiste, setValorFreteExiste] = useState<boolean>(false)
     const [ultimaCidadeSelecionada, setUltimaCidadeSelecionada] = useState<string>('')
 
@@ -199,6 +198,10 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
         }
     }, [estado])
 
+    useEffect(() => {
+        handleCalcularFrete()
+    }, [cidade])
+
 
     const handleCalcularFrete = () => {
         axios.get(`${backendBaseURL}/api/fretes/`, {
@@ -220,7 +223,6 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                 console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
             })
         
-        setValorFreteVisivel(true)
     }
 
     const handleSubmit = () => {
@@ -290,6 +292,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                     getOptionLabel={(option) => option.nome_municipio} // Como exibir cada opção
                     onChange={(_event, novaCidade) => {
                         setCidade(novaCidade)
+                        handleCalcularFrete()
                     }}
                     renderInput={(params) => <TextField required {...params} label="Cidade" />}
                     isOptionEqualToValue={(option, value) => option.id_municipio === value?.id_municipio}
@@ -351,15 +354,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                 allowNegative={false}
                 onValueChange={(values) => { setValorChapa(values.floatValue as number) }}
             />
-            <Button
-                variant='contained'
-                color='success'
-                onClick={handleCalcularFrete}
-            >
-                Calcular Frete
-            </Button>
-
-            { valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
                 <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
                     {valorFreteExiste ? 
                         <Box>
@@ -382,7 +377,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                         Confirmar
                     </Button>
                 </Box>}
-            </Box>}
+            </Box>
         </Box>
     )
 }
