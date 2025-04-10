@@ -29,6 +29,13 @@ interface Cidade {
     id_uf: number
 }
 
+const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 /**
@@ -109,6 +116,7 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const [cep, setCep] = useState<string>('')
     const [valorTransbordo, setValorTransbordo] = useState<number>(0)
     const [valorChapa, setValorChapa] = useState<number>(0)
+    const [valorFrete, setValorFrete] = useState<number>(0)
 
 
 
@@ -183,6 +191,20 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
         }
     }, [estado])
 
+
+    const handleCalcularFrete = () => {
+        axios.get(`${backendBaseURL}/api/fretes/`, {
+            params: {
+                id_municipio: cidade?.id_municipio
+            }
+        })
+            .then((response) => {
+                setValorFrete(response.data[0].valor_frete)
+            })
+            .catch((error) => {
+                console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
+            })
+    }
     
     return (
         <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column', mt: '20px'}}>
@@ -276,9 +298,18 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
             <Button
                 variant='contained'
                 color='success'
-                onClick={() => console.log('Clicou no botão')}
+                onClick={handleCalcularFrete}
             >
                 Calcular Frete
+            </Button>
+
+            <Typography  sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Valor Frete: {formatter.format(valorFrete)}</Typography>
+            <Button
+                variant='contained'
+                color='success'
+                onClick={handleCalcularFrete}
+            >
+                Agendar Pedido
             </Button>
         </Box>
     )
