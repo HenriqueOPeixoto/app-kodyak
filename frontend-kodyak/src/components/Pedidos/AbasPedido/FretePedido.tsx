@@ -107,6 +107,8 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const axios = useAxiosInstance()
     
     const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
+    const [valorFreteExiste, setValorFreteExiste] = useState<boolean>(false)
+    const [ultimaCidadeSelecionada, setUltimaCidadeSelecionada] = useState<string>('')
 
     const [listaEstados, setListaEstados] = useState<Estado[]>([])
     const [listaCidades, setListaCidades] = useState<Cidade[]>([])
@@ -201,7 +203,14 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
             }
         })
             .then((response) => {
-                setValorFrete(response.data[0].valor_frete)
+                if (response.data[0]){
+                    setValorFreteExiste(true)
+                    setValorFrete(response.data[0].valor_frete)
+                }
+                else {
+                    setValorFreteExiste(false)
+                    setUltimaCidadeSelecionada(cidade?.nome_municipio || 'CIDADE_NAO_LOCALIZADA')
+                }
             })
             .catch((error) => {
                 console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
@@ -308,7 +317,9 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
             </Button>
 
             { valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
-                <Typography sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Valor Frete: {formatter.format(valorFrete)}</Typography>
+                <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
+                    {valorFreteExiste ? `Valor Frete: ${formatter.format(valorFrete)}` : `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
+                </Typography>
                 <Button
                     variant='contained'
                     color='success'
