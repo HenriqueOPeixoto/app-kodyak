@@ -106,6 +106,8 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const axios = useAxiosInstance()
     
+    const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
+
     const [listaEstados, setListaEstados] = useState<Estado[]>([])
     const [listaCidades, setListaCidades] = useState<Cidade[]>([])
 
@@ -204,6 +206,8 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
             .catch((error) => {
                 console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
             })
+        
+        setValorFreteVisivel(true)
     }
     
     return (
@@ -255,7 +259,7 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                     
                     />
             </Box>
-            <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px'}}>
+            <Box sx={{display: 'flex', flexDirection: 'row', gap: '10px', flexWrap: 'wrap'}}>
                 <TextField 
                     label="Logradouro"
                     value={logradouro}
@@ -303,14 +307,17 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                 Calcular Frete
             </Button>
 
-            <Typography  sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Valor Frete: {formatter.format(valorFrete)}</Typography>
-            <Button
-                variant='contained'
-                color='success'
-                onClick={handleCalcularFrete}
-            >
-                Agendar Pedido
-            </Button>
+            { valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
+                <Typography sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Valor Frete: {formatter.format(valorFrete)}</Typography>
+                <Button
+                    variant='contained'
+                    color='success'
+                    onClick={handleCalcularFrete}
+                    
+                >
+                    Agendar Pedido
+                </Button>
+            </Box>}
         </Box>
     )
 }
