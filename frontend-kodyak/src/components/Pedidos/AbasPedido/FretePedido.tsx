@@ -361,7 +361,13 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
 
             { valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
                 <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
-                    {valorFreteExiste ? `Valor Frete: ${formatter.format(valorFrete)}` : `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
+                    {valorFreteExiste ? 
+                        <Box>
+                            {`Valor Frete: ${formatter.format(valorFrete)}`}
+                            <br />
+                            {`Valor Total: ${formatter.format(Number(valorFrete) + Number(valorChapa) + Number(valorTransbordo))}`}
+                        </Box> :
+                        `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
                 </Typography>
                 
                 { valorFreteExiste && <Box sx={{  display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
