@@ -105,6 +105,8 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
  */
 const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: string, enderecoPedido: number, handleClose: () => void}) => {
     const axios = useAxiosInstance()
+
+    const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
     
     const [valorFreteExiste, setValorFreteExiste] = useState<boolean>(false)
     const [ultimaCidadeSelecionada, setUltimaCidadeSelecionada] = useState<string>('')
@@ -117,9 +119,9 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
     const [logradouro, setLogradouro] = useState<string>('')
     const [numero, setNumero] = useState<string>('')
     const [cep, setCep] = useState<string>('')
-    const [valorTransbordo, setValorTransbordo] = useState<number>(0)
-    const [valorChapa, setValorChapa] = useState<number>(0)
-    const [valorFrete, setValorFrete] = useState<number>(0)
+    const [valorTransbordo, setValorTransbordo] = useState<number | undefined>(undefined)
+    const [valorChapa, setValorChapa] = useState<number | undefined>(undefined)
+    const [valorFrete, setValorFrete] = useState<number | undefined>(undefined)
 
     const [data, setData] = useState<Dayjs | null>(null)
 
@@ -204,25 +206,31 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
 
 
     const handleCalcularFrete = () => {
-        axios.get(`${backendBaseURL}/api/fretes/`, {
-            params: {
-                id_municipio: cidade?.id_municipio
-            }
-        })
-            .then((response) => {
-                if (response.data[0]){
-                    setValorFreteExiste(true)
-                    setValorFrete(response.data[0].valor_frete)
-                }
-                else {
-                    setValorFreteExiste(false)
-                    setUltimaCidadeSelecionada(cidade?.nome_municipio || 'CIDADE_NAO_LOCALIZADA')
+        if (cidade) {
+            axios.get(`${backendBaseURL}/api/fretes/`, {
+                params: {
+                    id_municipio: cidade.id_municipio
                 }
             })
-            .catch((error) => {
-                console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
-            })
-        
+                .then((response) => {
+                    if (response.data[0]){
+                        setValorFreteExiste(true)
+                        setValorFrete(response.data[0].valor_frete)
+                    }
+                    else {
+                        setValorFreteExiste(false)
+                        setUltimaCidadeSelecionada(cidade.nome_municipio || 'CIDADE_NAO_LOCALIZADA')
+                    }
+                })
+                .catch((error) => {
+                    console.error('Ocorreu um erro ao buscar os dados do frete. ' + error)
+                })
+
+                setValorFreteVisivel(true)
+        } else {
+            setValorFreteExiste(false)
+            setValorFreteVisivel(false)
+        }
     }
 
     const handleSubmit = () => {
@@ -292,7 +300,6 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                     getOptionLabel={(option) => option.nome_municipio} // Como exibir cada opção
                     onChange={(_event, novaCidade) => {
                         setCidade(novaCidade)
-                        handleCalcularFrete()
                     }}
                     renderInput={(params) => <TextField required {...params} label="Cidade" />}
                     isOptionEqualToValue={(option, value) => option.id_municipio === value?.id_municipio}
@@ -354,13 +361,13 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                 allowNegative={false}
                 onValueChange={(values) => { setValorChapa(values.floatValue as number) }}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
+            {valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
                 <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
                     {valorFreteExiste ? 
                         <Box>
-                            {`Valor Frete: ${formatter.format(valorFrete)}`}
+                            {`Valor Frete: ${formatter.format(valorFrete ?? 0)}`}
                             <br />
-                            {`Valor Total: ${formatter.format(Number(valorFrete) + Number(valorChapa) + Number(valorTransbordo))}`}
+                            {`Valor Total: ${formatter.format(Number(valorFrete ?? 0) + Number(valorChapa ?? 0) + Number(valorTransbordo ?? 0))}`}
                         </Box> :
                         `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
                 </Typography>
@@ -377,7 +384,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                         Confirmar
                     </Button>
                 </Box>}
-            </Box>
+            </Box>}
         </Box>
     )
 }
