@@ -103,7 +103,7 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 /**
  * Componente usado quando o cliente opta pelo envio do pedido
  */
-const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
+const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: string, enderecoPedido: number, handleClose: () => void}) => {
     const axios = useAxiosInstance()
     
     const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
@@ -122,6 +122,8 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
     const [valorChapa, setValorChapa] = useState<number>(0)
     const [valorFrete, setValorFrete] = useState<number>(0)
 
+    const [data, setData] = useState<Dayjs | null>(null)
+
 
 
     useEffect(() => {
@@ -139,6 +141,8 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                 console.error('Ocorreu um erro ao buscar os estados' + error)
             })
 
+        // TODO: Quando o token expira erro (403), esse request é reexecutado
+        // Todas as alterações do usuário na tela de frete são perdidas.
         axios.get(`${backendBaseURL}/api/clientes_enderecos/${enderecoPedido}`)
             .then((response) => {
                 const enderecoData = response.data[0]
@@ -217,6 +221,45 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
             })
         
         setValorFreteVisivel(true)
+    }
+
+    const handleSubmit = () => {
+
+        if (!cidade || !data) {
+            console.error('Erro ao consultar objetos. Verifique se os campos CIDADE e DATA estão sendo gerados corretamente.')
+            return
+        }
+
+        const formData = {
+            retirada_loja: false,
+            valor_frete: valorFrete,
+            municipio_entrega: cidade.id_municipio,
+            cep_entrega: cep,
+            logradouro_entrega: logradouro,
+            numero_entrega: numero,
+            valor_transbordo: valorTransbordo,
+            valor_chapa: valorChapa,
+            data_agendamento: data.format('YYYY-MM-DD')
+        }
+
+        axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
+            .then((response) => {
+                console.log('Dados enviados com sucesso:', response.data);
+
+                setValorFrete(0)
+                setCidade(null)
+                setCep('')
+                setLogradouro('')
+                setNumero('')
+                setValorTransbordo(0)
+                setValorChapa(0)
+                setData(null)
+
+                handleClose()
+            })
+            .catch((error) => {
+                console.error('Erro ao enviar os dados:', error);
+            })
     }
     
     return (
@@ -320,14 +363,19 @@ const CadastroEnvio = ({ enderecoPedido }: { enderecoPedido: number }) => {
                 <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
                     {valorFreteExiste ? `Valor Frete: ${formatter.format(valorFrete)}` : `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
                 </Typography>
-                <Button
-                    variant='contained'
-                    color='success'
-                    onClick={handleCalcularFrete}
-                    
-                >
-                    Agendar Pedido
-                </Button>
+                
+                { valorFreteExiste && <Box sx={{  display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
+                    <Typography sx={{fontWeight: 'bold'}}>Agendar Pedido</Typography>
+                    <DatePicker value={data} onChange={setData}/>
+                    <Button 
+                        variant='contained'
+                        sx={{ mt: '20px', mb: '20px', width: '100%' }}
+                        color='success'
+                        onClick={handleSubmit}
+                        >
+                        Confirmar
+                    </Button>
+                </Box>}
             </Box>}
         </Box>
     )
@@ -370,7 +418,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                     </FormControl>
 
                     {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido} />}
-                    {tipoFrete === '1' && <CadastroEnvio enderecoPedido={enderecoPedido} />}
+                    {tipoFrete === '1' && <CadastroEnvio idPedido={idPedido} enderecoPedido={enderecoPedido} handleClose={handleClose} />}
                 </DialogContent>
             </Dialog>
         </React.Fragment>
