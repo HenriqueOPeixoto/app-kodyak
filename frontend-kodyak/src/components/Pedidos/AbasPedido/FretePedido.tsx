@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Dialog, DialogContent, DialogTitle, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, Dialog, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc'
@@ -390,12 +390,29 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
 }
 
 const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido }) => {
+    const axios = useAxiosInstance()
 
     const [tipoFrete, setTipoFrete] = useState('')
+
+    // Armazena se o pedido já tem alguma informação de frete cadastrada.
+    // Se houver, mostra o resumo do frete e pergunta se quer alterar.
+    const [freteDefinido, setFreteDefinido] = useState<boolean>(false)
     
     const handleTipoFreteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTipoFrete(event.target.value)
     }
+
+    const buscarInfoFrete = () => {
+        axios.get(`${backendBaseURL}/api/pedidos/${idPedido}`)
+            .then((response) => {
+                if (response.data[0].retirada_loja !== null) {
+                    setFreteDefinido(true)
+                } else setFreteDefinido(false)
+            })
+            .catch((error) => {
+                console.error('Não foi possível verificar se o frete já existe. ' + error)
+            })
+        }
     
     return (
         <React.Fragment>
@@ -404,13 +421,32 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-                fullWidth
+                // 
+                TransitionProps={{ onEntered: () => buscarInfoFrete() }}
+                
             >
                 <DialogTitle>
                     {"Frete"}
                 </DialogTitle>
-                <DialogContent sx={{display: 'flex', flexDirection: 'column'}}>
-                    <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
+                <DialogContent sx={{display: 'flex', flexDirection: 'column', minWidth: '400px'}}>
+                    {freteDefinido && 
+                    <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column'}}>
+                        <Typography sx={{textAlign: 'center'}}>Resumo:</Typography>
+                        <Divider></Divider>
+                        <Typography>Retirada na loja:</Typography>
+                        <Typography>Logradouro:</Typography>
+                        <Typography>Número:</Typography>
+                        <Typography>Cep:</Typography>
+                        <Typography>Cidade:</Typography>
+                        <Typography>Estado:</Typography>
+                        <Typography>Valor Frete:</Typography>
+                        <Typography>Valor Transbordo:</Typography>
+                        <Typography>Valor Chapa:</Typography>
+
+                        <Button sx={{mt: '10px'}} variant='contained'>Alterar Frete</Button>
+                    </Box>
+                    }
+                    {!freteDefinido && <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
                         <FormLabel id="frete-select-label" required>Selecione a forma de entrega:</FormLabel>
                         <RadioGroup
                             aria-labelledby="tipo-frete-radio-buttons-group-label"
@@ -423,7 +459,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             <FormControlLabel value="0" control={<Radio />} label="Cliente Retira" />
                             <FormControlLabel value="1" control={<Radio />} label="Envio ao Cliente" />
                         </RadioGroup>
-                    </FormControl>
+                    </FormControl>}
 
                     {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido} />}
                     {tipoFrete === '1' && <CadastroEnvio idPedido={idPedido} enderecoPedido={enderecoPedido} handleClose={handleClose} />}
