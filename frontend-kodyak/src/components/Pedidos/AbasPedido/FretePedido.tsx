@@ -438,7 +438,13 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 // 
-                TransitionProps={{ onEntered: () => buscarInfoFrete() }}
+                TransitionProps={{ onEntered: () => {
+                        buscarInfoFrete() 
+                    },
+                    onExit: () => {
+                        setTipoFrete('')
+                    }
+                }}
                 
             >
                 <DialogTitle>
