@@ -38,7 +38,8 @@ interface FretePedido {
     uf_entrega: string,
     valor_frete: number,
     valor_transbordo: number,
-    valor_chapa: number
+    valor_chapa: number,
+    data_agendamento: string
 }
 
 const formatter = new Intl.NumberFormat('pt-BR', {
@@ -449,9 +450,10 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                         <Typography sx={{textAlign: 'center'}}>Resumo:</Typography>
                         <Divider></Divider>
                         <Typography>Retirada na loja: {fretePedido?.retirada_loja ? 'Sim' : 'Não'}</Typography>
+                        <Typography>Data Agendamento: {fretePedido?.data_agendamento ? dayjs.utc(fretePedido.data_agendamento).format('DD/MM/YYYY') : ''}</Typography>
                         <Typography>Logradouro: {fretePedido?.logradouro_entrega}</Typography>
                         <Typography>Número: {fretePedido?.numero_entrega}</Typography>
-                        <Typography>Cep: {fretePedido?.cep_entrega}</Typography>
+                        <Typography>CEP: {fretePedido?.cep_entrega}</Typography>
                         <Typography>Cidade: {fretePedido?.municipio_entrega}</Typography>
                         <Typography>Estado: {fretePedido?.uf_entrega}</Typography>
                         <Typography>Valor Frete: {
