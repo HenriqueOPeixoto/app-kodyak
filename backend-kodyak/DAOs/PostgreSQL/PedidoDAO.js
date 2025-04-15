@@ -233,6 +233,22 @@ const salvarInformacoesFrete = (request, response) => {
 
 }
 
+const getInfoFreteView = (request, response) => {
+    const id =  parseInt(request.params.id)
+
+    pool.query(
+        `SELECT * FROM VW_PEDIDO_FRETE WHERE ID = $1`,
+        [id]
+    )
+        .then((results) => {
+            return response.status(200).send(results.rows[0])
+        })
+        .catch((error) => {
+            return response.status(500).send('Não foi possível consultar os dados do frete do pedido. ' + error)
+        })
+    
+}
+
 module.exports = {
     createPedido,
     updatePedido,
@@ -240,5 +256,6 @@ module.exports = {
     deletePedido,
     getViewPedidos,
     getPedidoById,
-    salvarInformacoesFrete
+    salvarInformacoesFrete,
+    getInfoFreteView
 }

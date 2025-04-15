@@ -5,6 +5,7 @@ const PedidoController = require('../controllers/PedidoController');
 router.post('/', PedidoController.createPedido)
 router.get('/', PedidoController.getPedidos)
 router.put('/:id/frete', PedidoController.salvarInformacoesFrete)
+router.get('/:id/frete', PedidoController.getInfoFreteView)
 router.put('/:id', PedidoController.updatePedido)
 router.delete('/:id', PedidoController.deletePedido)
 router.get('/view', PedidoController.getViewPedidos)
