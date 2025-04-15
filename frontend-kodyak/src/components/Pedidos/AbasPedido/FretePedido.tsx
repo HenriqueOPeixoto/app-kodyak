@@ -29,6 +29,18 @@ interface Cidade {
     id_uf: number
 }
 
+interface FretePedido {
+    retirada_loja: boolean,
+    logradouro_entrega: string,
+    numero_entrega: string,
+    cep_entrega: string,
+    municipio_entrega: string,
+    uf_entrega: string,
+    valor_frete: number,
+    valor_transbordo: number,
+    valor_chapa: number
+}
+
 const formatter = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
@@ -393,6 +405,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
     const axios = useAxiosInstance()
 
     const [tipoFrete, setTipoFrete] = useState('')
+    const [fretePedido, setFretePedido] = useState<FretePedido | null>(null)
 
     // Armazena se o pedido já tem alguma informação de frete cadastrada.
     // Se houver, mostra o resumo do frete e pergunta se quer alterar.
@@ -403,10 +416,12 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
     }
 
     const buscarInfoFrete = () => {
-        axios.get(`${backendBaseURL}/api/pedidos/${idPedido}`)
+        axios.get(`${backendBaseURL}/api/pedidos/${idPedido}/frete`)
             .then((response) => {
-                if (response.data[0].retirada_loja !== null) {
+                if (response.data.retirada_loja !== null) {
                     setFreteDefinido(true)
+
+                    setFretePedido(response.data)
                 } else setFreteDefinido(false)
             })
             .catch((error) => {
@@ -433,17 +448,23 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                     <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column'}}>
                         <Typography sx={{textAlign: 'center'}}>Resumo:</Typography>
                         <Divider></Divider>
-                        <Typography>Retirada na loja:</Typography>
-                        <Typography>Logradouro:</Typography>
-                        <Typography>Número:</Typography>
-                        <Typography>Cep:</Typography>
-                        <Typography>Cidade:</Typography>
-                        <Typography>Estado:</Typography>
-                        <Typography>Valor Frete:</Typography>
-                        <Typography>Valor Transbordo:</Typography>
-                        <Typography>Valor Chapa:</Typography>
+                        <Typography>Retirada na loja: {fretePedido?.retirada_loja ? 'Sim' : 'Não'}</Typography>
+                        <Typography>Logradouro: {fretePedido?.logradouro_entrega}</Typography>
+                        <Typography>Número: {fretePedido?.numero_entrega}</Typography>
+                        <Typography>Cep: {fretePedido?.cep_entrega}</Typography>
+                        <Typography>Cidade: {fretePedido?.municipio_entrega}</Typography>
+                        <Typography>Estado: {fretePedido?.uf_entrega}</Typography>
+                        <Typography>Valor Frete: {
+                            formatter.format(fretePedido?.valor_frete || 0)
+                        }</Typography>
+                        <Typography>Valor Transbordo: {
+                            formatter.format(fretePedido?.valor_transbordo || 0)
+                        }</Typography>
+                        <Typography>Valor Chapa: {
+                            formatter.format(fretePedido?.valor_chapa || 0)
+                        }</Typography>
 
-                        <Button sx={{mt: '10px'}} variant='contained'>Alterar Frete</Button>
+                        <Button sx={{mt: '10px'}} variant='contained' onClick={() => setFreteDefinido(false)}>Alterar Frete</Button>
                     </Box>
                     }
                     {!freteDefinido && <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
