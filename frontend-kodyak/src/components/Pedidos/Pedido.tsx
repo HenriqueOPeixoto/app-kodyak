@@ -59,6 +59,13 @@ const actions = [
     { icon: <ShareIcon />, name: 'Share', label: 'Compartilhar' },
 ];
 
+const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+
 export default function Pedido() {
     const axios = useAxiosInstance()
     const navigate = useNavigate();
@@ -86,6 +93,7 @@ export default function Pedido() {
 
     const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
     const [valorTotal, setValorTotal] = React.useState<number>(0.0)
+    const [valorFrete, setValorFrete] = React.useState<number>(0.0)
 
     // Listagem de clientes
     React.useEffect(() => {
@@ -101,6 +109,8 @@ export default function Pedido() {
                     const pedidoData = pedidoResults.data[0]
                     setObservacoes(pedidoData.observacoes)
                     setStatus(pedidoData.status)
+                    
+                    setValorFrete(Number(pedidoData.valor_frete) + Number(pedidoData.valor_chapa) + Number(pedidoData.valor_transbordo))
                     
                     return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
                 })
@@ -323,6 +333,14 @@ export default function Pedido() {
         setSnackOpen(false)
     }
 
+    /**
+     * Essa função deve ser passada para que FretePedido possa atualizar o valor na tela de pedido.
+     * @param valorFrete number
+     */
+    const changeValorFretePedido = (valorFrete: number) => {
+        setValorFrete(valorFrete)
+    }
+
     return (
         <div className='Pedido'>
             <Backdrop
@@ -489,18 +507,15 @@ export default function Pedido() {
                     <Tooltip title='Clique aqui para definir informações de frete.' placement='top'>
                         <div className='InfoFrete' onClick={handleOpenFretePedidoDialog} > {/* Info frete */}
                             <Typography color={'black'}>
-                                Valor Chapa:<br />
-                                Valor Frete:
+                                Valor Frete: <br />
+                                {formatter.format(valorFrete)}
                             </Typography>
                         </div>
                     </Tooltip>
                     <div className='ContainerValorTotal'> {/* Valor total */}
                         <Typography>Valor Total:</Typography>
                         <Typography className='LblValor' variant='h5'>{
-                                new Intl.NumberFormat('pt-BR', {
-                                    style: 'currency',
-                                    currency: 'BRL'
-                                }).format(valorTotal)
+                                formatter.format(valorTotal)
                             }
                         </Typography>
                     </div>
@@ -508,7 +523,14 @@ export default function Pedido() {
             </AppBar>
             <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
             {/* Só renderiza a tela FretePedido se tiver id */}
-            { id && endereco && <FretePedido open={openFretePedidoDialog} handleClose={handleCloseFretePedidoDialog} idPedido={id} enderecoPedido={endereco.id}/> }
+            { id && endereco && 
+                <FretePedido
+                    open={openFretePedidoDialog} 
+                    handleClose={handleCloseFretePedidoDialog} 
+                    idPedido={id} 
+                    enderecoPedido={endereco.id} 
+                    setValorFreteInPedido={changeValorFretePedido}
+                />}
             <Snackbar
                 open={snackOpen}
                 autoHideDuration={6000}

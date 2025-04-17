@@ -13,7 +13,8 @@ interface FretePedidoProps {
     open: boolean,
     handleClose: () => void,
     idPedido: string,
-    enderecoPedido: number
+    enderecoPedido: number,
+    setValorFreteInPedido: (valorFrete: number) => void
 }
 
 interface Estado {
@@ -54,7 +55,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 /**
  * Componente para lidar com o caso no qual o cliente prefere retirar o pedido por conta própria.
  */
-const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void, idPedido: string }) => {
+const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { handleClose: () => void, idPedido: string, setValorFreteInPedido: (valorFrete: number) => void }) => {
 
     const axios = useAxiosInstance()
     const [data, setData] = useState<Dayjs | null>(null)
@@ -87,6 +88,7 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
         axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
             .then((response) => {
                 console.log('Dados enviados com sucesso:', response.data);
+                setValorFreteInPedido(0)
             })
             .catch((error) => {
                 console.error('Erro ao enviar os dados:', error);
@@ -116,7 +118,7 @@ const AgendadorRetirada = ({ handleClose, idPedido }: { handleClose: () => void,
 /**
  * Componente usado quando o cliente opta pelo envio do pedido
  */
-const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: string, enderecoPedido: number, handleClose: () => void}) => {
+const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInPedido }: { idPedido: string, enderecoPedido: number, handleClose: () => void, setValorFreteInPedido: (valorFrete: number) => void }) => {
     const axios = useAxiosInstance()
 
     const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
@@ -278,6 +280,8 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
                 setValorChapa(0)
                 setData(null)
 
+                setValorFreteInPedido(valorFrete || 0)
+
                 handleClose()
             })
             .catch((error) => {
@@ -402,7 +406,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose }: { idPedido: st
     )
 }
 
-const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido }) => {
+const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido, setValorFreteInPedido }) => {
     const axios = useAxiosInstance()
 
     const [tipoFrete, setTipoFrete] = useState('')
@@ -490,8 +494,19 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                         </RadioGroup>
                     </FormControl>}
 
-                    {tipoFrete === '0' && <AgendadorRetirada handleClose={handleClose} idPedido={idPedido} />}
-                    {tipoFrete === '1' && <CadastroEnvio idPedido={idPedido} enderecoPedido={enderecoPedido} handleClose={handleClose} />}
+                    {tipoFrete === '0' && 
+                        <AgendadorRetirada 
+                            handleClose={handleClose} 
+                            idPedido={idPedido} 
+                            setValorFreteInPedido={setValorFreteInPedido} 
+                        />}
+                    {tipoFrete === '1' && 
+                        <CadastroEnvio 
+                            idPedido={idPedido} 
+                            enderecoPedido={enderecoPedido} 
+                            handleClose={handleClose} 
+                            setValorFreteInPedido={setValorFreteInPedido} 
+                        />}
                 </DialogContent>
             </Dialog>
         </React.Fragment>
