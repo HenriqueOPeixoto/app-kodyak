@@ -461,20 +461,26 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                         <Divider></Divider>
                         <Typography>Retirada na loja: {fretePedido?.retirada_loja ? 'Sim' : 'Não'}</Typography>
                         <Typography>Data Agendamento: {fretePedido?.data_agendamento ? dayjs.utc(fretePedido.data_agendamento).format('DD/MM/YYYY') : ''}</Typography>
-                        <Typography>Logradouro: {fretePedido?.logradouro_entrega}</Typography>
-                        <Typography>Número: {fretePedido?.numero_entrega}</Typography>
-                        <Typography>CEP: {fretePedido?.cep_entrega}</Typography>
-                        <Typography>Cidade: {fretePedido?.municipio_entrega}</Typography>
-                        <Typography>Estado: {fretePedido?.uf_entrega}</Typography>
-                        <Typography>Valor Frete: {
-                            formatter.format(fretePedido?.valor_frete || 0)
-                        }</Typography>
-                        <Typography>Valor Transbordo: {
-                            formatter.format(fretePedido?.valor_transbordo || 0)
-                        }</Typography>
-                        <Typography>Valor Chapa: {
-                            formatter.format(fretePedido?.valor_chapa || 0)
-                        }</Typography>
+                        {
+                            fretePedido?.retirada_loja === false &&
+                            <>
+                                <Typography>Logradouro: {fretePedido?.logradouro_entrega}</Typography>
+                                <Typography>Número: {fretePedido?.numero_entrega}</Typography>
+                                <Typography>CEP: {fretePedido?.cep_entrega}</Typography>
+                                <Typography>Cidade: {fretePedido?.municipio_entrega}</Typography>
+                                <Typography>Estado: {fretePedido?.uf_entrega}</Typography>
+                                <Typography>Valor Frete: {
+                                    formatter.format(fretePedido?.valor_frete || 0)
+                                }</Typography>
+                                <Typography>Valor Transbordo: {
+                                    formatter.format(fretePedido?.valor_transbordo || 0)
+                                }</Typography>
+                                <Typography>Valor Chapa: {
+                                    formatter.format(fretePedido?.valor_chapa || 0)
+                                }</Typography>
+                            </>
+
+                        }
 
                         <Button sx={{mt: '10px'}} variant='contained' onClick={() => setFreteDefinido(false)}>Alterar Frete</Button>
                     </Box>
