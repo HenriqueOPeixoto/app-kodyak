@@ -205,8 +205,9 @@ export default function Pedido() {
         itensPedido.map((item) => {
             novoValorTotal = Number(novoValorTotal) + Number(item.valor)
         })
+        novoValorTotal += valorFrete
         setValorTotal(novoValorTotal)
-    }, [itensPedido])
+    }, [itensPedido, valorFrete])
 
     const handleClose = () => {
         navigate('/pedidos')
