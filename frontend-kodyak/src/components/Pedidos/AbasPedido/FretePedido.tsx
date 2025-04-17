@@ -280,7 +280,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                 setValorChapa(0)
                 setData(null)
 
-                setValorFreteInPedido(Number(valorFrete) + Number(valorChapa) + Number(valorTransbordo))
+                setValorFreteInPedido(Number(valorFrete || 0) + Number(valorChapa || 0) + Number(valorTransbordo || 0))
 
                 handleClose()
             })
