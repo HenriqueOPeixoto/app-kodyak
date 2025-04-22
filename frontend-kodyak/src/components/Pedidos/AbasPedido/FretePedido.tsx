@@ -493,8 +493,8 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                         <Button sx={{mt: '10px'}} variant='contained' onClick={() => setExibindoTelaResumo(false)}>Alterar Frete</Button>
                     </Box>
                     }
-                    {!exibindoTelaResumo && <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
-                        <FormLabel id="frete-select-label" required>Selecione a forma de entrega:</FormLabel>
+                    {!exibindoTelaResumo && <FormControl sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
+                        <FormLabel id="frete-select-label">Selecione a forma de entrega</FormLabel>
                         <RadioGroup
                             aria-labelledby="tipo-frete-radio-buttons-group-label"
                             defaultValue="0"
