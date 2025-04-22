@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Autocomplete, Box, Button, Dialog, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
+import { Autocomplete, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import utc from 'dayjs/plugin/utc'
@@ -411,10 +411,11 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
 
     const [tipoFrete, setTipoFrete] = useState('')
     const [fretePedido, setFretePedido] = useState<FretePedido | null>(null)
+    const [carregando, setCarregando] = useState<boolean>(true)
 
     // Armazena se o pedido já tem alguma informação de frete cadastrada.
     // Se houver, mostra o resumo do frete e pergunta se quer alterar.
-    const [freteDefinido, setFreteDefinido] = useState<boolean>(false)
+    const [exibindoTelaResumo, setExibindoTelaResumo] = useState<boolean>(true)
     
     const handleTipoFreteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTipoFrete(event.target.value)
@@ -424,13 +425,16 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
         axios.get(`${backendBaseURL}/api/pedidos/${idPedido}/frete`)
             .then((response) => {
                 if (response.data.retirada_loja !== null) {
-                    setFreteDefinido(true)
+                    setExibindoTelaResumo(true)
 
                     setFretePedido(response.data)
-                } else setFreteDefinido(false)
+                } else setExibindoTelaResumo(false)
             })
             .catch((error) => {
                 console.error('Não foi possível verificar se o frete já existe. ' + error)
+            })
+            .finally(() => {
+                setCarregando(false)
             })
         }
     
@@ -455,12 +459,16 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                     {"Frete"}
                 </DialogTitle>
                 <DialogContent sx={{display: 'flex', flexDirection: 'column', minWidth: '400px'}}>
-                    {freteDefinido && 
+                    {exibindoTelaResumo && 
                     <Box sx={{display: 'flex', gap: '10px', flexDirection: 'column'}}>
                         <Typography sx={{textAlign: 'center'}}>Resumo:</Typography>
                         <Divider></Divider>
-                        <Typography>Retirada na loja: {fretePedido?.retirada_loja ? 'Sim' : 'Não'}</Typography>
-                        <Typography>Data Agendamento: {fretePedido?.data_agendamento ? dayjs.utc(fretePedido.data_agendamento).format('DD/MM/YYYY') : ''}</Typography>
+                        {carregando ? <CircularProgress sx={{ alignSelf: 'center'}} /> :
+                            <>
+                                <Typography>Retirada na loja: {fretePedido?.retirada_loja ? 'Sim' : 'Não'}</Typography>
+                                <Typography>Data Agendamento: {fretePedido?.data_agendamento ? dayjs.utc(fretePedido.data_agendamento).format('DD/MM/YYYY') : ''}</Typography>
+                            </>
+                        }
                         {
                             fretePedido?.retirada_loja === false &&
                             <>
@@ -482,10 +490,10 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
 
                         }
 
-                        <Button sx={{mt: '10px'}} variant='contained' onClick={() => setFreteDefinido(false)}>Alterar Frete</Button>
+                        <Button sx={{mt: '10px'}} variant='contained' onClick={() => setExibindoTelaResumo(false)}>Alterar Frete</Button>
                     </Box>
                     }
-                    {!freteDefinido && <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
+                    {!exibindoTelaResumo && <FormControl required sx={{marginLeft: '15px', textAlign: 'center', alignItems: 'center'}}>
                         <FormLabel id="frete-select-label" required>Selecione a forma de entrega:</FormLabel>
                         <RadioGroup
                             aria-labelledby="tipo-frete-radio-buttons-group-label"
@@ -495,8 +503,8 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             value={tipoFrete}
                             row
                         >
-                            <FormControlLabel value="0" control={<Radio />} label="Cliente Retira" />
-                            <FormControlLabel value="1" control={<Radio />} label="Envio ao Cliente" />
+                            <FormControlLabel disabled={exibindoTelaResumo} value="0" control={<Radio />} label="Cliente Retira" />
+                            <FormControlLabel disabled={exibindoTelaResumo} value="1" control={<Radio />} label="Envio ao Cliente" />
                         </RadioGroup>
                     </FormControl>}
 
