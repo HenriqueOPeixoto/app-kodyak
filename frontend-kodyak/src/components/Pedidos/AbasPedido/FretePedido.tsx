@@ -124,7 +124,7 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSa
                 {carregando ? <CircularProgress color='inherit' /> : 'Confirmar'}
             </Button>
 
-            <Typography color='error'>{msgErro}</Typography>
+            <Typography sx={{ textAlign: 'center' }} color='error'>{msgErro}</Typography>
             
         </>
     )
