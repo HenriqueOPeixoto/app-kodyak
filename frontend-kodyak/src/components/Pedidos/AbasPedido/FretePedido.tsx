@@ -55,10 +55,12 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 /**
  * Componente para lidar com o caso no qual o cliente prefere retirar o pedido por conta própria.
  */
-const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { handleClose: () => void, idPedido: string, setValorFreteInPedido: (valorFrete: number) => void }) => {
+const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSalvandoDadosFrete }: { handleClose: () => void, idPedido: string, setValorFreteInPedido: (valorFrete: number) => void, setSalvandoDadosFrete: (salvando: boolean) => void}) => {
 
     const axios = useAxiosInstance()
     const [data, setData] = useState<Dayjs | null>(null)
+    const [carregando, setCarregando] = useState<boolean>(false)
+    const [msgErro, setMsgErro] = useState<string>('')
 
     useEffect(() => {
         axios.get(`${backendBaseURL}/api/pedidos/${idPedido}`)
@@ -77,6 +79,9 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { h
             return;
         }
 
+        setSalvandoDadosFrete(true)
+        setCarregando(true)
+
         // Se houver dados de endereço de entrega, o banco irá
         // apagá-los, pois retirada_loja === true executa a procedure
         // SET_RETIRADA_LOJA() 
@@ -89,13 +94,20 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { h
             .then((response) => {
                 console.log('Dados enviados com sucesso:', response.data);
                 setValorFreteInPedido(0)
+
+                setData(null);
+                handleClose();
             })
             .catch((error) => {
-                console.error('Erro ao enviar os dados:', error);
+                console.error(error)
+                setMsgErro(error.response.data)
+            })
+            .finally(() => { 
+                setCarregando(false)
+                setSalvandoDadosFrete(false)
             })
 
-        setData(null);
-        handleClose();
+        
     }
 
     return (
@@ -107,9 +119,12 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { h
                 sx={{ mt: '20px', mb: '20px', width: '100%' }}
                 color='success'
                 onClick={handleSubmit}
+                disabled={carregando}
             >
-                Confirmar
+                {carregando ? <CircularProgress color='inherit' /> : 'Confirmar'}
             </Button>
+
+            <Typography color='error'>{msgErro}</Typography>
             
         </>
     )
@@ -118,7 +133,7 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido }: { h
 /**
  * Componente usado quando o cliente opta pelo envio do pedido
  */
-const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInPedido }: { idPedido: string, enderecoPedido: number, handleClose: () => void, setValorFreteInPedido: (valorFrete: number) => void }) => {
+const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInPedido, setSalvandoDadosFrete }: { idPedido: string, enderecoPedido: number, handleClose: () => void, setValorFreteInPedido: (valorFrete: number) => void, setSalvandoDadosFrete: (salvando: boolean) => void }) => {
     const axios = useAxiosInstance()
 
     const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
@@ -139,6 +154,9 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
     const [valorFrete, setValorFrete] = useState<number | undefined>(undefined)
 
     const [data, setData] = useState<Dayjs | null>(null)
+
+    const [carregando, setCarregando] = useState<boolean>(false)
+    const [msgErro, setMsgErro] = useState<string>('')
 
 
 
@@ -250,10 +268,13 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
 
     const handleSubmit = () => {
 
-        if (!cidade || !data) {
-            console.error('Erro ao consultar objetos. Verifique se os campos CIDADE e DATA estão sendo gerados corretamente.')
+        if (!cidade || !data || !cep || !logradouro || !numero) {
+            setMsgErro('Campos obrigatórios não preenchidos.')
             return
         }
+
+        setSalvandoDadosFrete(true)
+        setCarregando(true)
 
         const formData = {
             retirada_loja: false,
@@ -286,6 +307,11 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
             })
             .catch((error) => {
                 console.error('Erro ao enviar os dados:', error);
+                setMsgErro(error.response.data)
+            })
+            .finally(() => {
+                setCarregando(false)
+                setSalvandoDadosFrete(false)
             })
     }
     
@@ -397,9 +423,11 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                         sx={{ mt: '20px', mb: '20px', width: '100%' }}
                         color='success'
                         onClick={handleSubmit}
+                        disabled={carregando}
                         >
-                        Confirmar
+                        {carregando ? <CircularProgress color='inherit' /> : 'Confirmar'}
                     </Button>
+                    <Typography sx={{textAlign: 'center'}} color='error'>{msgErro}</Typography>
                 </Box>}
             </Box>}
         </Box>
@@ -416,6 +444,9 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
     // Armazena se o pedido já tem alguma informação de frete cadastrada.
     // Se houver, mostra o resumo do frete e pergunta se quer alterar.
     const [exibindoTelaResumo, setExibindoTelaResumo] = useState<boolean>(true)
+
+    // Este estado será usado para impedir o usuário de mudar o tipo frete caso esteja enviando dados ao banco.
+    const [salvandoDadosFrete, setSalvandoDadosFrete] = useState<boolean>(false)
     
     const handleTipoFreteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTipoFrete(event.target.value)
@@ -503,8 +534,8 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             value={tipoFrete}
                             row
                         >
-                            <FormControlLabel disabled={exibindoTelaResumo} value="0" control={<Radio />} label="Cliente Retira" />
-                            <FormControlLabel disabled={exibindoTelaResumo} value="1" control={<Radio />} label="Envio ao Cliente" />
+                            <FormControlLabel disabled={exibindoTelaResumo || salvandoDadosFrete} value="0" control={<Radio />} label="Cliente Retira" />
+                            <FormControlLabel disabled={exibindoTelaResumo || salvandoDadosFrete} value="1" control={<Radio />} label="Envio ao Cliente" />
                         </RadioGroup>
                     </FormControl>}
 
@@ -513,13 +544,15 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             handleClose={handleClose} 
                             idPedido={idPedido} 
                             setValorFreteInPedido={setValorFreteInPedido} 
+                            setSalvandoDadosFrete={setSalvandoDadosFrete}
                         />}
                     {tipoFrete === '1' && 
                         <CadastroEnvio 
                             idPedido={idPedido} 
                             enderecoPedido={enderecoPedido} 
                             handleClose={handleClose} 
-                            setValorFreteInPedido={setValorFreteInPedido} 
+                            setValorFreteInPedido={setValorFreteInPedido}
+                            setSalvandoDadosFrete={setSalvandoDadosFrete}
                         />}
                 </DialogContent>
             </Dialog>
