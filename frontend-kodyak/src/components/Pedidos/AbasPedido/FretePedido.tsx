@@ -74,9 +74,15 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSa
 
     const handleSubmit = () => {
 
+        // startOf('day') retorna a data atual com o relógio em 00:00
         if (!data) {
-            console.error('Data não selecionada');
+            setMsgErro('Informe uma data válida.')
             return;
+        }
+
+        if (data < dayjs.utc().startOf('day')) {
+            setMsgErro('Não é possível selecionar data de entrega retroativa.')
+            return
         }
 
         setSalvandoDadosFrete(true)
@@ -113,7 +119,7 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSa
     return (
         <>
             <Typography sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>Agendar Pedido</Typography>
-            <DatePicker value={data} onChange={setData}/>
+            <DatePicker disablePast value={data} onChange={setData}/>
             <Button 
                 variant='contained'
                 sx={{ mt: '20px', mb: '20px', width: '100%' }}
@@ -273,6 +279,11 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
             return
         }
 
+        if (data < dayjs.utc().startOf('day')) {
+            setMsgErro('Não é possível selecionar data de entrega retroativa.')
+            return
+        }
+
         setSalvandoDadosFrete(true)
         setCarregando(true)
 
@@ -417,7 +428,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                 
                 { valorFreteExiste && <Box sx={{  display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
                     <Typography sx={{fontWeight: 'bold'}}>Agendar Pedido</Typography>
-                    <DatePicker value={data} onChange={setData}/>
+                    <DatePicker disablePast value={data} onChange={setData}/>
                     <Button 
                         variant='contained'
                         sx={{ mt: '20px', mb: '20px', width: '100%' }}
