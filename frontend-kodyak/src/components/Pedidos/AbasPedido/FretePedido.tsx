@@ -40,7 +40,9 @@ interface FretePedido {
     valor_frete: number,
     valor_transbordo: number,
     valor_chapa: number,
-    data_agendamento: string
+    data_agendamento: string,
+    icms_frete_percentual: number,
+    icms_venda_percentual: number
 }
 
 const formatter = new Intl.NumberFormat('pt-BR', {
@@ -479,6 +481,16 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                 setCarregando(false)
             })
         }
+
+    const calcularValorTotalFrete = (fretePedido: FretePedido): number => {
+        const valorFrete = Number(fretePedido?.valor_frete) || 0
+        const icmsFretePercentual = Number(fretePedido?.icms_frete_percentual) / 100 || 0
+        const valorChapa = Number(fretePedido?.valor_chapa) || 0
+        const valorTransbordo = Number(fretePedido?.valor_transbordo) || 0
+
+        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorTransbordo
+
+    }
     
     return (
         <React.Fragment>
@@ -519,6 +531,8 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                                 <Typography>CEP: {fretePedido?.cep_entrega}</Typography>
                                 <Typography>Cidade: {fretePedido?.municipio_entrega}</Typography>
                                 <Typography>Estado: {fretePedido?.uf_entrega}</Typography>
+                                <Typography>ICMS Venda: {fretePedido?.icms_venda_percentual || 0}%</Typography>
+                                <Typography>ICMS Frete: {fretePedido?.icms_frete_percentual || 0}%</Typography>
                                 <Typography>Valor Frete: {
                                     formatter.format(fretePedido?.valor_frete || 0)
                                 }</Typography>
@@ -528,6 +542,9 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                                 <Typography>Valor Chapa: {
                                     formatter.format(fretePedido?.valor_chapa || 0)
                                 }</Typography>
+                                <Typography sx={{ fontWeight: 'bold', textAlign: 'center' }}>
+                                    Valor Total Frete: {formatter.format(calcularValorTotalFrete(fretePedido))}
+                                </Typography>
                             </>
 
                         }
