@@ -4,13 +4,24 @@ function Avisos() {
     return (
         <div>
             <Typography variant="h5">Vendas Kodyak</Typography>
-            <Typography variant="h6">Versão: 0.2.1</Typography>
+            <Typography variant="h6">Versão: 0.3</Typography>
             <hr />
 
             <Typography>Seja bem-vindo!</Typography>
             <Typography>Abaixo está disponível o histórico de modificações por versão:</Typography>
             <br />
             <Typography variant="h6">Changelog:</Typography>
+            <Typography variant="h6">0.3</Typography>
+            <List>
+                <ListItem>Corrigida falha no interceptador de respostas do servidor, que estava fazendo com que
+                    as respostas de erro fossem tratadas como sucesso;
+                </ListItem>
+                <ListItem>Implementado cadastro de fretes;</ListItem>
+                <ListItem>Tabela de referência removida da tela de lançamento de itens de pedido;</ListItem>
+                <ListItem>O sistema agora permite informar dados de frete no pedido (retirada ou envio ao cliente);</ListItem>
+                <ListItem>Os valores de frete e pedido agora consideram ICMS, que é informado no cadastro de fretes;</ListItem>
+            </List>
+            <hr />
             <Typography variant="h6">0.2.1</Typography>
             <List>
                 <ListItem>Na listagem de usuários, o sistema exibe nome do representante e nível de acesso, em vez de seus respectivos IDs;</ListItem>
