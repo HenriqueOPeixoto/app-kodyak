@@ -226,6 +226,7 @@ export default function Pedido() {
         itensPedido.map((item) => {
             novoValorTotal = Number(novoValorTotal) + Number(item.valor)
         })
+        novoValorTotal += novoValorTotal * icmsVendaPercentual / 100
         novoValorTotal += valorFrete
         setValorTotal(novoValorTotal)
     }, [itensPedido, valorFrete])
