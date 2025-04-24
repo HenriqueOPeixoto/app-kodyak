@@ -14,7 +14,8 @@ interface FretePedidoProps {
     handleClose: () => void,
     idPedido: string,
     enderecoPedido: number,
-    setValorFreteInPedido: (valorFrete: number) => void
+    setValorFreteInPedido: (valorFrete: number) => void,
+    setIcmsVendaPercentualInPedido: (icmsVendaPercentual: number) => void
 }
 
 interface Estado {
@@ -57,7 +58,19 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 /**
  * Componente para lidar com o caso no qual o cliente prefere retirar o pedido por conta própria.
  */
-const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSalvandoDadosFrete }: { handleClose: () => void, idPedido: string, setValorFreteInPedido: (valorFrete: number) => void, setSalvandoDadosFrete: (salvando: boolean) => void}) => {
+const AgendadorRetirada = ({ 
+    handleClose,
+    idPedido,
+    setValorFreteInPedido,
+    setSalvandoDadosFrete,
+    setIcmsVendaPercentualInPedido 
+}: { 
+    handleClose: () => void,
+    idPedido: string,
+    setValorFreteInPedido: (valorFrete: number) => void,
+    setSalvandoDadosFrete: (salvando: boolean) => void,
+    setIcmsVendaPercentualInPedido: (icmsVendaPercentual: number) => void
+}) => {
 
     const axios = useAxiosInstance()
     const [data, setData] = useState<Dayjs | null>(null)
@@ -102,6 +115,7 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSa
             .then((response) => {
                 console.log('Dados enviados com sucesso:', response.data);
                 setValorFreteInPedido(0)
+                setIcmsVendaPercentualInPedido(0)
 
                 setData(null);
                 handleClose();
@@ -141,7 +155,21 @@ const AgendadorRetirada = ({ handleClose, idPedido, setValorFreteInPedido, setSa
 /**
  * Componente usado quando o cliente opta pelo envio do pedido
  */
-const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInPedido, setSalvandoDadosFrete }: { idPedido: string, enderecoPedido: number, handleClose: () => void, setValorFreteInPedido: (valorFrete: number) => void, setSalvandoDadosFrete: (salvando: boolean) => void }) => {
+const CadastroEnvio = ({ 
+    idPedido,
+    enderecoPedido,
+    handleClose,
+    setValorFreteInPedido,
+    setSalvandoDadosFrete,
+    setIcmsVendaPercentualInPedido 
+}: { 
+    idPedido: string,
+    enderecoPedido: number,
+    handleClose: () => void,
+    setValorFreteInPedido: (valorFrete: number) => void,
+    setSalvandoDadosFrete: (salvando: boolean) => void,
+    setIcmsVendaPercentualInPedido: (icmsVendaPercentual: number) => void
+ }) => {
     const axios = useAxiosInstance()
 
     const [valorFreteVisivel, setValorFreteVisivel] = useState<boolean>(false)
@@ -328,7 +356,8 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
         axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
             .then((response) => {
                 console.log('Dados enviados com sucesso:', response.data);
-
+                
+                setIcmsVendaPercentualInPedido(icmsVendaPercentual || 0)
                 setValorFreteInPedido(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorTransbordo))
 
                 setValorFrete(0)
@@ -478,7 +507,7 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
     )
 }
 
-const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido, setValorFreteInPedido }) => {
+const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, enderecoPedido, setValorFreteInPedido, setIcmsVendaPercentualInPedido }) => {
     const axios = useAxiosInstance()
 
     const [tipoFrete, setTipoFrete] = useState('')
@@ -604,6 +633,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             idPedido={idPedido} 
                             setValorFreteInPedido={setValorFreteInPedido} 
                             setSalvandoDadosFrete={setSalvandoDadosFrete}
+                            setIcmsVendaPercentualInPedido={setIcmsVendaPercentualInPedido}
                         />}
                     {tipoFrete === '1' && 
                         <CadastroEnvio 
@@ -612,6 +642,7 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                             handleClose={handleClose} 
                             setValorFreteInPedido={setValorFreteInPedido}
                             setSalvandoDadosFrete={setSalvandoDadosFrete}
+                            setIcmsVendaPercentualInPedido={setIcmsVendaPercentualInPedido}
                         />}
                 </DialogContent>
             </Dialog>

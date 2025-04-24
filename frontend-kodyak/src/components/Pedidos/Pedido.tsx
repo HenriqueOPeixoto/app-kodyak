@@ -108,6 +108,7 @@ export default function Pedido() {
     const [itensPedido, setItensPedido] = React.useState<Item[]>([]);
     const [valorTotal, setValorTotal] = React.useState<number>(0.0)
     const [valorFrete, setValorFrete] = React.useState<number>(0.0)
+    const [icmsVendaPercentual, setIcmsVendaPercentual] = React.useState<number>(0.0)
 
     // Listagem de clientes
     React.useEffect(() => {
@@ -123,6 +124,7 @@ export default function Pedido() {
                     const pedidoData = pedidoResults.data[0]
                     setObservacoes(pedidoData.observacoes)
                     setStatus(pedidoData.status)
+                    setIcmsVendaPercentual(pedidoData.icms_venda_percentual)
                     
                     setValorFrete(calcularValorTotalFrete(
                         pedidoData.valor_frete,
@@ -533,11 +535,16 @@ export default function Pedido() {
                         </div>
                     </Tooltip>
                     <div className='ContainerValorTotal'> {/* Valor total */}
-                        <Typography>Valor Total:</Typography>
-                        <Typography className='LblValor' variant='h5'>{
-                                formatter.format(valorTotal)
-                            }
-                        </Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px'}}>
+                            <Typography>Valor Total:</Typography>
+                            <Typography className='LblValor' variant='h5'>{
+                                    formatter.format(valorTotal)
+                                }
+                            </Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '5px'}}>
+                            <Typography>ICMS: {icmsVendaPercentual || 0}%</Typography>
+                        </Box>
                     </div>
                 </Toolbar>
             </AppBar>
@@ -550,6 +557,7 @@ export default function Pedido() {
                     idPedido={id} 
                     enderecoPedido={endereco.id} 
                     setValorFreteInPedido={changeValorFretePedido}
+                    setIcmsVendaPercentualInPedido={setIcmsVendaPercentual}
                 />}
             <Snackbar
                 open={snackOpen}

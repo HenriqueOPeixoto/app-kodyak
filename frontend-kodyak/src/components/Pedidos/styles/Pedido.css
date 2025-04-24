@@ -99,6 +99,7 @@
 .ContainerValorTotal {
     display: flex;
     align-items: center;
+    flex-direction: column;
     gap: 7px
 }
 
