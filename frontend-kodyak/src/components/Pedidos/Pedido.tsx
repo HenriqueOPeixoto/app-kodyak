@@ -51,6 +51,20 @@ interface Item {
     valor: number
 }
 
+const calcularValorTotalFrete = (
+        valorFrete: number | undefined, 
+        icmsFretePercentual: number | undefined, 
+        valorChapa: number | undefined,
+        valorTransbordo: number | undefined
+    ) => {
+        valorFrete = Number(valorFrete || 0)
+        icmsFretePercentual = Number(icmsFretePercentual || 0) / 100
+        valorChapa = Number(valorChapa || 0)
+        valorTransbordo = Number(valorTransbordo || 0)
+
+        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorTransbordo
+}
+
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
@@ -110,7 +124,12 @@ export default function Pedido() {
                     setObservacoes(pedidoData.observacoes)
                     setStatus(pedidoData.status)
                     
-                    setValorFrete(Number(pedidoData.valor_frete) + Number(pedidoData.valor_chapa) + Number(pedidoData.valor_transbordo))
+                    setValorFrete(calcularValorTotalFrete(
+                        pedidoData.valor_frete,
+                        pedidoData.icms_frete_percentual,
+                        pedidoData.valor_chapa,
+                        pedidoData.valor_transbordo
+                    ))
                     
                     return axios.get(`${backendBaseURL}/api/clientes_enderecos/${pedidoData.cliente_endereco}`)
                 })

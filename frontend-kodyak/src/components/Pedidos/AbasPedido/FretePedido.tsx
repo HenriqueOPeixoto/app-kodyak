@@ -160,6 +160,8 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
     const [valorTransbordo, setValorTransbordo] = useState<number | undefined>(undefined)
     const [valorChapa, setValorChapa] = useState<number | undefined>(undefined)
     const [valorFrete, setValorFrete] = useState<number | undefined>(undefined)
+    const [icmsFretePercentual, setIcmsFretePercentual] = useState<number | undefined>(undefined)
+    const [icmsVendaPercentual, setIcmsVendaPercentual] = useState<number | undefined>(undefined)
 
     const [data, setData] = useState<Dayjs | null>(null)
 
@@ -257,6 +259,12 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                     if (response.data[0]){
                         setValorFreteExiste(true)
                         setValorFrete(response.data[0].valor_frete)
+                        
+                        // TODO: Precisa padronizar a nomenclatura na tabela de cadastro frete.
+                        // Lá consta como icms_frete em vez de icms_frete_percentual.
+                        // O mesmo para icms_venda
+                        setIcmsFretePercentual(response.data[0].icms_frete)
+                        setIcmsVendaPercentual(response.data[0].icms_venda)
                     }
                     else {
                         setValorFreteExiste(false)
@@ -272,6 +280,20 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
             setValorFreteExiste(false)
             setValorFreteVisivel(false)
         }
+    }
+
+    const calcularValorTotalFrete = (
+        valorFrete: number | undefined, 
+        icmsFretePercentual: number | undefined, 
+        valorChapa: number | undefined,
+        valorTransbordo: number | undefined
+    ) => {
+        valorFrete = Number(valorFrete || 0)
+        icmsFretePercentual = Number(icmsFretePercentual || 0) / 100
+        valorChapa = Number(valorChapa || 0)
+        valorTransbordo = Number(valorTransbordo || 0)
+
+        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorTransbordo
     }
 
     const handleSubmit = () => {
@@ -298,12 +320,16 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
             numero_entrega: numero,
             valor_transbordo: valorTransbordo,
             valor_chapa: valorChapa,
-            data_agendamento: data.format('YYYY-MM-DD')
+            data_agendamento: data.format('YYYY-MM-DD'),
+            icms_frete_percentual: icmsFretePercentual,
+            icms_venda_percentual: icmsVendaPercentual
         }
 
         axios.put(`${backendBaseURL}/api/pedidos/${idPedido}/frete`, formData)
             .then((response) => {
                 console.log('Dados enviados com sucesso:', response.data);
+
+                setValorFreteInPedido(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorTransbordo))
 
                 setValorFrete(0)
                 setCidade(null)
@@ -313,8 +339,8 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                 setValorTransbordo(0)
                 setValorChapa(0)
                 setData(null)
-
-                setValorFreteInPedido(Number(valorFrete || 0) + Number(valorChapa || 0) + Number(valorTransbordo || 0))
+                setIcmsFretePercentual(0)
+                setIcmsVendaPercentual(0)
 
                 handleClose()
             })
@@ -418,12 +444,17 @@ const CadastroEnvio = ({ idPedido, enderecoPedido, handleClose, setValorFreteInP
                 onValueChange={(values) => { setValorChapa(values.floatValue as number) }}
             />
             {valorFreteVisivel && <Box sx={{ display: 'flex', justifyContent: 'end', flexDirection: 'column' }}>
-                <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'center', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
+                <Typography color={valorFreteExiste ? '' : 'error'} sx={{ textAlign: 'start', mt: '20px', mb:'10px', fontWeight: 'bold'}}>
                     {valorFreteExiste ? 
                         <Box>
                             {`Valor Frete: ${formatter.format(valorFrete ?? 0)}`}
                             <br />
-                            {`Valor Total: ${formatter.format(Number(valorFrete ?? 0) + Number(valorChapa ?? 0) + Number(valorTransbordo ?? 0))}`}
+                            {`ICMS Frete ${icmsFretePercentual || 0}% `}
+                            <br />
+                            {`Valor Total Frete: ${formatter.format(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorTransbordo))}`}
+                            <br />
+                            {`ICMS Venda ${icmsVendaPercentual || 0}%`}
+                            <br />
                         </Box> :
                         `Não existe frete cadastrado para ${ultimaCidadeSelecionada}`}
                 </Typography>
