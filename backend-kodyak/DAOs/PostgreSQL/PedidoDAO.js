@@ -171,7 +171,9 @@ const salvarInformacoesFrete = (request, response) => {
         numero_entrega,
         valor_transbordo,
         valor_chapa,
-        data_agendamento
+        data_agendamento,
+        icms_frete_percentual,
+        icms_venda_percentual
     } = request.body
 
     if (!id) {
@@ -204,8 +206,10 @@ const salvarInformacoesFrete = (request, response) => {
                     NUMERO_ENTREGA = $6,
                     VALOR_TRANSBORDO = $7,
                     VALOR_CHAPA = $8,
-                    DATA_AGENDAMENTO = $9
-                WHERE ID = $10
+                    DATA_AGENDAMENTO = $9,
+                    ICMS_FRETE_PERCENTUAL = $10,
+                    ICMS_VENDA_PERCENTUAL = $11
+                WHERE ID = $12
             `
     
             const params = [
@@ -218,6 +222,8 @@ const salvarInformacoesFrete = (request, response) => {
                 valor_transbordo,
                 valor_chapa,
                 data_agendamento,
+                icms_frete_percentual,
+                icms_venda_percentual,
                 id
             ]
             pool.query(query, params)
