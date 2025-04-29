@@ -39,7 +39,7 @@ interface FretePedido {
     municipio_entrega: string,
     uf_entrega: string,
     valor_frete: number,
-    valor_transbordo: number,
+    valor_extra: number,
     valor_chapa: number,
     data_agendamento: string,
     icms_frete_percentual: number,
@@ -185,7 +185,7 @@ const CadastroEnvio = ({
     const [logradouro, setLogradouro] = useState<string>('')
     const [numero, setNumero] = useState<string>('')
     const [cep, setCep] = useState<string>('')
-    const [valorTransbordo, setValorTransbordo] = useState<number | undefined>(undefined)
+    const [valorExtra, setValorExtra] = useState<number | undefined>(undefined)
     const [valorChapa, setValorChapa] = useState<number | undefined>(undefined)
     const [valorFrete, setValorFrete] = useState<number | undefined>(undefined)
     const [icmsFretePercentual, setIcmsFretePercentual] = useState<number | undefined>(undefined)
@@ -314,14 +314,14 @@ const CadastroEnvio = ({
         valorFrete: number | undefined, 
         icmsFretePercentual: number | undefined, 
         valorChapa: number | undefined,
-        valorTransbordo: number | undefined
+        valorExtra: number | undefined
     ) => {
         valorFrete = Number(valorFrete || 0)
         icmsFretePercentual = Number(icmsFretePercentual || 0) / 100
         valorChapa = Number(valorChapa || 0)
-        valorTransbordo = Number(valorTransbordo || 0)
+        valorExtra = Number(valorExtra || 0)
 
-        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorTransbordo
+        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorExtra
     }
 
     const handleSubmit = () => {
@@ -346,7 +346,7 @@ const CadastroEnvio = ({
             cep_entrega: cep,
             logradouro_entrega: logradouro,
             numero_entrega: numero,
-            valor_transbordo: valorTransbordo,
+            valor_extra: valorExtra,
             valor_chapa: valorChapa,
             data_agendamento: data.format('YYYY-MM-DD'),
             icms_frete_percentual: icmsFretePercentual,
@@ -358,14 +358,14 @@ const CadastroEnvio = ({
                 console.log('Dados enviados com sucesso:', response.data);
                 
                 setIcmsVendaPercentualInPedido(icmsVendaPercentual || 0)
-                setValorFreteInPedido(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorTransbordo))
+                setValorFreteInPedido(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorExtra))
 
                 setValorFrete(0)
                 setCidade(null)
                 setCep('')
                 setLogradouro('')
                 setNumero('')
-                setValorTransbordo(0)
+                setValorExtra(0)
                 setValorChapa(0)
                 setData(null)
                 setIcmsFretePercentual(0)
@@ -449,16 +449,16 @@ const CadastroEnvio = ({
                 />
             </Box>
             <NumericFormat
-                label='Valor Transbordo'
+                label='Valor Extra'
                 customInput={TextField}
                 thousandSeparator="."
                 decimalSeparator=","
-                value={valorTransbordo}
+                value={valorExtra}
                 prefix="R$ "
                 decimalScale={2}
                 fixedDecimalScale
                 allowNegative={false}
-                onValueChange={(values) => { setValorTransbordo(values.floatValue as number) }}
+                onValueChange={(values) => { setValorExtra(values.floatValue as number) }}
             />
             <NumericFormat
                 label='Valor Chapa'
@@ -480,7 +480,7 @@ const CadastroEnvio = ({
                             <br />
                             {`ICMS Frete ${icmsFretePercentual || 0}% `}
                             <br />
-                            {`Valor Total Frete: ${formatter.format(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorTransbordo))}`}
+                            {`Valor Total Frete: ${formatter.format(calcularValorTotalFrete(valorFrete, icmsFretePercentual, valorChapa, valorExtra))}`}
                             <br />
                             {`ICMS Venda ${icmsVendaPercentual || 0}%`}
                             <br />
@@ -546,9 +546,9 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
         const valorFrete = Number(fretePedido?.valor_frete) || 0
         const icmsFretePercentual = Number(fretePedido?.icms_frete_percentual) / 100 || 0
         const valorChapa = Number(fretePedido?.valor_chapa) || 0
-        const valorTransbordo = Number(fretePedido?.valor_transbordo) || 0
+        const valorExtra = Number(fretePedido?.valor_extra) || 0
 
-        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorTransbordo
+        return valorFrete + (valorFrete * icmsFretePercentual) + valorChapa + valorExtra
 
     }
     
@@ -596,11 +596,11 @@ const FretePedido: React.FC<FretePedidoProps> = ({ open, handleClose, idPedido, 
                                 <Typography>Valor Frete: {
                                     formatter.format(fretePedido?.valor_frete || 0)
                                 }</Typography>
-                                <Typography>Valor Transbordo: {
-                                    formatter.format(fretePedido?.valor_transbordo || 0)
-                                }</Typography>
                                 <Typography>Valor Chapa: {
                                     formatter.format(fretePedido?.valor_chapa || 0)
+                                }</Typography>
+                                <Typography>Valor Extra: {
+                                    formatter.format(fretePedido?.valor_extra || 0)
                                 }</Typography>
                                 <Typography sx={{ fontWeight: 'bold', textAlign: 'center' }}>
                                     Valor Total Frete: {formatter.format(calcularValorTotalFrete(fretePedido))}
