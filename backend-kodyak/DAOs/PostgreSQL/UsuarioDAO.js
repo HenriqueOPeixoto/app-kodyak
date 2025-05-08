@@ -254,8 +254,16 @@ const getUsuarioAtual = (request, response) => {
     if (!token) {
         return response.status(401).send('Token não fornecido.')
     }
+
+    const conteudoToken = decodeToken(token)
     
-    return response.status(200).send(decodeToken(token))
+    pool.query(`SELECT nome, email, nivel_acesso, representante FROM USUARIOS WHERE id = $1`, [conteudoToken.id])
+        .then((results) => {
+            return response.status(200).send(results.rows[0])
+        })
+        .catch(() => {
+            return response.status(500).send('Não foi possível consultar os dados do usuário logado.')
+        })
 
 }
 
