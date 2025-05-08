@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, CircularProgress, Container, Paper, TextField, Typography } from "@mui/material";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
@@ -13,6 +13,19 @@ export default function Login() {
     const [senha, setSenha] = useState<string>('')
     const [msgErro, setMsgErro] = useState<string>(location.state ? location.state.message : '')
     const [loading, setLoading] = useState<boolean>(false)
+
+    useEffect(() => {
+        axios.get(`${backendBaseURL}/api/usuarios/eu`, { 
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true
+            })
+            .then(() => {
+                navigate('/avisos')
+            })
+            .catch(() => {
+                console.info('Login automático não autorizado.')
+            })
+    }, [])
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault() // Evitar que a página recarregue
