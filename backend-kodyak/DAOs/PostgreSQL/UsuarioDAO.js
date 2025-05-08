@@ -256,12 +256,28 @@ const getUsuarioAtual = (request, response) => {
     }
 
     const conteudoToken = decodeToken(token)
-    
+
     pool.query(`SELECT nome, email, nivel_acesso, representante FROM USUARIOS WHERE id = $1`, [conteudoToken.id])
-        .then((results) => {
-            return response.status(200).send(results.rows[0])
+        .then((usuarioResults) => {
+            const usuario = usuarioResults.rows[0]
+
+            if (!usuario)
+                return response.status(404).send('Usuário não encontrado.');
+
+
+            // Aqui irá retornar a lista de status de pedido que o usuário tem acesso.
+            return pool.query(`SELECT id_status_pedido FROM VINCULA_ACESSO_STATUS WHERE id_nivel_acesso = $1`, [usuario.nivel_acesso])
+                .then((statusResults) => {
+                    const statusLiberados = statusResults.rows.map(row => row.id_status_pedido);
+
+                    return response.status(200).send({
+                        ...usuario,
+                        status_liberados: statusLiberados
+                        })
+                })
         })
-        .catch(() => {
+        .catch((error) => {
+            console.error(error)
             return response.status(500).send('Não foi possível consultar os dados do usuário logado.')
         })
 
