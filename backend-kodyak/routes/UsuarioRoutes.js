@@ -1,14 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const UsuarioController = require('../controllers/UsuarioController');
-const authenticateToken = require('../middleware/Authorization');
-
-// Infomar middleware como está abaixo, quando a autenticação estiver pronta no frontend.
-// Fazer o mesmo em todas as outras funções.
-//router.get('/', authenticateToken, UsuarioController.getUsuarios);
 
 router.post('/', UsuarioController.createUsuario);
-router.get('/eu', authenticateToken, UsuarioController.getUsuarioAtual)
+router.get('/eu', UsuarioController.getUsuarioAtual);
 router.put('/:id', UsuarioController.updateUsuario);
 
 
