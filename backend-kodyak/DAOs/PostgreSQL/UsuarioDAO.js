@@ -1,5 +1,6 @@
 const pool = require('../../postgres').pool
 const bcrypt = require('bcryptjs')
+const { decodeToken } = require('../../utils/JWTHelpers')
 
 const MensagensErro = {
     EMAIL_EM_USO: 'E-mail já está em uso',
@@ -243,11 +244,27 @@ const alterarStatusUsuario = (request, response) => {
     })
 }
 
+/**
+ * Retorna os dados do usuário que fez a solicitação. Usado para verificação de nível de acesso
+ * e outras informações pertinentes ao utilizador do sistema.
+ */
+const getUsuarioAtual = (request, response) => {
+    const token = request.cookies.access_token
+
+    if (!token) {
+        return response.status(401).send('Token não fornecido.')
+    }
+    
+    return response.status(200).send(decodeToken(token))
+
+}
+
 module.exports = {
     createUsuario,
     updateUsuario,
     validaCadastro,
     getUsuarios,
     getUsuarioById,
-    alterarStatusUsuario
+    alterarStatusUsuario,
+    getUsuarioAtual
 }

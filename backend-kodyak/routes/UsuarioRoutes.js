@@ -8,6 +8,7 @@ const authenticateToken = require('../middleware/Authorization');
 //router.get('/', authenticateToken, UsuarioController.getUsuarios);
 
 router.post('/', UsuarioController.createUsuario);
+router.get('/eu', authenticateToken, UsuarioController.getUsuarioAtual)
 router.put('/:id', UsuarioController.updateUsuario);
 
 

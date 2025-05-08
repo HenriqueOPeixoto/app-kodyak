@@ -19,3 +19,7 @@ exports.getUsuarioById = (req, res) => {
 exports.alterarStatusUsuario = (req, res) => {
     UsuarioDAO.alterarStatusUsuario(req, res);
 };
+
+exports.getUsuarioAtual = (req, res) => {
+    UsuarioDAO.getUsuarioAtual(req, res);
+};
