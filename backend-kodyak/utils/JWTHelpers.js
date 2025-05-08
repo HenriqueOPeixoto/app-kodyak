@@ -12,4 +12,25 @@ function jwtTokens({id, nome, email}) {
     return ({ accessToken, refreshToken })
 }
 
-module.exports = jwtTokens
+/**
+ * Verifica se o access token é válido e retorna o payload.
+ * @param token 
+ * @returns payload (json)
+ */
+function decodeToken(token) {
+    try{
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+
+        return decoded
+
+    } catch (error) {
+        // Está aqui apenas como fallback caso o middleware falhe.
+        // Em tese esse catch nunca vai executar, pois a verificação do token ocorre antes de executar essa função.
+        // Verificar Authorization.js (authenticateToken)
+        console.error(error)
+    }
+    
+    
+}
+
+module.exports = { jwtTokens, decodeToken }

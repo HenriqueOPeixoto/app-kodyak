@@ -2,7 +2,7 @@ const express = require('express');
 const pool = require('../postgres').pool
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
-const jwtTokens = require('../utils/JWTHelpers');
+const { jwtTokens } = require('../utils/JWTHelpers');
 
 const router = express.Router();
 
