@@ -51,6 +51,11 @@ interface Item {
     valor: number
 }
 
+interface StatusPedido {
+    id: number,
+    descricao: string
+}
+
 const calcularValorTotalFrete = (
         valorFrete: number | undefined, 
         icmsFretePercentual: number | undefined, 
@@ -97,6 +102,7 @@ export default function Pedido() {
     const [listaEnderecos, setListaEnderecos] = React.useState<Endereco[]>([])
     const [observacoes, setObservacoes] = React.useState<string>('')
     const [status, setStatus] = React.useState<string>('0')
+    const [statusLiberados, setStatusLiberados] = React.useState<StatusPedido[]>()
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
     const [openFretePedidoDialog, setOpenFretePedidoDialog] = React.useState(false)
@@ -110,11 +116,34 @@ export default function Pedido() {
     const [valorFrete, setValorFrete] = React.useState<number>(0.0)
     const [icmsVendaPercentual, setIcmsVendaPercentual] = React.useState<number>(0.0)
 
-    // Listagem de clientes
     React.useEffect(() => {
+        let usuario: { 
+            nome: string, 
+            email: string, 
+            nivel_acesso: number,
+            representante: number,
+            status_liberados: number[]
+        } | null = null
+
+        let statusPedido: StatusPedido[] = [];
         axios.get(`${backendBaseURL}/api/clientes`)
             .then((results) => {
                 setClientes(results.data)
+
+                return axios.get(`${backendBaseURL}/api/usuarios/eu`)
+            })
+            .then((usuarioResults) => {
+                usuario = usuarioResults.data
+
+                return axios.get(`${backendBaseURL}/api/status_pedido`)
+            })
+            .then((statusPedidoResults) => {
+                statusPedido = statusPedidoResults.data
+
+                setStatusLiberados(statusPedido.filter(status => {
+                    return usuario?.status_liberados.includes(status.id)
+                }))
+
             })
             .catch((error) => { console.error('Não foi possível listar os clientes: ' + error) })
             .finally(() => { if (!id) setLoadingBackdropOpen(false) })
@@ -257,7 +286,16 @@ export default function Pedido() {
         } else {
             axios.put(`${backendBaseURL}/api/pedidos/${id}`, {
                 "observacoes": observacoes,
-                "status": status
+                /* 
+                    Abaixo tem um truque, pois node é meio imprevisível às vezes.
+                    Um dos status possíveis é Criado (id=0). Porém, lá no backend é feita a verificação
+                    if (status) para verificar se foi informado um status.
+                    Como 0 é um valor falsy, é como se nenhum status tivesse sido informado, então nunca volta para
+                    o status 0.
+                    Mandar o valor como string, permite que if (status) seja avaliado como true quando status = 0
+                    e o valor é registrado devidamente no banco de dados.
+                */
+                "status": status.toString()
             })
             .then(() => { handleAbrirSnack('Pedido alterado com sucesso!') })
         }
@@ -439,15 +477,9 @@ export default function Pedido() {
                             variant='standard'
 
                         >
-                            <MenuItem value={'0'}>Criado</MenuItem>
-                            <MenuItem value={'1'}>Pendente</MenuItem>
-                            <MenuItem value={'2'}>Análise Financeira</MenuItem>
-                            <MenuItem value={'3'}>Aprovado</MenuItem>
-                            <MenuItem value={'4'}>Faturado</MenuItem>
-                            <MenuItem value={'5'}>Em Rota</MenuItem>
-                            <MenuItem value={'6'}>Entregue</MenuItem>
-                            <MenuItem value={'7'}>Pagamento em Atraso</MenuItem>
-                            <MenuItem value={'8'}>Recusado</MenuItem>
+                            {statusLiberados?.map(status => (
+                                <MenuItem value={status.id}>{status.descricao}</MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                     <div className='ContainerObservacao' >
