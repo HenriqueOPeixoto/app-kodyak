@@ -17,6 +17,7 @@ const pedidoRoutes = require('./routes/PedidoRoutes')
 const pedidoItensRoutes = require('./routes/PedidoItensRoutes')
 const localidadesRoutes = require('./routes/LocalidadesRoutes')
 const freteRoutes = require('./routes/FreteRoutes')
+const statusPedidoRoutes = require('./routes/StatusPedidoRoutes')
 const authRoutes = require('./routes/AuthRoutes');
 const authenticateToken = require('./middleware/Authorization');
 
@@ -48,5 +49,6 @@ app.use('/api/pedidos', authenticateToken, pedidoRoutes)
 app.use('/api/pedidos_itens', authenticateToken, pedidoItensRoutes)
 app.use('/api/localidades', authenticateToken, localidadesRoutes)
 app.use('/api/fretes', authenticateToken, freteRoutes)
+app.use('/api/status_pedido', authenticateToken, statusPedidoRoutes)
 
 app.listen(port, '0.0.0.0')
