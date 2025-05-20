@@ -559,7 +559,7 @@ export default function Pedido() {
                         ))}
                     </SpeedDial>
                     <div /> {/* Apenas para empurrar as divs abaixo para o meio e para a esquerda*/}
-                    <Tooltip title='Clique aqui para definir informações de frete.' placement='top'>
+                    <Tooltip title={id ? 'Clique aqui para definir informações de frete.' : 'Crie um pedido para configurar frete.'} placement='top'>
                         <div className='InfoFrete' onClick={handleOpenFretePedidoDialog} > {/* Info frete */}
                             <Typography color={'black'}>
                                 Valor Frete: <br />
