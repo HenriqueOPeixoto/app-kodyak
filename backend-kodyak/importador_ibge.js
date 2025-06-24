@@ -95,6 +95,15 @@ async function cadastrarLocalidades() {
             console.log(`Erro ao cadastrar ${municipio.nome}: ${error}`);
         }
     }
+    
+    console.log('| === ATUALIZANDO VIEWS MATERIALIZADAS... === |')
+    logToFile('| === ATUALIZANDO VIEWS MATERIALIZADAS... === |')
+    try {
+        await pool.query('REFRESH MATERIALIZED VIEW municipios_por_uf')
+    } catch (error) {
+        logToFile(`Erro ao atualizar view: ${error}`);
+        console.log(`Erro ao atualizar view: ${error}`);
+    }
 
     console.log('\n=== Cadastro finalizado ===');
     console.log('Consulte logs/erros_localidades.log para verificar se algum cadastro falhou.')
