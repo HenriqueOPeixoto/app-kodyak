@@ -20,7 +20,8 @@ function Avisos() {
                 <ListItem>Tabela de referência removida da tela de lançamento de itens de pedido;</ListItem>
                 <ListItem>O sistema agora permite informar dados de frete no pedido (retirada ou envio ao cliente);</ListItem>
                 <ListItem>Os valores de frete e pedido agora consideram ICMS, que é informado no cadastro de fretes;</ListItem>
-                <ListItem>O nível de acesso agora determina quais status de pedido são acessíveis ao usuário.</ListItem>
+                <ListItem>O nível de acesso agora determina quais status de pedido são acessíveis ao usuário;</ListItem>
+                <ListItem>Uso de migrations para atualizar a estrutura do banco de dados.</ListItem>
             </List>
             <hr />
             <Typography variant="h6">0.2.1</Typography>
