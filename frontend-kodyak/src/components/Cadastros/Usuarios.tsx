@@ -77,12 +77,15 @@ export default function Usuarios() {
           setNivelAcesso(nivel_acesso)
           setInativo(inativo)
 
-          return axios.get(`${backendBaseURL}/api/representantes/${representante}`)
+          if (representante)
+            return axios.get(`${backendBaseURL}/api/representantes/${representante}`)
         })
         .then((representanteResponse) => {
-          const representanteData = representanteResponse.data[0]
-          representanteData.label = `${representanteData.nome}`
-          setRepresentante(representanteData)
+          if (representanteResponse) {
+            const representanteData = representanteResponse.data[0]
+            representanteData.label = `${representanteData.nome}`
+            setRepresentante(representanteData)
+          }
           
         })
       .catch(error => {
