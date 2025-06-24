@@ -17,7 +17,6 @@ exports.seed = async function(knex) {
   ])
   await knex('usuarios').insert([
     {
-      id: 1,
       nome: 'admin',
       email: 'admin',
       senha: '$2a$10$JR1clzowAFzdqV/WIsz2DOL4uQvlaSke9SCj2QPdAU.39yD5ij2fO',

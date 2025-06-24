@@ -8,15 +8,15 @@ exports.seed = async function(knex) {
   await knex('vincula_acesso_status').del()
 
   await knex('status_pedido').insert([
-  { id: 0, descricao: "Criado", ordem: 0},
-  { id: 1, descricao: "Pendente", ordem: 1},
-  { id: 2, descricao: "Análise financeira", ordem: 2},
-  { id: 3, descricao: "Aprovado", ordem: 3},
-  { id: 4, descricao: "Avaliar comissão", ordem: 4},
-  { id: 5, descricao: "Em produção", ordem: 5},
-  { id: 6, descricao: "Em rota", ordem: 6},
-  { id: 7, descricao: "Entregue", ordem: 7},
-  { id: 8, descricao: "Recusado", ordem: 9}
+  { descricao: "Criado", ordem: 0},
+  { descricao: "Pendente", ordem: 1},
+  { descricao: "Análise financeira", ordem: 2},
+  { descricao: "Aprovado", ordem: 3},
+  { descricao: "Avaliar comissão", ordem: 4},
+  { descricao: "Em produção", ordem: 5},
+  { descricao: "Em rota", ordem: 6},
+  { descricao: "Entregue", ordem: 7},
+  { descricao: "Recusado", ordem: 9}
   ]);
 
   await knex('vincula_acesso_status').insert([
