@@ -227,8 +227,8 @@ exports.up = function (knex) {
                 n.descricao AS nivel_acesso,
                 u.inativo
             FROM usuarios u
-                JOIN representantes r ON u.representante = r.id
-                JOIN nivel_acesso n ON u.nivel_acesso = n.id;
+                LEFT JOIN representantes r ON u.representante = r.id
+                INNER JOIN nivel_acesso n ON u.nivel_acesso = n.id;
             `)
         
         //VW_FRETES
