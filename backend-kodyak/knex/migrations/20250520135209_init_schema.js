@@ -57,7 +57,7 @@ exports.up = function (knex) {
             table.increments('id')
             table.text('razao_social').notNullable()
             table.text('nome').notNullable()
-            table.text('documento').notNullable()
+            table.text('documento').notNullable().unique()
             table.string('tipo_pessoa', 1).notNullable()
             table.boolean('inativo').notNullable().defaultTo(false)
         })
