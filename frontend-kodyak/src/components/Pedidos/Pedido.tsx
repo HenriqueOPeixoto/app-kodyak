@@ -20,7 +20,8 @@ import FretePedido from './AbasPedido/FretePedido'
 interface Cliente {
     label: string,
     id: number,
-    nome: string
+    nome: string,
+    representante: string
 }
 
 interface Endereco {
@@ -244,7 +245,8 @@ export default function Pedido() {
             return {
                 label: `${cliente.id} - ${cliente.nome}`,
                 id: cliente.id,
-                nome: cliente.nome
+                nome: cliente.nome,
+                representante: cliente.representante
             }
         })
     }, [clientes])
@@ -268,21 +270,25 @@ export default function Pedido() {
         // Salvar pedido no backend
         // se id não for informado, cria um novo pedido
         if (!id) {
-            axios.post(`${backendBaseURL}/api/pedidos`, {
-                "cliente_endereco": endereco?.id,
-                "status": status,
-                "observacoes": observacoes,
-                "data": new Date().toISOString(),
-            })
-                .then((response) => {
-                    handleAbrirSnack('Pedido salvo com sucesso!')
-                    //navigate('/pedidos')
-                    navigate('/pedidos/editar_pedido/' + response.data.id)
+            if (cliente?.representante && endereco?.id) {
+                axios.post(`${backendBaseURL}/api/pedidos`, {
+                    "cliente_endereco": endereco?.id,
+                    "status": status,
+                    "observacoes": observacoes,
+                    "data": new Date().toISOString(),
+                    "representante": cliente?.representante
                 })
-                .catch((error) => {
-                    handleAbrirSnack('Não foi possível salvar o pedido: ' + error)
-                    console.error('Não foi possível salvar o pedido: ' + error)
-                })
+                    .then((response) => {
+                        handleAbrirSnack('Pedido salvo com sucesso!')
+                        //navigate('/pedidos')
+                        navigate('/pedidos/editar_pedido/' + response.data.id)
+                    })
+                    .catch((error) => {
+                        handleAbrirSnack('Não foi possível salvar o pedido: ' + error)
+                        console.error('Não foi possível salvar o pedido: ' + error)
+                    })
+            } else if (!cliente?.representante) { handleAbrirSnack('Erro: O cliente selecionado não possui representante cadastrado.') }
+            else { handleAbrirSnack('Erro: Nem todos os campos obrigatórios foram preenchidos.') }
         } else {
             axios.put(`${backendBaseURL}/api/pedidos/${id}`, {
                 "observacoes": observacoes,

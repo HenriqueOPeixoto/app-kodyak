@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Snackbar, TextField, Tooltip } from "@mui/material";
+import { Autocomplete, Box, Button, FormControl, FormControlLabel, FormLabel, IconButton, Radio, RadioGroup, Snackbar, TextField, Tooltip } from "@mui/material";
 import useAxiosInstance from "../../../service/AxiosInstance";
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
@@ -10,6 +10,11 @@ import EditIcon from '@mui/icons-material/Edit';
 
 const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
+interface Representante {
+    id: string,
+    nome: string
+}
+
 export default function CadastroPrincipal() {
     const axios = useAxiosInstance()
     const navigate = useNavigate();
@@ -20,6 +25,9 @@ export default function CadastroPrincipal() {
     const [tipoPessoa, setTipoPessoa] = useState('F')
     const [documento, setDocumento] = useState('')
     const [inativo, setInativo] = useState(false)
+    const [representante, setRepresentante] = useState<Representante | null>(null)
+
+    const [listaRepresentantes, setListaRepresentantes] = useState<Representante[]>([])
 
     const [dialogOpen, setDialogOpen] = useState(false)
     const [snackOpen, setSnackOpen] = useState(false)
@@ -28,6 +36,17 @@ export default function CadastroPrincipal() {
 
     const [msgTextoErro, setMsgTextoErro] = useState('') // Texto usado para exibir mensagem de erro ao informar documento
     const [inputErrado, setInputErrado] = useState(false) // Flag para exibir mensagem de erro ao informar documento
+
+    useEffect(() => {
+        axios.get(`${backendBaseURL}/api/representantes`)
+        .then((response) => {
+            setListaRepresentantes(response.data)
+        })
+        .catch((error) => {
+            handleAbrirSnack('Ocorreu um erro ao buscar os representantes. Verifique o console.')
+            console.error('Erro ao buscar os representantes: ' + error.message)
+        })
+    }, [])
 
     useEffect(() => {
         if (id) {
@@ -39,7 +58,8 @@ export default function CadastroPrincipal() {
                             nome,
                             tipo_pessoa,
                             documento,
-                            inativo
+                            inativo,
+                            representante
                         } = response.data[0]
 
                         setRazaoSocial(razao_social)
@@ -47,7 +67,13 @@ export default function CadastroPrincipal() {
                         setTipoPessoa(tipo_pessoa)
                         setDocumento(documento)
                         setInativo(inativo)
+
+                        return axios.get(`${backendBaseURL}/api/representantes/${representante}`)
                     }
+                })
+                .then((response) => {
+                    const representanteData = response?.data[0]
+                    setRepresentante(representanteData)
                 })
                 .catch(error => {
                     console.error('Não foi possível carregar dados do cliente: ', error)
@@ -72,7 +98,8 @@ export default function CadastroPrincipal() {
                 nome,
                 tipo_pessoa: tipoPessoa,
                 documento,
-                inativo
+                inativo,
+                representante: representante ? representante.id : null
             }
     
             if (id) {
@@ -204,6 +231,21 @@ export default function CadastroPrincipal() {
             }}
 
           />
+            <Autocomplete
+                className='TxtRepresentante'
+                disablePortal
+                options={listaRepresentantes}
+                //sx={{ width: 100 }}
+                value={representante}
+                getOptionLabel={(option) => option.nome} // Como exibir cada opção
+                onChange={(_event, novoRepresentante) => {
+                    if (representante?.id !== novoRepresentante?.id) {
+                        setRepresentante(novoRepresentante)
+                    }
+                }}
+                renderInput={(params) => <TextField required {...params} label="Representante" />}
+                isOptionEqualToValue={(option, value) => option.id === value?.id}
+            />
             <div className='FormButtons'>
                 <Button startIcon={<SaveIcon />}
                     variant='contained'

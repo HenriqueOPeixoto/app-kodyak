@@ -5,21 +5,23 @@ const createCliente = (request, response) => {
         razao_social,
         nome,
         tipo_pessoa,
-        documento
+        documento,
+        representante
     } = request.body
 
     const query =
         `INSERT INTO CLIENTES (
-            razao_social, nome, tipo_pessoa, documento
+            razao_social, nome, tipo_pessoa, documento, representante
         ) 
-        VALUES ($1, $2, $3, $4)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING ID`
     
     const values = [
         razao_social,
         nome,
         tipo_pessoa,
-        documento
+        documento,
+        representante
     ]
 
     pool.query(query, values)
@@ -32,7 +34,7 @@ const createCliente = (request, response) => {
 }
 
 const getClientes = (request, response) => {
-    const { nome, documento, inativo } = request.query
+    const { nome, documento, inativo, representante } = request.query
 
     let query = 'SELECT * FROM CLIENTES WHERE 1=1'
     const params = []
@@ -52,6 +54,11 @@ const getClientes = (request, response) => {
         params.push(inativo)
         query += ' AND INATIVO = $' + params.length
     }
+    
+    if (representante) {
+        params.push(representante)
+        query += ' AND REPRESENTANTE = $' + params.length
+    }
 
     query += ' ORDER BY UPPER(NOME)'
 
@@ -67,7 +74,8 @@ const updateCliente = (request, response) => {
         razao_social,
         nome,
         tipo_pessoa,
-        documento
+        documento,
+        representante
     } = request.body
 
     let query = 'UPDATE CLIENTES SET '
@@ -89,6 +97,10 @@ const updateCliente = (request, response) => {
     if (documento) {
         params.push(documento)
         updates.push(' documento = $' + params.length)
+    }
+    if (representante) {
+        params.push(representante)
+        updates.push(' representante = $' + params.length)
     }
 
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.')}

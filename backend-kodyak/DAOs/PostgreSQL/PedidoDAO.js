@@ -1,12 +1,12 @@
 const pool = require('../../postgres').pool
 
 const createPedido = (request, response) => {
-    const { data, status, observacoes, cliente_endereco } = request.body
+    const { data, status, observacoes, cliente_endereco, representante } = request.body
 
     const query = 
-        `INSERT INTO PEDIDOS (data, status, observacoes, cliente_endereco) VALUES ($1, $2, $3, $4) RETURNING ID`
+        `INSERT INTO PEDIDOS (data, status, observacoes, cliente_endereco, representante) VALUES ($1, $2, $3, $4, $5) RETURNING ID`
     
-        pool.query(query, [data, status, observacoes, cliente_endereco])
+        pool.query(query, [data, status, observacoes, cliente_endereco, representante])
         .then((results) => { 
             const newId = results.rows[0].id;
             response.status(201).json({ id: newId, message: `Pedido cadastrado com ID ${newId}` });
@@ -17,7 +17,7 @@ const createPedido = (request, response) => {
 const updatePedido = (request, response) => {
     const id = parseInt(request.params.id)
 
-    const { data, status, observacoes, cliente_endereco } = request.body
+    const { data, status, observacoes, cliente_endereco, representante } = request.body
 
     let query = 'UPDATE PEDIDOS SET '
     const updates = []
@@ -39,6 +39,10 @@ const updatePedido = (request, response) => {
         params.push(cliente_endereco)
         updates.push(' cliente_endereco = $' + params.length)
     }
+    if (representante) {
+        params.push(representante)
+        updates.push(' representante = $' + params.length)
+    }
 
     if (updates.length === 0) { return response.status(400).send('Não há atualizações a serem realizadas.') }
 
@@ -52,7 +56,7 @@ const updatePedido = (request, response) => {
 }
 
 const getPedidos = (request, response) => {
-    const { data, status, observacoes, cliente_endereco } = request.query
+    const { data, status, observacoes, cliente_endereco, representante } = request.query
 
     let query = 'SELECT * FROM PEDIDOS WHERE 1=1'
     const params = []
@@ -75,6 +79,11 @@ const getPedidos = (request, response) => {
     if (cliente_endereco) {
         params.push(cliente_endereco)
         query += ' AND CLIENTE_ENDERECO = $' + params.length
+    }
+
+    if (representante) {
+        params.push(representante)
+        query += ' AND REPRESENTANTE = $' + params.length
     }
 
     pool.query(query, params)
