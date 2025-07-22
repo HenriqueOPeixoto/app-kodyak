@@ -90,8 +90,8 @@ export default function CadastroPrincipal() {
             setMsgTextoErro('Raíz do CNPJ precisa conter 8 dígitos')
             setInputErrado(true)
             return
-        } else if ((razaoSocial === '') || (nome === '')) {
-            handleAbrirSnack('Nome e Razão Social são campos obrigatórios!')
+        } else if ((razaoSocial === '') || (nome === '') || (!representante)) {
+            handleAbrirSnack('Nome, Razão Social e Representante são campos obrigatórios!')
         } else {
             const formData = {
                 razao_social: razaoSocial,
