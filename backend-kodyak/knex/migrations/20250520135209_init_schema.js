@@ -140,7 +140,7 @@ exports.up = function (knex) {
             table.primary(['id'])
         })
         .createTable('status_pedido', function (table) {
-            table.increments('id')
+            table.integer('id').primary()
             table.text('descricao').notNullable()
             table.integer('ordem').notNullable()
         })
