@@ -9,6 +9,7 @@ import { Autocomplete, Backdrop, Box, CircularProgress, FormControl, InputLabel,
 import PrintIcon from '@mui/icons-material/Print';
 import ShareIcon from '@mui/icons-material/Share';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import './styles/Pedido.css'
@@ -16,6 +17,7 @@ import ItensPedido from './AbasPedido/ItensPedido';
 import useAxiosInstance from "../../service/AxiosInstance";
 import NovoItemPedido from './AbasPedido/NovoItemPedido';
 import FretePedido from './AbasPedido/FretePedido'
+import PagamentoDialog from './AbasPedido/PagamentoDialog';
 
 interface Cliente {
     label: string,
@@ -54,7 +56,8 @@ interface Item {
 
 interface StatusPedido {
     id: number,
-    descricao: string
+    descricao: string,
+    ordem: number
 }
 
 const calcularValorTotalFrete = (
@@ -75,6 +78,7 @@ const backendBaseURL = import.meta.env.VITE_BACKEND_BASE_URL
 
 const actions = [
     { icon: <AddShoppingCartIcon />, name: 'AdicionarItem', label: 'Adicionar Item' },
+    { icon: <CreditCardIcon />, name: 'AdicionarFormaPgto', label: 'Forma de Pagamento' },
     { icon: <PrintIcon />, name: 'Print', label: 'Imprimir' },
     { icon: <ShareIcon />, name: 'Share', label: 'Compartilhar' },
 ];
@@ -107,6 +111,7 @@ export default function Pedido() {
 
     const [openNovoItemDialog, setOpenNovoItemDialog] = React.useState(false)
     const [openFretePedidoDialog, setOpenFretePedidoDialog] = React.useState(false)
+    const [openPagamentoDialog, setOpenPagamentoDialog] = React.useState(false)
     const [snackOpen, setSnackOpen] = React.useState(false) 
     const [snackMessage, setSnackMessage] = React.useState('')
 
@@ -332,10 +337,21 @@ export default function Pedido() {
 
     }
 
+    const handleOpenPagamentoDialog = () => {
+        setOpenPagamentoDialog(true)
+    }
+    
+    const handleClosePagamentoDialog = () => {
+        setOpenPagamentoDialog(false)
+    }
+
     const handleAcaoSpeedDial = (actionname: string) => {
         switch (actionname) {
             case 'AdicionarItem':
                 handleOpenNovoItemDialog()
+                break
+            case 'AdicionarFormaPgto':
+                handleOpenPagamentoDialog()
                 break
             case 'Print':
                 alert('Não implementado')
@@ -588,6 +604,7 @@ export default function Pedido() {
                 </Toolbar>
             </AppBar>
             <NovoItemPedido open={openNovoItemDialog} handleClose={handleCloseNovoItemDialog} onAdicionarItemAoCarrinho={adicionarItemAoPedido}/>
+            <PagamentoDialog open={openPagamentoDialog} handleClose={handleClosePagamentoDialog} status={parseInt(status)} />
             {/* Só renderiza a tela FretePedido se tiver id */}
             { id && endereco && 
                 <FretePedido
