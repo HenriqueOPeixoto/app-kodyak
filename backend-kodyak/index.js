@@ -19,6 +19,7 @@ const localidadesRoutes = require('./routes/LocalidadesRoutes')
 const freteRoutes = require('./routes/FreteRoutes')
 const statusPedidoRoutes = require('./routes/StatusPedidoRoutes')
 const authRoutes = require('./routes/AuthRoutes');
+const formasPagamentoRoutes = require('./routes/FormasPagamentoRoutes');
 const authenticateToken = require('./middleware/Authorization');
 
 const app = express();
@@ -50,5 +51,7 @@ app.use('/api/pedidos_itens', authenticateToken, pedidoItensRoutes)
 app.use('/api/localidades', authenticateToken, localidadesRoutes)
 app.use('/api/fretes', authenticateToken, freteRoutes)
 app.use('/api/status_pedido', authenticateToken, statusPedidoRoutes)
+app.use('/api/formas_pagamento', authenticateToken, formasPagamentoRoutes)
+
 
 app.listen(port, '0.0.0.0')
