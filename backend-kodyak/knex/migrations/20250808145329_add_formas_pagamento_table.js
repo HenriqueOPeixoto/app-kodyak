@@ -16,7 +16,7 @@ exports.up = function(knex) {
     table.boolean('inativo').defaultTo(false)
   })
   .alterTable('pedidos', function (table) {
-    table.integer('parcelamento').notNullable().references('id').inTable('parcelamentos').onDelete('RESTRICT').onUpdate('CASCADE')
+    table.integer('parcelamento').references('id').inTable('parcelamentos').onDelete('RESTRICT').onUpdate('CASCADE')
   })
 };
 
