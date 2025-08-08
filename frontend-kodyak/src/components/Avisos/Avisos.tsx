@@ -11,6 +11,10 @@ function Avisos() {
             <Typography>Abaixo está disponível o histórico de modificações por versão:</Typography>
             <br />
             <Typography variant="h6">Changelog:</Typography>
+            <Typography variant="h6">0.4</Typography>
+            <List>
+                <ListItem>O Consumo Diário no cadastro de Produtos não é mais obrigatório;</ListItem>
+            </List>
             <Typography variant="h6">0.3</Typography>
             <List>
                 <ListItem>Corrigida falha no interceptador de respostas do servidor, que estava fazendo com que

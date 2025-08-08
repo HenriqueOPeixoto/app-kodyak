@@ -78,10 +78,10 @@ export default function Produtos() {
 
     const handleSubmit = () => {
         const formData = {
-            nome, valor, indicacoes, modo_uso: modoUso, restricoes, peso, consumo_diario: consumoDiario, familia_produtos: familiaProdutos, inativo
+            nome, valor, indicacoes, modo_uso: modoUso, restricoes, peso, consumo_diario: consumoDiario || null, familia_produtos: familiaProdutos, inativo
         }
 
-        const chavesVerificarNulo: (keyof typeof formData)[] = ['nome', 'valor', 'peso', 'consumo_diario', 'familia_produtos']
+        const chavesVerificarNulo: (keyof typeof formData)[] = ['nome', 'valor', 'peso', 'familia_produtos']
         const obrigatoriosNulos = chavesVerificarNulo.filter(chave => formData[chave] === '')
 
         if (obrigatoriosNulos.length > 0) handleAbrirSnack('Os seguintes campos obrigatórios não foram preenchidos: ' + obrigatoriosNulos.join(', ').toUpperCase())
