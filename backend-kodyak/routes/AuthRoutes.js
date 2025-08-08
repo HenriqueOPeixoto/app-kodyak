@@ -14,13 +14,13 @@ router.post('/login', async (req, res) => {
         const usuarios = await pool.query('SELECT * FROM USUARIOS WHERE email = $1', [email])
 
         if (usuarios.rows.length === 0) {
-            return res.status(401).send('E-mail não encontrado')
+            return res.status(401).send('E-mail ou senha incorreta.')
         }
 
         // validação de senha
         const isSenhaValida = await bcrypt.compare(senha, usuarios.rows[0].senha)
         if (!isSenhaValida) {
-            return res.status(401).send('Senha incorreta')
+            return res.status(401).send('E-mail ou senha incorreta.')
         }
 
         // Retorna o token para quem requisitou o login.
