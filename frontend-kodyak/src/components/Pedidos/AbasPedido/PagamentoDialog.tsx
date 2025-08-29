@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useAxiosInstance from "../../../service/AxiosInstance";
 
@@ -30,13 +30,13 @@ const PagamentoDialog: React.FC<PagamentoDialogProps> = ({ open, handleClose, st
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     
-    const [formaPagamento, setFormaPagamento] = useState<FormaPagamento | null>(null)
+    const [formaPagamento, setFormaPagamento] = useState('')
+    const [parcelamento, setParcelamento] = useState('')
 
     const [formasPagamento, setFormasPagamento] = useState<FormaPagamento[]>([])
     const [parcelamentos, setParcelamentos] = useState<Parcelamento[]>([])
 
-    const [listaFormasPagamento, setListaFormasPagamento] = useState<FormaPagamento[]>([])
-    const[listaParcelamentos, setListaParcelamentos] = useState<Parcelamento[]>([])
+//    const [bloqueado, setBloqueado] = useState(false)
 
     useEffect(() => {
         axios.get(`${backendBaseURL}/api/formas_pagamento`)
@@ -44,39 +44,80 @@ const PagamentoDialog: React.FC<PagamentoDialogProps> = ({ open, handleClose, st
             setFormasPagamento(results.data)
         })
         .catch((error) => {
-            console.error('Não foi possível carregar as formas de pagamento.')
+            console.error('Não foi possível carregar as formas de pagamento: ' + error)
         })
     }, [])
 
-    React.useEffect(() => {
-        setListaFormasPagamento(formasPagamento.map((formaPagamento) => {
-            return {
-                label: `${formaPagamento.descricao}`,
-                id: formaPagamento.id,
-                descricao: formaPagamento.descricao
-            }
-        }))
-    }, [formasPagamento])
+    useEffect(() => {
+        axios.get(`${backendBaseURL}/api/formas_pagamento/${formaPagamento}/parcelamentos`)
+        .then((results) => {
+            setParcelamentos(results.data)
+        })
+        .catch((error) => {
+            console.error('Não foi possível carregar as opções de parcelamento para o pagamento selecionado: ' + error)
+        })
+    }, [formaPagamento])
+
+    // IMPLEMENTAR DEPOIS QUE A FUNCIONALIDADE BASICA ESTIVER PRONTA
+    /*useEffect(() => {
+        // AQUI ESTÁ PERMITINDO ALTERAR CASO O USUÁRIO TEMPORARIAMENTE
+        // RETORNE O STATUS PARA CRIADO !!!
+        console.log(status)
+        if (status) setBloqueado(true)
+            else setBloqueado(false)
+    }, [status])*/
+
+    const handleChangeFormaPagamento = (event: SelectChangeEvent) => {
+        setFormaPagamento(event.target.value as string)
+        setParcelamento('')
+    } 
+
+    const handleChangeParcelamento = (event: SelectChangeEvent) => {
+        setParcelamento(event.target.value as string)
+    } 
 
     return (
         <React.Fragment>
             <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
-                <DialogTitle>Forma de Pagamento</DialogTitle>
+                <DialogTitle>Informações de Pagamento</DialogTitle>
                 <DialogContent>
-                    {/* Abaixo eu trato dois casos no prop disabled
-                        ordemStatusPedido === 0 
-                        ordemStatusPedido === undefined  */}
-                    <Autocomplete
-                        disablePortal
-                        
-                        options={listaFormasPagamento}
-                        sx={{ width: 300 }}
-                        value={formaPagamento}
-                        getOptionLabel={(option) => option.label}
-                        renderInput={(params) => <TextField {...params} label="Forma de Pagamento" />}
-                    >
-                        
-                    </Autocomplete>
+                    <FormControl sx={{mt: '5px'}}>
+                        <InputLabel
+                            >Forma de Pagamento</InputLabel>
+                        <Select
+                            
+                            label="Forma de Pagamento"
+                            onChange={handleChangeFormaPagamento}
+                            sx={{ width: '300px' }}
+                            variant='standard'
+
+                        >
+                            
+                            {formasPagamento.map((formaPagamento: FormaPagamento) => (
+                                <MenuItem key={formaPagamento.id} value={formaPagamento.id}>{formaPagamento.descricao}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    
+                </DialogContent>
+                <DialogContent>
+                    <FormControl>
+                        <InputLabel
+                            >Parcelamento</InputLabel>
+                        <Select
+                            
+                            label="Parcelamento"
+                            onChange={handleChangeParcelamento}
+                            sx={{ width: '300px' }}
+                            variant='standard'
+
+                        >
+                            {parcelamentos.map((parcelamento: Parcelamento) => (
+                                <MenuItem key={parcelamento.id} value={parcelamento.id}>{parcelamento.descricao}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    
                 </DialogContent>
 
                 <DialogActions>
